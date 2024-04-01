@@ -7,6 +7,7 @@ import VerifyOtp from "../pages/VerifyOtp";
 import NewPassword from "../pages/NewPassword";
 import { routeGenerator } from "../utils/routeGenerator";
 import { adminRoute } from "./admin.route";
+import { vendorRoute } from "./vendor.route";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,11 @@ const router = createBrowserRouter([
     path: "/admin",
     element: <MainLayout />,
     children: routeGenerator(adminRoute),
+  },
+  {
+    path: "/vendor",
+    element: <MainLayout />,
+    children: routeGenerator(vendorRoute),
   },
   {
     path: "/login",

@@ -7,19 +7,20 @@ import { useAppSelector } from "../redux/hooks";
 import { sidebarItemsGenerator } from "../utils/sidebarItemsGenerator";
 import { adminRoute } from "../router/admin.route";
 import { IoLogInOutline } from "react-icons/io5";
+import { vendorRoute } from "../router/vendor.route";
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { pathname } = location;
   const collapsed = useAppSelector((state) => state.layout.collapsed);
-  const role: string = "admin";
+  const role: string = "vendor";
   let SidebarItems;
   switch (role) {
     case "admin":
       SidebarItems = sidebarItemsGenerator(adminRoute, "admin");
       break;
     case "vendor":
-      SidebarItems = sidebarItemsGenerator(adminRoute, "vendor");
+      SidebarItems = sidebarItemsGenerator(vendorRoute, "vendor");
       break;
 
     default:

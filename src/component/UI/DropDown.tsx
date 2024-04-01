@@ -17,8 +17,8 @@ const DropDown = ({ items, children }: DropdownProps) => {
       theme={{
         components: {
           Dropdown: {
-            colorBgElevated: "#181818",
-            colorText: "white",
+            colorBgElevated: "white",
+            colorText: "black",
           },
         },
       }}
