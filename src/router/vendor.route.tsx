@@ -11,6 +11,7 @@ import UpdatePassword from "../pages/UpdatePassword";
 import VendorDashboard from "../pages/VendorDashboard";
 import VendorRestaurant from "../pages/VendorDashboard/Restaurant";
 import CreateRestaurant from "../pages/VendorDashboard/Restaurant/CreateRestaurant";
+import Order from "../pages/VendorDashboard/Order";
 
 export const vendorRoute = [
   {
@@ -24,6 +25,12 @@ export const vendorRoute = [
     path: "restaurant",
     icon: <MdDashboard />,
     element: <VendorRestaurant />,
+  },
+  {
+    name: "Order",
+    path: "order",
+    icon: <MdDashboard />,
+    element: <Order />,
   },
   {
     path: "create-restaurant",
