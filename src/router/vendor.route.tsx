@@ -12,6 +12,7 @@ import VendorDashboard from "../pages/VendorDashboard";
 import VendorRestaurant from "../pages/VendorDashboard/Restaurant";
 import CreateRestaurant from "../pages/VendorDashboard/Restaurant/CreateRestaurant";
 import Order from "../pages/VendorDashboard/Order";
+import Table from "../pages/VendorDashboard/Table";
 
 export const vendorRoute = [
   {
@@ -31,6 +32,12 @@ export const vendorRoute = [
     path: "order",
     icon: <MdDashboard />,
     element: <Order />,
+  },
+  {
+    name: "Table",
+    path: "table",
+    icon: <MdDashboard />,
+    element: <Table />,
   },
   {
     path: "create-restaurant",

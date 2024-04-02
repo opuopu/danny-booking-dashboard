@@ -5,3 +5,4 @@ export * from "./notificationData";
 export * from "./walletIncome";
 export * from "./item";
 export * from "./vendororder";
+export * from "./tableData";
