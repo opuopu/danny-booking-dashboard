@@ -3,7 +3,7 @@ interface Paginationprops {
   total: number;
   onChange?: (page: number, pageSize: number) => void;
 }
-const GuruPagination = ({ total, onChange }: Paginationprops) => {
+const ResPagination = ({ total, onChange }: Paginationprops) => {
   return (
     <div>
       <Pagination defaultCurrent={1} total={total} onChange={onChange} />
@@ -11,4 +11,4 @@ const GuruPagination = ({ total, onChange }: Paginationprops) => {
   );
 };
 
-export default GuruPagination;
+export default ResPagination;
