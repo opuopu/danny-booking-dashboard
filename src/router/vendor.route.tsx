@@ -9,6 +9,8 @@ import AboutUs from "../pages/AboutUs";
 import Otp from "../pages/Otp";
 import UpdatePassword from "../pages/UpdatePassword";
 import VendorDashboard from "../pages/VendorDashboard";
+import VendorRestaurant from "../pages/VendorDashboard/Restaurant";
+import CreateRestaurant from "../pages/VendorDashboard/Restaurant/CreateRestaurant";
 
 export const vendorRoute = [
   {
@@ -16,6 +18,16 @@ export const vendorRoute = [
     path: "dashboard",
     icon: <MdDashboard />,
     element: <VendorDashboard />,
+  },
+  {
+    name: "Restaurant",
+    path: "restaurant",
+    icon: <MdDashboard />,
+    element: <VendorRestaurant />,
+  },
+  {
+    path: "create-restaurant",
+    element: <CreateRestaurant />,
   },
 
   {

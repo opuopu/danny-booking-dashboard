@@ -1,17 +1,22 @@
 import { MenuOutlined } from "@ant-design/icons";
 import { IoIosNotifications } from "react-icons/io";
 // import user from "../assets/users/user.png";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Button } from "antd";
 import { setCollapsed } from "../redux/features/layout/layoutSlice";
 import { NavLink, useLocation } from "react-router-dom";
 const HeaderLayout = () => {
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
-
+  const collapsed = useAppSelector((state) => state.layout.collapsed);
   return (
     <div className="flex justify-between">
-      <div className="flex items-center">
+      <div
+        className="flex items-center"
+        style={{
+          marginLeft: collapsed ? "100px" : "200px",
+        }}
+      >
         <Button
           type="text"
           icon={<MenuOutlined style={{ color: "white" }} />}

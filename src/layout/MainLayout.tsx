@@ -13,15 +13,19 @@ const MainLayout = () => {
   return (
     <div>
       <ConfigProvider theme={sidebardThemes}>
-        <Layout style={{ height: "100%" }}>
+        <Layout style={{ minHeight: "100vh", backgroundColor: "#edf5ea" }}>
           <Sidebar />
           <Layout>
-            <Header className="sticky top-0 z-50 w-full bg-primary ">
+            <Header className="sticky top-0 z-10 w-full bg-primary ">
               <HeaderLayout />
             </Header>
             <ConfigProvider theme={paginationTheme}>
               <Content
-                style={{ padding: "24px 16px 0", backgroundColor: "#edf5ea" }}
+                style={{
+                  padding: "24px 16px 0",
+                  backgroundColor: "#edf5ea",
+                  paddingLeft: collapsed ? "110px" : "215px",
+                }}
                 className={`responsive-content ${
                   !collapsed ? "collapsed" : ""
                 }`}
@@ -29,6 +33,7 @@ const MainLayout = () => {
                 <div
                   style={{
                     padding: 24,
+                    height: "100%",
                     backgroundColor: "#edf5ea",
                   }}
                 >

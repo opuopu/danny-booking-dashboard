@@ -1,18 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Input } from "antd";
+import { Form, TimePicker } from "antd";
 import { SizeType } from "antd/es/config-provider/SizeContext";
 import { Controller } from "react-hook-form";
 
-interface InputProps {
-  type: string;
+interface TTimeProps {
   name: string;
   label?: string;
   size?: SizeType;
   placeholder?: string;
-  labelColor?: string;
 }
 
-const ResInput = ({ type, name, label, size, placeholder }: InputProps) => {
+const ResTimePicker = ({ name, label, size }: TTimeProps) => {
   return (
     <Controller
       name={name}
@@ -22,12 +20,11 @@ const ResInput = ({ type, name, label, size, placeholder }: InputProps) => {
           validateStatus={error ? "error" : ""}
           help={error ? error.message : ""}
         >
-          <Input
+          <TimePicker
             {...field}
-            type={type}
-            id={name}
             size={size}
-            placeholder={placeholder}
+            style={{ width: "100%" }}
+            format="HH:mm"
           />
         </Form.Item>
       )}
@@ -35,4 +32,4 @@ const ResInput = ({ type, name, label, size, placeholder }: InputProps) => {
   );
 };
 
-export default ResInput;
+export default ResTimePicker;

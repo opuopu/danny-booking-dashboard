@@ -38,10 +38,11 @@ const Sidebar = () => {
       // collapsedWidth="0"
       style={{
         height: "100vh",
-        position: "relative",
+        zIndex: 154,
+        overflow: "auto",
+        position: "fixed",
         top: "0",
         left: "0",
-
         backgroundColor: "#D2D9CC",
       }}
     >
@@ -49,6 +50,7 @@ const Sidebar = () => {
         style={{
           color: "white",
           display: "flex",
+
           justifyContent: "center",
           alignItems: "center",
         }}
