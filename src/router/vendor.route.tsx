@@ -13,8 +13,12 @@ import VendorRestaurant from "../pages/VendorDashboard/Restaurant";
 import CreateRestaurant from "../pages/VendorDashboard/Restaurant/CreateRestaurant";
 import Order from "../pages/VendorDashboard/Order";
 import Table from "../pages/VendorDashboard/Table";
-import Menu from "../pages/VendorDashboard/Menu";
+
 import AddMenu from "../pages/VendorDashboard/Menu/AddMenu";
+import VendorTransaction from "../pages/VendorDashboard/Transaction";
+import { RiMoneyDollarCircleLine } from "react-icons/ri";
+import MenuCategory from "../pages/VendorDashboard/MenuCategory";
+import Menu from "../pages/VendorDashboard/Menu";
 
 export const vendorRoute = [
   {
@@ -43,9 +47,27 @@ export const vendorRoute = [
   },
   {
     name: "Menu",
-    path: "menu",
+    icon: <RiMoneyDollarCircleLine />,
+    children: [
+      {
+        name: "Category",
+        path: "category",
+        icon: <RiMoneyDollarCircleLine />,
+        element: <MenuCategory />,
+      },
+      {
+        name: "Menu",
+        path: "menu",
+        icon: <RiMoneyDollarCircleLine />,
+        element: <Menu />,
+      },
+    ],
+  },
+  {
+    name: "Transaction",
+    path: "transaction",
     icon: <MdDashboard />,
-    element: <Menu />,
+    element: <VendorTransaction />,
   },
   {
     path: "create-restaurant",

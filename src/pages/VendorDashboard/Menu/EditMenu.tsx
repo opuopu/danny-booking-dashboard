@@ -6,7 +6,7 @@ import UseImageUpload from "../../../hooks/useImageUpload";
 import ResInput from "../../../component/Form/ResInput";
 import ResSelect from "../../../component/Form/ResSelect";
 import ResTextArea from "../../../component/Form/ResTextarea";
-const AddMenu = () => {
+const EditMenu = () => {
   const { imageUrl, setFile } = UseImageUpload();
   const onSubmit = async (data: any) => {
     console.log(data);
@@ -55,10 +55,10 @@ const AddMenu = () => {
         htmlType="submit"
         className="bg-primary text-white w-full  h-[40px]"
       >
-        Submit
+        EDIT
       </Button>
     </ResForm>
   );
 };
 
-export default AddMenu;
+export default EditMenu;

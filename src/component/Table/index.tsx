@@ -6,7 +6,7 @@ interface ScrollProps {
   y?: number | "max";
 }
 interface ResTableProps {
-  loading: boolean;
+  loading?: boolean;
   onTableChange?: () => void;
   column: any;
   data: any[];

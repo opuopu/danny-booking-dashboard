@@ -10,11 +10,13 @@ import AddMenu from "./AddMenu";
 
 const Menu = () => {
   const [show, setshow] = useState<boolean>(false);
+
   return (
     <div>
       <ResModal showModal={show} setShowModal={setshow} title="ADD MENU">
         <AddMenu />
       </ResModal>
+
       <MenuHeaderCards />
       <div className="flex justify-end gap-x-4 ">
         <Input.Search
