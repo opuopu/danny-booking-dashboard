@@ -1,4 +1,4 @@
-import profile from "../../assets/users/user.png";
+import profile from "../../assets/person.png";
 import ProfileForm from "../../component/ProfileForm";
 const Profile = () => {
   return (
@@ -10,7 +10,8 @@ const Profile = () => {
             alt=""
             className="rounded-full h-[200px] w-[200px] object-cover"
           />
-          <h1 className="text-40 font-600">James Mitchell</h1>
+
+          <h1 className="text-40 text-black font-600">James Mitchell</h1>
         </div>
         <div className="w-[800px]">
           <ProfileForm />

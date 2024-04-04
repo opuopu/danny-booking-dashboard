@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Form } from "antd";
+import { Button, Form, UploadProps } from "antd";
 import ResForm from "../../../component/Form/FormProvider";
 import SingleUpload from "../../../component/SingleUpload";
 import UseImageUpload from "../../../hooks/useImageUpload";
@@ -8,6 +8,11 @@ import ResSelect from "../../../component/Form/ResSelect";
 import ResTextArea from "../../../component/Form/ResTextarea";
 const AddMenu = () => {
   const { imageUrl, setFile } = UseImageUpload();
+  const onchange: UploadProps["onChange"] = (info) => {
+    if (info.file?.originFileObj) {
+      setFile(info.file.originFileObj);
+    }
+  };
   const onSubmit = async (data: any) => {
     console.log(data);
   };
@@ -15,7 +20,7 @@ const AddMenu = () => {
   return (
     <ResForm onSubmit={onSubmit}>
       <Form.Item className="flex justify-center">
-        <SingleUpload imageUrl={imageUrl} setFile={setFile} />
+        <SingleUpload imageUrl={imageUrl!} onchange={onchange} />
       </Form.Item>
       <ResInput
         type="text"

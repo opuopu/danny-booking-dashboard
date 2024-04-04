@@ -1,4 +1,9 @@
-import { MdDashboard } from "react-icons/md";
+import {
+  MdDashboard,
+  MdOutlineCategory,
+  MdOutlineTableRestaurant,
+  MdRestaurantMenu,
+} from "react-icons/md";
 import { CiSettings } from "react-icons/ci";
 import Setting from "../pages/Setting";
 import Notification from "../pages/Notification";
@@ -19,6 +24,8 @@ import VendorTransaction from "../pages/VendorDashboard/Transaction";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import MenuCategory from "../pages/VendorDashboard/MenuCategory";
 import Menu from "../pages/VendorDashboard/Menu";
+import Profile from "../pages/Profile";
+import { BsBorderStyle } from "react-icons/bs";
 
 export const vendorRoute = [
   {
@@ -30,35 +37,35 @@ export const vendorRoute = [
   {
     name: "Restaurant",
     path: "restaurant",
-    icon: <MdDashboard />,
+    icon: <MdOutlineTableRestaurant />,
     element: <VendorRestaurant />,
   },
   {
     name: "Order",
     path: "order",
-    icon: <MdDashboard />,
+    icon: <BsBorderStyle />,
     element: <Order />,
   },
   {
     name: "Table",
     path: "table",
-    icon: <MdDashboard />,
+    icon: <MdOutlineTableRestaurant />,
     element: <Table />,
   },
   {
     name: "Menu",
-    icon: <RiMoneyDollarCircleLine />,
+    icon: <MdRestaurantMenu />,
     children: [
       {
         name: "Category",
         path: "category",
-        icon: <RiMoneyDollarCircleLine />,
+        icon: <MdOutlineCategory />,
         element: <MenuCategory />,
       },
       {
         name: "Menu",
         path: "menu",
-        icon: <RiMoneyDollarCircleLine />,
+        icon: <MdRestaurantMenu />,
         element: <Menu />,
       },
     ],
@@ -66,7 +73,7 @@ export const vendorRoute = [
   {
     name: "Transaction",
     path: "transaction",
-    icon: <MdDashboard />,
+    icon: <RiMoneyDollarCircleLine />,
     element: <VendorTransaction />,
   },
   {
@@ -83,6 +90,10 @@ export const vendorRoute = [
     path: "setting",
     icon: <CiSettings />,
     element: <Setting />,
+  },
+  {
+    path: "profile",
+    element: <Profile />,
   },
   {
     path: "notification",

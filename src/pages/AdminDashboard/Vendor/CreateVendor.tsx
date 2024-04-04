@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Form } from "antd";
+import { Button, Form, UploadProps } from "antd";
 import ResForm from "../../../component/Form/FormProvider";
 import SingleUpload from "../../../component/SingleUpload";
 import UseImageUpload from "../../../hooks/useImageUpload";
@@ -11,10 +11,15 @@ const CreateVendor = () => {
   const onSubmit = async (data: any) => {
     console.log(data);
   };
+  const onchange: UploadProps["onChange"] = (info) => {
+    if (info.file?.originFileObj) {
+      setFile(info.file.originFileObj);
+    }
+  };
   return (
     <ResForm onSubmit={onSubmit}>
       <Form.Item className="flex justify-center">
-        <SingleUpload imageUrl={imageUrl} setFile={setFile} />
+        <SingleUpload imageUrl={imageUrl!} onchange={onchange} />
         <p className="text-center">upload image</p>
       </Form.Item>
       <ResInput

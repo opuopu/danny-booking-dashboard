@@ -1,6 +1,6 @@
 import { MenuOutlined } from "@ant-design/icons";
 import { IoIosNotifications } from "react-icons/io";
-// import user from "../assets/users/user.png";
+import user from "../assets/person.png";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Button } from "antd";
 import { setCollapsed } from "../redux/features/layout/layoutSlice";
@@ -9,6 +9,7 @@ const HeaderLayout = () => {
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
   const collapsed = useAppSelector((state) => state.layout.collapsed);
+  const role = "vendor";
   return (
     <div className="flex justify-between">
       <div
@@ -37,13 +38,13 @@ const HeaderLayout = () => {
       </div>
       <div className="flex items-center  gap-x-6">
         <IoIosNotifications className="text-white  text-32 cursor-pointer" />
-        <NavLink to="/profile">
-          {/* <img
+        <NavLink to={`/${role}/profile`}>
+          <img
             src={user}
             width={40}
             className="rounded-full object-cover"
             alt=""
-          /> */}
+          />
         </NavLink>
       </div>
     </div>
