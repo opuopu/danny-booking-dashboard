@@ -7,25 +7,32 @@ import image from "./../../assets/bg_2.jpg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginValidationSchema } from "../../schema/auth.schema";
 import { NavLink, useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import { toast } from "sonner";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
+import ErrorResponse from "../../component/UI/ErrorResponse";
+import { useAppDispatch } from "../../redux/hooks";
+import { setUser, TUser } from "../../redux/features/auth/authSlice";
+import { verifyToken } from "../../utils/verifyToken";
 interface FieldValues {
   email: string;
   password: string;
 }
-
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [login] = useLoginMutation();
   const onSubmit = async (data: FieldValues) => {
-    navigate("/dashboard");
-    console.log(data);
-    Swal.fire({
-      // position: "top-end",
-      color: "orange",
-      icon: "success",
-      title: "Successfully logged in",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+    const toastId = toast.loading("Logging in");
+    // navigate("/dashboard");
+    try {
+      const res: any = await login(data).unwrap();
+      const user = verifyToken(res.data.accessToken) as TUser;
+      dispatch(setUser({ user: user, token: res.data.accessToken }));
+      toast.success("Logged in", { id: toastId, duration: 2000 });
+      navigate(`/${user?.role}/dashboard`);
+    } catch (err) {
+      ErrorResponse(err, toastId);
+    }
   };
 
   return (

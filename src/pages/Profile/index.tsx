@@ -1,6 +1,9 @@
 import profile from "../../assets/person.png";
 import ProfileForm from "../../component/ProfileForm";
+import { useProfileQuery } from "../../redux/features/auth/authApi";
 const Profile = () => {
+  const { data, isLoading } = useProfileQuery(undefined);
+  console.log(data);
   return (
     <div className="flex justify-center">
       <div className="">
