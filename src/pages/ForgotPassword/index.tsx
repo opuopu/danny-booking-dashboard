@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import GuruForm from "../../component/Form/FormProvider";
 import image from "./../../assets/bg_2.jpg";
-import { fogotpasswordSchema } from "../../schema/auth.schema";
+import { authValidationSchema } from "../../schema/auth.schema";
 import ResInput from "../../component/Form/ResInput";
 import { Button } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
@@ -56,7 +56,7 @@ const ForgotPassword = () => {
           <div className="mt-[25px]">
             <GuruForm
               onSubmit={onSubmit}
-              resolver={zodResolver(fogotpasswordSchema)}
+              resolver={zodResolver(authValidationSchema.fogotpasswordSchema)}
             >
               <ResInput
                 size="large"

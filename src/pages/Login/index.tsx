@@ -5,7 +5,7 @@ import GuruForm from "../../component/Form/FormProvider";
 import ResInput from "../../component/Form/ResInput";
 import image from "./../../assets/bg_2.jpg";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginValidationSchema } from "../../schema/auth.schema";
+import { authValidationSchema } from "../../schema/auth.schema";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
@@ -51,7 +51,7 @@ const Login = () => {
           <div className="mt-[20px]">
             <GuruForm
               onSubmit={onSubmit}
-              resolver={zodResolver(loginValidationSchema)}
+              resolver={zodResolver(authValidationSchema.loginValidationSchema)}
             >
               <ResInput
                 size="large"

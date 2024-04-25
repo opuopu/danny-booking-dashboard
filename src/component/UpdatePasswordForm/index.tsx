@@ -1,29 +1,57 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "antd";
 import ResInput from "../Form/ResInput";
-import GuruForm from "../Form/FormProvider";
+
 import { GiConfirmed } from "react-icons/gi";
+import { useResendOtpMutation } from "../../redux/features/otp/otpApi";
+import ErrorResponse from "../UI/ErrorResponse";
+import { toast } from "sonner";
+import { TUser, useCurrentUser } from "../../redux/features/auth/authSlice";
+import { useAppSelector } from "../../redux/hooks";
+import { useNavigate } from "react-router-dom";
+
+import { authValidationSchema } from "../../schema/auth.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import ResForm from "../Form/FormProvider";
 
 interface SubmitProps {
   newPassword: string;
   confirmPassword: string;
 }
 const UpdatePasswordForm = () => {
+  const navigate = useNavigate();
+  const [resetPassword] = useResendOtpMutation();
+  const user: TUser | null = useAppSelector(useCurrentUser);
   const onSubmit = async (data: SubmitProps) => {
-    console.log(data);
+    console.log(data, "dfsafdsfsdfd");
+    const toastId = toast.loading("Resetting");
+    try {
+      const res = await resetPassword(data).unwrap();
+      toast.success("Password updated successfully", {
+        id: toastId,
+        duration: 200,
+      });
+      navigate(`/${user?.role}/dashboard`);
+    } catch (err) {
+      ErrorResponse(err, toastId);
+    }
   };
   return (
     <div>
-      <GuruForm onSubmit={onSubmit}>
+      <ResForm
+        onSubmit={onSubmit}
+        resolver={zodResolver(authValidationSchema.resetPasswordSchema)}
+      >
         <ResInput
-          label="Current Password"
-          type="password"
+          label="Confirm Password"
           size="large"
-          name="currentPassword"
+          type="password"
+          name="newPassword"
           placeholder="enter your current password"
         />
         <ResInput
-          label="Current Password"
+          label="Confirm Password"
           size="large"
           type="password"
           name="confirmPassword"
@@ -31,12 +59,13 @@ const UpdatePasswordForm = () => {
         />
 
         <Button
+          htmlType="submit"
           className="bg-primary h-[38px] w-full flex justify-center items-center font-600 text-18 border-0"
           icon={<GiConfirmed />}
         >
           Confirm
         </Button>
-      </GuruForm>
+      </ResForm>
     </div>
   );
 };

@@ -13,13 +13,18 @@ import { toast } from "sonner";
 import { tagTypesList } from "../../types/tagTypes";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://192.168.10.3:5000/api/v1",
+  baseUrl: "http://103.145.138.78:5000/api/v1",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
+    const otpToken = sessionStorage.getItem("token");
+
     const token = (getState() as RootState).auth.token;
 
     if (token) {
-      headers.set("authorization", `${token}`);
+      headers.set("authorization", `Bearer ${token}`);
+    }
+    if (otpToken) {
+      headers.set("token", otpToken);
     }
 
     return headers;
@@ -44,7 +49,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     console.log("Sending refresh token");
 
     const res = await fetch(
-      "http://192.168.10.3:5000/api/v1/auth/refresh-token",
+      "http://103.145.138.78:5000/api/v1/auth/refresh-token",
       {
         method: "POST",
         credentials: "include",
