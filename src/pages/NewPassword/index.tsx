@@ -5,15 +5,31 @@ import GuruForm from "../../component/Form/FormProvider";
 import ResInput from "../../component/Form/ResInput";
 import { Button } from "antd";
 import { GiConfirmed } from "react-icons/gi";
+import { useResetPasswordMutation } from "../../redux/features/auth/authApi";
+import { toast } from "sonner";
+import ErrorResponse from "../../component/UI/ErrorResponse";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { authValidationSchema } from "../../schema/auth.schema";
 interface PasswordProps {
   newPassword: string;
   confirmPassword: string;
 }
 const NewPassword = () => {
+  const [resetPassword] = useResetPasswordMutation();
   const navigate = useNavigate();
   const onSubmit = async (data: PasswordProps) => {
-    console.log(data);
-    navigate("/login");
+    const toastId = toast.loading("Password resetting....");
+    try {
+      await resetPassword(data).unwrap();
+      toast.success("Password reseted successfully", {
+        id: toastId,
+        duration: 200,
+      });
+      sessionStorage.clear();
+      navigate("/login");
+    } catch (err) {
+      ErrorResponse(err, toastId);
+    }
   };
   return (
     <div
@@ -42,7 +58,10 @@ const NewPassword = () => {
           </div>
 
           <div>
-            <GuruForm onSubmit={onSubmit}>
+            <GuruForm
+              onSubmit={onSubmit}
+              resolver={zodResolver(authValidationSchema.resetPasswordSchema)}
+            >
               <ResInput
                 size="large"
                 label="New Password"

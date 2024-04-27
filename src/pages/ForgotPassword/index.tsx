@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,25 +10,31 @@ import { Button } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useForgotPasswordMutation } from "../../redux/features/auth/authApi";
+import ErrorResponse from "../../component/UI/ErrorResponse";
+import { toast } from "sonner";
 
 interface FieldValues {
   email: string;
 }
 
 const ForgotPassword = () => {
+  const [forgotPassword] = useForgotPasswordMutation();
   const navigate = useNavigate();
   const onSubmit = async (data: FieldValues) => {
-    console.log(data);
-    Swal.fire({
-      // position: "top-end",
-
-      icon: "success",
-      title: "An Email Sent Successfull To Your Email",
-      text: "An Email Sent Successfull To Your Email",
-      showConfirmButton: false,
-      timer: 1500,
-    });
-    navigate("/verify-otp");
+    const toastId = toast.loading("Sending Otp..");
+    try {
+      const res = await forgotPassword(data).unwrap();
+      toast.success("An otp successfully sent your email", {
+        id: toastId,
+        duration: 2000,
+      });
+      sessionStorage.setItem("email", data?.email);
+      sessionStorage.setItem("token", res?.data?.token);
+      navigate("/verify-otp");
+    } catch (err) {
+      ErrorResponse(err, toastId);
+    }
   };
 
   return (

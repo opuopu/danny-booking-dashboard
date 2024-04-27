@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ConfigProvider, Form } from "antd";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 type TConfig = {
   defaultValues?: Record<string, any>;
@@ -20,14 +20,17 @@ const ResForm = ({
   theme,
 }: ResFormProviderProps) => {
   const formConfig: TConfig = {};
-  if (defaultValues) {
-    formConfig["defaultValues"] = defaultValues;
-  }
+  const methods = useForm(formConfig);
+  useEffect(() => {
+    if (defaultValues) {
+      Object.keys(defaultValues).forEach((name) => {
+        methods.setValue(name, defaultValues[name]);
+      });
+    }
+  }, [defaultValues, methods]);
   if (resolver) {
     formConfig["resolver"] = resolver;
   }
-
-  const methods = useForm(formConfig);
 
   return (
     <ConfigProvider theme={theme}>

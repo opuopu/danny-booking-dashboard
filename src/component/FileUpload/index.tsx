@@ -43,7 +43,16 @@ const FileUpload = ({
     <ConfigProvider theme={multiUpload}>
       <Upload {...props}>
         {imageUrl ? (
-          <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
+          <img
+            src={imageUrl}
+            alt="avatar"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              border: "none",
+            }}
+          />
         ) : (
           uploadButton
         )}

@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { authValidationSchema } from "../../schema/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ResForm from "../Form/FormProvider";
+import { useResetPasswordMutation } from "../../redux/features/auth/authApi";
 
 interface SubmitProps {
   newPassword: string;
@@ -21,10 +22,10 @@ interface SubmitProps {
 }
 const UpdatePasswordForm = () => {
   const navigate = useNavigate();
-  const [resetPassword] = useResendOtpMutation();
+  const [resetPassword] = useResetPasswordMutation();
   const user: TUser | null = useAppSelector(useCurrentUser);
   const onSubmit = async (data: SubmitProps) => {
-    console.log(data, "dfsafdsfsdfd");
+    console.log(data);
     const toastId = toast.loading("Resetting");
     try {
       const res = await resetPassword(data).unwrap();
@@ -44,18 +45,18 @@ const UpdatePasswordForm = () => {
         resolver={zodResolver(authValidationSchema.resetPasswordSchema)}
       >
         <ResInput
-          label="Confirm Password"
+          label="New Password"
           size="large"
           type="password"
           name="newPassword"
-          placeholder="enter your current password"
+          placeholder="enter your new password"
         />
         <ResInput
           label="Confirm Password"
           size="large"
           type="password"
           name="confirmPassword"
-          placeholder="enter your current password"
+          placeholder="enter your confirm password"
         />
 
         <Button

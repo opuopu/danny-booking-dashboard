@@ -22,13 +22,23 @@ const ResInput = ({ type, name, label, size, placeholder }: InputProps) => {
           validateStatus={error ? "error" : ""}
           help={error ? error.message : ""}
         >
-          <Input
-            {...field}
-            type={type}
-            id={name}
-            size={size}
-            placeholder={placeholder}
-          />
+          {type === "password" ? (
+            <Input.Password
+              {...field}
+              type={type}
+              id={name}
+              size={size}
+              placeholder={placeholder}
+            />
+          ) : (
+            <Input
+              {...field}
+              type={type}
+              id={name}
+              size={size}
+              placeholder={placeholder}
+            />
+          )}
         </Form.Item>
       )}
     />
