@@ -9,6 +9,7 @@ interface InputProps {
   size?: SizeType;
   placeholder?: string;
   labelColor?: string;
+  showTime?: boolean;
 }
 
 const ResDatePicker = ({
@@ -17,6 +18,7 @@ const ResDatePicker = ({
   size,
   placeholder,
   labelColor = "black",
+  showTime = false,
 }: InputProps) => {
   return (
     <Controller
@@ -28,6 +30,7 @@ const ResDatePicker = ({
           help={error ? error.message : ""}
         >
           <DatePicker
+            showTime={showTime}
             {...field}
             id={name}
             size={size}

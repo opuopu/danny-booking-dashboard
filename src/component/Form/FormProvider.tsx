@@ -28,6 +28,8 @@ const ResForm = ({
       });
     }
   }, [defaultValues, methods]);
+
+  console.log(resolver);
   if (resolver) {
     formConfig["resolver"] = resolver;
   }

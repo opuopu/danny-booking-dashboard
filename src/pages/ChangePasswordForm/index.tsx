@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { authValidationSchema } from "../../schema/auth.schema";
 import { useAppDispatch } from "../../redux/hooks";
 import { setToken } from "../../redux/features/otp/otpSlice";
+import ResForm from "../../component/Form/FormProvider";
 
 interface SubmitProps {
   currentPassword: string;
@@ -66,7 +67,7 @@ const ChangePasswordFrom = () => {
             Change Your Password
           </h1>
         </div>
-        <GuruForm
+        <ResForm
           onSubmit={onSubmit}
           resolver={zodResolver(authValidationSchema.changePasswordSchema)}
         >
@@ -106,7 +107,7 @@ const ChangePasswordFrom = () => {
           >
             Confirm
           </Button>
-        </GuruForm>
+        </ResForm>
       </div>
     </div>
   );

@@ -1,14 +1,26 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import MultiUpload from "../../../component/MultiUpload/MultiUpload";
 import { Button, Col, Divider, Form, Row, Switch, UploadFile } from "antd";
 import { RcFile } from "antd/es/upload";
-import ResForm from "../../../component/Form/FormProvider";
+
 import ResInput from "../../../component/Form/ResInput";
 import ResTextArea from "../../../component/Form/ResTextarea";
 import ResTimePicker from "../../../component/Form/ResTimepicker";
+import { useAddRestaurantMutation } from "../../../redux/features/restaurant/restaurantApi";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import { toast } from "sonner";
+import ResDatePicker from "../../../component/Form/ResDatePicker";
+import moment from "moment";
+import { days } from "../../../constant/days";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { restaurantSchema } from "../../../schema/restaurant.schema";
+import ResForm from "../../../component/Form/FormProvider";
+
 const CreateRestaurant = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [addRestaurant] = useAddRestaurantMutation();
   const onChange = (value: boolean) => {
     console.log(value);
   };
@@ -17,7 +29,10 @@ const CreateRestaurant = () => {
   };
   return (
     <div>
-      <ResForm onSubmit={onSubmit}>
+      <ResForm
+        onSubmit={onSubmit}
+        resolver={zodResolver(restaurantSchema.createRestaurantValidation)}
+      >
         <Row gutter={[14, 0]}>
           <Col span={24}>
             <Form.Item>
@@ -51,6 +66,26 @@ const CreateRestaurant = () => {
               name="description"
               placeholder="type restaurant description"
             />
+          </Col>
+          <Col span={6}>
+            <ResDatePicker
+              showTime={true}
+              size="large"
+              label="Enter Close From"
+              name="close.from"
+              placeholder="select date and time"
+            />
+          </Col>
+          <Col span={6}>
+            <ResDatePicker
+              showTime={true}
+              size="large"
+              label="Enter Close To"
+              name="close.to"
+              placeholder="select date and time"
+            />
+          </Col>
+          <Col span={24}>
             <Form.Item name="review-status">
               <div className="flex gap-x-2 items-center">
                 <p>Review Status</p>
@@ -58,55 +93,56 @@ const CreateRestaurant = () => {
               </div>
             </Form.Item>
           </Col>
+
           <Col span={12}>
             <Divider className="bg-deepGray" />
             <Row gutter={16}>
               <Col span={12}>
                 <ResTimePicker
                   label="Saturday Open Time"
-                  name="saturday.openTime"
+                  name="saturday.openingTime"
                 />
               </Col>
               <Col span={12}>
                 <ResTimePicker
                   label="Saturday Close Time"
-                  name="saturday.closeTime"
+                  name="saturday.closingTime"
                 />
               </Col>
               <Col span={12}>
                 <ResTimePicker
                   label="Sunday Open Time"
-                  name="sunday.openTime"
+                  name="sunday.openingTime"
                 />
               </Col>
               <Col span={12}>
                 <ResTimePicker
                   label="Sunday Close Time"
-                  name="sunday.closeTime"
+                  name="sunday.closingTime"
                 />
               </Col>
               <Col span={12}>
                 <ResTimePicker
                   label="Monday Open Time"
-                  name="monday.openTime"
+                  name="monday.openingTime"
                 />
               </Col>
               <Col span={12}>
                 <ResTimePicker
                   label="Monday Close Time"
-                  name="monday.closeTime"
+                  name="monday.closingTime"
                 />
               </Col>
               <Col span={12}>
                 <ResTimePicker
                   label="Friday Open Time"
-                  name="friday.openTime"
+                  name="friday.openingTime"
                 />
               </Col>
               <Col span={12}>
                 <ResTimePicker
                   label="Friday Close Time"
-                  name="friday.closeTime"
+                  name="friday.closingTime"
                 />
               </Col>
             </Row>
@@ -117,37 +153,37 @@ const CreateRestaurant = () => {
               <Col span={12}>
                 <ResTimePicker
                   label="Tuesday Open Time"
-                  name="tuesday.openTime"
+                  name="tuesday.openingTime"
                 />
               </Col>
               <Col span={12}>
                 <ResTimePicker
                   label="Tuesday Close Time"
-                  name="tuesday.closeTime"
+                  name="tuesday.closingTime"
                 />
               </Col>
               <Col span={12}>
                 <ResTimePicker
                   label="WednesDay Open Time"
-                  name="wednesday.openTime"
+                  name="wednesday.openingTime"
                 />
               </Col>
               <Col span={12}>
                 <ResTimePicker
                   label="WednesDay Close Time"
-                  name="wednesday.closeTime"
+                  name="wednesday.closingTime"
                 />
               </Col>
               <Col span={12}>
                 <ResTimePicker
                   label="Thursday Open Time"
-                  name="thursday.openTime"
+                  name="thursday.openingTime"
                 />
               </Col>
               <Col span={12}>
                 <ResTimePicker
                   label="Thursday Close Time"
-                  name="thursday.closeTime"
+                  name="thursday.closingTime"
                 />
               </Col>
             </Row>
