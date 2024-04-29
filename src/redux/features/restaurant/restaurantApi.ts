@@ -12,16 +12,44 @@ const restaurantsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.restaurant],
     }),
+    EditRestaurant: builder.mutation({
+      query: (body) => ({
+        url: `/restaurants/${body?.id}`,
+        method: "PATCH",
+        body: body?.data,
+      }),
+      invalidatesTags: [tagTypes.restaurant],
+    }),
+    DeleteFile: builder.mutation({
+      query: (body) => ({
+        url: `/restaurants/files/delete`,
+        method: "PATCH",
+        body: body,
+      }),
+      invalidatesTags: [tagTypes.restaurant],
+    }),
     getAllRestaurants: builder.query({
-      query: (data) => ({
-        url: "/restaurants",
+      query: (query: Record<string, any>) => ({
+        url: "/restaurants/dashboard",
         method: "GET",
-        body: data,
+        params: query,
+      }),
+      providesTags: [tagTypes.restaurant],
+    }),
+    getSingleRestaurant: builder.query({
+      query: (id: string) => ({
+        url: `/restaurants/owner/${id}`,
+        method: "GET",
       }),
       providesTags: [tagTypes.restaurant],
     }),
   }),
 });
 
-export const { useAddRestaurantMutation, useGetAllRestaurantsQuery } =
-  restaurantsApi;
+export const {
+  useAddRestaurantMutation,
+  useGetAllRestaurantsQuery,
+  useEditRestaurantMutation,
+  useGetSingleRestaurantQuery,
+  useDeleteFileMutation,
+} = restaurantsApi;

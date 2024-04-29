@@ -1,34 +1,59 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "antd";
 import ResForm from "../../../component/Form/FormProvider";
 import ResInput from "../../../component/Form/ResInput";
-interface TtableProps {
-  name: string;
-  seat: number;
-}
-const EditTable = () => {
-  const defaultvalue = {
-    name: "table 1",
-    seat: 5,
-  };
-  const onSubmit = async (data: TtableProps) => {
-    console.log(data);
+import { zodResolver } from "@hookform/resolvers/zod";
+import { tableValidation } from "../../../schema/table.schema";
+import { useAppSelector } from "../../../redux/hooks";
+import { useEditTableMutation } from "../../../redux/features/table/tableApi";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import { toast } from "sonner";
+
+const EditTable = ({ setShow }: any) => {
+  const table = useAppSelector((state) => state.table.table);
+  const formatData = { ...table, seats: Number(table?.seats) };
+  const [editTable] = useEditTableMutation();
+  const onSubmit = async (data: any) => {
+    const toastId = toast.loading("Editing....");
+    try {
+      await editTable({ body: data, id: table?._id }).unwrap();
+      toast.success("Table successfully updated", {
+        id: toastId,
+        duration: 2000,
+      });
+      setShow((prev: boolean) => !prev);
+    } catch (err) {
+      ErrorResponse(err, toastId);
+    }
   };
   return (
-    <ResForm onSubmit={onSubmit} defaultValues={defaultvalue}>
+    <ResForm
+      defaultValues={formatData}
+      onSubmit={onSubmit}
+      resolver={zodResolver(tableValidation.createTableSchema)}
+    >
       <ResInput
         type="text"
         size="large"
-        name="name"
+        name="tableName"
         placeholder="Enter Table Name"
         label="Enter Table Name"
       />
       <ResInput
+        type="text"
+        size="large"
+        name="tableNo"
+        placeholder="Enter Table No"
+        label="Enter Table No"
+      />
+      <ResInput
         type="number"
         size="large"
-        name="seat"
-        placeholder="Enter Seat No"
-        label="Enter Seat No"
+        name="seats"
+        placeholder="Enter Total Seats"
+        label="Enter Total Seats"
       />
+
       <div className="pt-4">
         <Button
           htmlType="submit"

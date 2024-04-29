@@ -5,12 +5,16 @@ import { useState } from "react";
 import ResModal from "../../../component/Modal/Modal";
 import AddCategory from "./AddCategory";
 import ResTable from "../../../component/Table";
-import { menucategoryData } from "../../../db";
 import EditCategory from "./EditCategory";
+import { useGetMYmenuCategoriesQuery } from "../../../redux/features/menu/menuApi";
+import { useAppDispatch } from "../../../redux/hooks";
+import { setCategoryDetails } from "../../../redux/features/menu/menuSlice";
 
 const MenuCategory = () => {
   const [show, setShow] = useState<boolean>(false);
   const [showEditModal, setshowEditModal] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const { data: categoryData } = useGetMYmenuCategoriesQuery(undefined);
   const column = [
     {
       title: "#SL",
@@ -29,13 +33,21 @@ const MenuCategory = () => {
     },
     {
       title: "Action",
-      dataIndex: "action",
+
       key: "action",
       render: (data: any, index: number) => {
         return (
           <div className="flex gap-x-4">
             <EditOutlined
-              onClick={() => setshowEditModal((prev) => !prev)}
+              onClick={() => {
+                setshowEditModal((prev) => !prev);
+                dispatch(
+                  setCategoryDetails({
+                    categoryTitle: data?.title,
+                    categoryId: data?._id,
+                  })
+                );
+              }}
               className="cursor-pointer"
               key={index}
             />
@@ -44,17 +56,23 @@ const MenuCategory = () => {
       },
     },
   ];
+  const data = categoryData?.data?.map((data: any, index: number) => {
+    return {
+      serial: index,
+      ...data,
+    };
+  });
   return (
     <div>
       <ResModal title="ADD CATEGORY" setShowModal={setShow} showModal={show}>
-        <AddCategory />
+        <AddCategory setShow={setShow} />
       </ResModal>
       <ResModal
         title="EDIT CATEGORY"
         setShowModal={setshowEditModal}
         showModal={showEditModal}
       >
-        <EditCategory />
+        <EditCategory setshowEditModal={setshowEditModal} />
       </ResModal>
       <div className="flex justify-end">
         <Button
@@ -67,9 +85,9 @@ const MenuCategory = () => {
       </div>
       <div className="mt-4">
         <ResTable
-          data={menucategoryData}
+          data={data}
           column={column}
-          pagination={{ total: menucategoryData?.length, pageSize: 10 }}
+          pagination={{ total: data?.length, pageSize: 10 }}
         />
       </div>
     </div>

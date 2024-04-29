@@ -35,6 +35,7 @@ const ResDatePicker = ({
             id={name}
             size={size}
             placeholder={placeholder}
+            format="YYYY-MM-DD HH:mm"
           />
         </Form.Item>
       )}

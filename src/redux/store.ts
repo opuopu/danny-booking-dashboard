@@ -14,6 +14,8 @@ import { baseApi } from "./api/baseApi";
 import authSlice from "./features/auth/authSlice";
 import layoutSlice from "./features/layout/layoutSlice";
 import otpSlice from "./features/otp/otpSlice";
+import menuSlice from "./features/menu/menuSlice";
+import tableSlice from "./features/table/tableSlice";
 
 const persistConfig = {
   key: "auth",
@@ -28,6 +30,8 @@ export const store = configureStore({
     auth: persistedAuthReducer,
     otp: otpSlice,
     layout: layoutSlice,
+    menu: menuSlice,
+    table: tableSlice,
   },
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({

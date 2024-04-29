@@ -4,11 +4,14 @@ import { useState } from "react";
 import MultiUpload from "../../../component/MultiUpload/MultiUpload";
 import { Button, Col, Divider, Form, Row, Switch, UploadFile } from "antd";
 import { RcFile } from "antd/es/upload";
-
 import ResInput from "../../../component/Form/ResInput";
 import ResTextArea from "../../../component/Form/ResTextarea";
 import ResTimePicker from "../../../component/Form/ResTimepicker";
-import { useAddRestaurantMutation } from "../../../redux/features/restaurant/restaurantApi";
+import {
+  useDeleteFileMutation,
+  useEditRestaurantMutation,
+  useGetSingleRestaurantQuery,
+} from "../../../redux/features/restaurant/restaurantApi";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
 import { toast } from "sonner";
 import ResDatePicker from "../../../component/Form/ResDatePicker";
@@ -17,20 +20,40 @@ import { days } from "../../../constant/days";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { restaurantSchema } from "../../../schema/restaurant.schema";
 import ResForm from "../../../component/Form/FormProvider";
+import { useParams } from "react-router-dom";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import showImage from "../../../utils/showImage";
+dayjs.extend(customParseFormat);
 
-const CreateRestaurant = () => {
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+const EditRestaurant = () => {
+  const { id } = useParams();
   const [reviewStatus, setReviewStatus] = useState(true);
-  const [addRestaurant] = useAddRestaurantMutation();
+  const [editRestaurant] = useEditRestaurantMutation();
+  const [deletImages] = useDeleteFileMutation();
+  const { data: singleRestaurantData } = useGetSingleRestaurantQuery(id!);
+  const formatedImage = singleRestaurantData?.data?.images?.map(
+    (image: any, index: number) => {
+      return {
+        uid: image?._id,
+        name: image?.url,
+        status: "done",
+        url: showImage(image?.url),
+      };
+    }
+  );
+  const [fileList, setFileList] = useState<UploadFile[]>(formatedImage);
+  const formatedData = {
+    ...singleRestaurantData?.data,
+    close: {
+      from: dayjs(singleRestaurantData?.data?.close?.from, "YYYY-MM-DD HH:mm"),
+      to: dayjs(singleRestaurantData?.data?.close?.to, "YYYY-MM-DD HH:mm"),
+    },
+  };
   const onChange = (value: boolean) => {
     setReviewStatus(value);
   };
   const onSubmit = async (data: any) => {
-    // check at least 5 images
-    if (fileList.length !== 5) {
-      toast.error("Please select 5 image before submitting..");
-      return;
-    }
     days.forEach((day) => {
       const dayData = data[day];
       if (dayData.openingTime && dayData.closingTime) {
@@ -43,35 +66,83 @@ const CreateRestaurant = () => {
         data[day] = { openingTime, closingTime }; // Update the day object with formatted times
       }
     });
-
     const formData = new FormData();
-    if (fileList.length > 0) {
+    if (fileList && fileList.length > 0) {
       fileList.forEach((file: any) => {
-        formData.append("files", file.originFileObj); // Append the file object
+        if (file.originFileObj) {
+          console.log(file.originFileObj);
+          formData.append("files", file.originFileObj);
+        }
       });
     }
-    // formData.append("data", JSON.stringify({ ...data, reviewStatus }));
-    const toastId = toast.loading("Creating new restaurant...");
+
+    formData.append("data", JSON.stringify({ ...data, reviewStatus }));
+    const toastId = toast.loading("Editing...");
     try {
-      const res = await addRestaurant(formData).unwrap();
-      toast.success("Restaurant added successfully", {
+      const res = await editRestaurant({ id: id, data: formData }).unwrap();
+      toast.success("Restaurant edited successfully", {
         id: toastId,
         duration: 2000,
       });
+      //   console.log(res);
     } catch (err) {
       ErrorResponse(err, toastId);
     }
   };
+  days.forEach((day) => {
+    const dayData = formatedData[day];
+    if (dayData && dayData.openingTime && dayData.closingTime) {
+      const formattedDayData = {
+        openingTime: dayjs(dayData.openingTime, "HH:mm"),
+        closingTime: dayjs(dayData.closingTime, "HH:mm"),
+      };
+      formatedData[day] = formattedDayData;
+    }
+  });
+
+  //   delete an image
+
+  const deleteFile = async (file: any): Promise<boolean> => {
+    return new Promise((resolve) => {
+      toast("Are You Sure?", {
+        description: "This action cannot be undone!",
+        action: {
+          label: "Delete",
+
+          onClick: async () => {
+            const toastId = toast.loading("Deleting...");
+            try {
+              const res = await deletImages({
+                restaurantId: id,
+                imageId: file?.uid,
+              }).unwrap();
+              toast.success("Image deleted successfully", {
+                id: toastId,
+                duration: 2000,
+              });
+              resolve(true); // Resolve with true if deletion is successful
+            } catch (err) {
+              ErrorResponse(err, toastId);
+              resolve(false); // Resolve with false if deletion fails
+            }
+          },
+        },
+      });
+    });
+  };
+
   return (
     <div>
       <ResForm
         onSubmit={onSubmit}
+        defaultValues={formatedData}
         // resolver={zodResolver(restaurantSchema.insertRestaurantSchema)}
       >
         <Row gutter={[14, 0]}>
           <Col span={24}>
             <Form.Item>
               <MultiUpload
+                removeFile={deleteFile}
                 fileList={fileList as RcFile[]}
                 setFileList={setFileList}
               />
@@ -124,7 +195,10 @@ const CreateRestaurant = () => {
             <Form.Item name="review-status">
               <div className="flex gap-x-2 items-center">
                 <p>Review Status</p>
-                <Switch defaultChecked onChange={onChange} />
+                <Switch
+                  defaultValue={formatedData.reviewStatus}
+                  onChange={onChange}
+                />
               </div>
             </Form.Item>
           </Col>
@@ -238,4 +312,4 @@ const CreateRestaurant = () => {
   );
 };
 
-export default CreateRestaurant;
+export default EditRestaurant;

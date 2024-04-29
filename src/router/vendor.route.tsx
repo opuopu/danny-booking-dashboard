@@ -26,6 +26,7 @@ import MenuCategory from "../pages/VendorDashboard/MenuCategory";
 import Menu from "../pages/VendorDashboard/Menu";
 import Profile from "../pages/Profile";
 import { BsBorderStyle } from "react-icons/bs";
+import EditRestaurant from "../pages/VendorDashboard/Restaurant/EditRestaurant";
 
 export const vendorRoute = [
   {
@@ -79,6 +80,10 @@ export const vendorRoute = [
   {
     path: "create-restaurant",
     element: <CreateRestaurant />,
+  },
+  {
+    path: "edit-restaurant/:id",
+    element: <EditRestaurant />,
   },
   {
     path: "add-menu",

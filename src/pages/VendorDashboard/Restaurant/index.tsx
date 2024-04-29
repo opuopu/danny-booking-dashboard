@@ -10,9 +10,12 @@ import { vendorRestaurantData } from "../../../db";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Button, Tag } from "antd";
 import { useState } from "react";
+import { useGetAllRestaurantsQuery } from "../../../redux/features/restaurant/restaurantApi";
 
 const VendorRestaurant = () => {
   const [show, setshow] = useState<boolean>(false);
+  const query = {};
+  const { data: restaurantData } = useGetAllRestaurantsQuery(query);
   const navigate = useNavigate();
   const column = [
     {
@@ -32,13 +35,13 @@ const VendorRestaurant = () => {
     },
     {
       title: "Total Tables",
-      dataIndex: "totalTables",
-      key: "totalTables",
+      dataIndex: "tables",
+      key: "tables",
     },
     {
       title: "Total Menus",
-      dataIndex: "totalMenuItems",
-      key: "totalMenuItems",
+      dataIndex: "menus",
+      key: "menus",
     },
     {
       title: "Status",
@@ -61,18 +64,17 @@ const VendorRestaurant = () => {
     },
     {
       title: "Action",
-      dataIndex: "action",
       key: "action",
       render: (data: any, index: number) => {
+        console.log(data);
         return (
-          <div className="flex gap-x-4">
-            <EditOutlined
-              onClick={() => setshow((prev) => !prev)}
-              className="cursor-pointer"
-              key={index}
-            />
-            <NavLink to={`/contest-details/${1}`}>
-              <EyeOutlined className="cursor-pointer" key={index} />
+          <div className="flex justify-center">
+            <NavLink to={`/vendor/edit-restaurant/${data?._id}`}>
+              <EditOutlined
+                onClick={() => setshow((prev) => !prev)}
+                className="cursor-pointer"
+                key={index}
+              />
             </NavLink>
           </div>
         );
@@ -97,7 +99,7 @@ const VendorRestaurant = () => {
       </div>
       <ResTable
         column={column}
-        data={vendorRestaurantData}
+        data={restaurantData?.data}
         loading={false}
         pagination={{ total: vendorRestaurantData.length, pageSize: 10 }}
       />
