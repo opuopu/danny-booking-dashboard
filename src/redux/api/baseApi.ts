@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { tagTypesList } from "../../types/tagTypes";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://103.145.138.78:5000/api/v1",
+  baseUrl: "http://192.168.10.3:5000/api/v1",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const otpToken = sessionStorage.getItem("token");

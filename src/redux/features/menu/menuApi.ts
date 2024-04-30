@@ -19,6 +19,13 @@ const menuApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.menu],
     }),
+    getSingleCategory: builder.query({
+      query: (id: string) => ({
+        url: `/menu-categories/${id}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.menu],
+    }),
     EditMyMenuCategories: builder.mutation({
       query: (data) => ({
         url: `/menu-categories/${data?.id}`,
@@ -51,9 +58,10 @@ const menuApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.menu],
     }),
     getAllMenu: builder.query({
-      query: () => ({
+      query: (query) => ({
         url: `/menu`,
         method: "GET",
+        params: query,
       }),
       providesTags: [tagTypes.menu],
     }),
@@ -70,6 +78,7 @@ const menuApi = baseApi.injectEndpoints({
 export const {
   useAddMenuCategortyMutation,
   useGetAllMenuQuery,
+  useGetSingleCategoryQuery,
   useEditMyMenuCategoriesMutation,
   useAddMenuMutation,
   useGetMYmenuCategoriesQuery,

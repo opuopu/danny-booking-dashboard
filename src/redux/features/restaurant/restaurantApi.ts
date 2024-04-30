@@ -49,6 +49,7 @@ const restaurantsApi = baseApi.injectEndpoints({
 export const {
   useAddRestaurantMutation,
   useGetAllRestaurantsQuery,
+
   useEditRestaurantMutation,
   useGetSingleRestaurantQuery,
   useDeleteFileMutation,

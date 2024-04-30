@@ -22,7 +22,7 @@ const Table = () => {
   const [show, setShow] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const { data: tableData, isLoading } = useGetTablesQuery(undefined);
-  console.log(tableData);
+
   // const handleBookedTable = (id: string, type: string) => {
   //   console.log(id, type);
   // };

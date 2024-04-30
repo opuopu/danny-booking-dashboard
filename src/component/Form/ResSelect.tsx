@@ -13,6 +13,7 @@ interface SelectProps {
   placeholder?: string;
   size?: SizeType;
   options: OptionsProps[];
+  defaultValue?: string;
 }
 
 const ResSelect = ({
@@ -21,6 +22,7 @@ const ResSelect = ({
   placeholder,
   options,
   size,
+  defaultValue,
 }: SelectProps) => {
   return (
     <Controller
@@ -32,6 +34,7 @@ const ResSelect = ({
           help={error ? error.message : ""}
         >
           <Select
+            defaultValue={defaultValue}
             size={size}
             options={options}
             onChange={onChange}

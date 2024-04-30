@@ -1,31 +1,72 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Form, UploadProps } from "antd";
+import { Button, Form } from "antd";
 import ResForm from "../../../component/Form/FormProvider";
-import SingleUpload from "../../../component/SingleUpload";
 import UseImageUpload from "../../../hooks/useImageUpload";
 import ResInput from "../../../component/Form/ResInput";
 import ResSelect from "../../../component/Form/ResSelect";
 import ResTextArea from "../../../component/Form/ResTextarea";
-const AddMenu = () => {
-  const { imageUrl, setFile } = UseImageUpload();
-  const onchange: UploadProps["onChange"] = (info) => {
-    if (info.file?.originFileObj) {
-      setFile(info.file.originFileObj);
+import {
+  useAddMenuMutation,
+  useGetMYmenuCategoriesQuery,
+} from "../../../redux/features/menu/menuApi";
+import { useGetAllRestaurantsQuery } from "../../../redux/features/restaurant/restaurantApi";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import { toast } from "sonner";
+import FileUpload from "../../../component/FileUpload";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { menuValidationSchema } from "../../../schema/menu.schema";
+const AddMenu = ({ setShow }: any) => {
+  const { data: categoryData } = useGetMYmenuCategoriesQuery(undefined);
+  const category = categoryData?.data?.map((data: any) => {
+    return {
+      label: data?.title,
+      value: data?._id,
+    };
+  });
+  const { data: restaurantData } = useGetAllRestaurantsQuery({});
+  const [addMenu] = useAddMenuMutation();
+  const { imageUrl, setFile, imageFile } = UseImageUpload();
+
+  const onSubmit = async (data: any) => {
+    const toastId = toast.loading("Adding menu....");
+    const formatedData = {
+      ...data,
+      restaurant: restaurantData?.data[0]?._id,
+    };
+
+    const formData = new FormData();
+    if (!imageFile) {
+      toast.error("Please select an image", { id: toastId, duration: 2000 });
+      return;
+    }
+    formData.append("file", imageFile);
+    formData.append("data", JSON.stringify(formatedData));
+
+    try {
+      await addMenu(formData).unwrap();
+      toast.success("Menu added successfully", { id: toastId, duration: 2000 });
+      setShow((prev: boolean) => !prev);
+    } catch (err) {
+      ErrorResponse(err, toastId);
     }
   };
-  const onSubmit = async (data: any) => {
-    console.log(data);
-  };
-  const options = [{ label: "true", value: "true" }];
+  const options = [
+    { label: "true", value: "true" },
+    { label: "false", value: "false" },
+  ];
   return (
-    <ResForm onSubmit={onSubmit}>
+    <ResForm
+      onSubmit={onSubmit}
+      resolver={zodResolver(menuValidationSchema.AddmenuSchema)}
+    >
       <Form.Item className="flex justify-center">
-        <SingleUpload imageUrl={imageUrl!} onchange={onchange} />
+        <FileUpload imageUrl={imageUrl} setSelectedFile={setFile} />
       </Form.Item>
       <ResInput
         type="text"
         label="Enter Menu Name"
-        name="menu"
+        name="name"
         placeholder="menu name"
         size="large"
       />
@@ -39,13 +80,14 @@ const AddMenu = () => {
       <ResSelect
         label="Select Category"
         name="category"
-        options={options}
+        options={category}
         placeholder="select status"
         size="large"
       />
       <ResSelect
         label="Select Avilable Status"
         name="status"
+        // @ts-ignore
         options={options}
         placeholder="select status"
         size="large"

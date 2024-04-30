@@ -1,20 +1,44 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button } from "antd";
+import { Button, Form } from "antd";
 import ResForm from "../../../component/Form/FormProvider";
-
 import ResInput from "../../../component/Form/ResInput";
 import { useAddMenuCategortyMutation } from "../../../redux/features/menu/menuApi";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { menuValidationSchema } from "../../../schema/menu.schema";
+import FileUpload from "../../../component/FileUpload";
+import UseImageUpload from "../../../hooks/useImageUpload";
+import { useAppSelector } from "../../../redux/hooks";
+import { useCurrentUser } from "../../../redux/features/auth/authSlice";
+import { useGetAllRestaurantsQuery } from "../../../redux/features/restaurant/restaurantApi";
+import ResSelect from "../../../component/Form/ResSelect";
 
 const AddCategory = ({ setShow }: any) => {
+  const { setFile, imageUrl, imageFile } = UseImageUpload();
   const [addcategory] = useAddMenuCategortyMutation();
+  const user = useAppSelector(useCurrentUser);
+  console.log(user);
+  const { data: restaurantData } = useGetAllRestaurantsQuery({
+    owner: user?.userId,
+  });
+  const options = restaurantData?.data?.map((data: any) => {
+    return {
+      label: data?.name,
+      value: data?._id,
+    };
+  });
   const onSubmit = async (data: any) => {
-    console.log(data);
     const toastId = toast.loading("Createing category....");
     const formData = new FormData();
+    if (!imageFile) {
+      toast.error("Please select an category image", {
+        id: toastId,
+        duration: 2000,
+      });
+      return;
+    }
+    formData.append("file", imageFile);
     formData.append("data", JSON.stringify(data));
     try {
       await addcategory(formData).unwrap();
@@ -33,6 +57,16 @@ const AddCategory = ({ setShow }: any) => {
         onSubmit={onSubmit}
         resolver={zodResolver(menuValidationSchema.menuCategorySchema)}
       >
+        <Form.Item className="flex justify-center">
+          <FileUpload imageUrl={imageUrl} setSelectedFile={setFile} />
+        </Form.Item>
+        <ResSelect
+          options={options}
+          placeholder="Select restaurant"
+          name="restaurant"
+          size="large"
+          label="Select Restaurant"
+        />
         <ResInput
           type="text"
           label="Enter Category Title"

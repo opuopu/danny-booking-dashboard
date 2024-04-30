@@ -25,13 +25,13 @@ const ResForm = ({
   resolver,
 }: TFormProps) => {
   const formConfig: TFormConfig = {};
-  const transformedDefaultValues = transformDefaultValues(defaultValues);
+
   if (resolver) {
     formConfig["resolver"] = resolver;
   }
-
-  if (transformedDefaultValues) {
-    formConfig["defaultValues"] = transformedDefaultValues;
+  // set default value-------------------------
+  if (defaultValues) {
+    formConfig["defaultValues"] = defaultValues;
   }
 
   const methods = useForm(formConfig);
@@ -49,20 +49,20 @@ const ResForm = ({
   );
 };
 // Function to transform default values
-const transformDefaultValues = (
-  defaultValues: Record<string, any> | undefined
-) => {
-  if (!defaultValues) return defaultValues;
-  const transformedValues: Record<string, any> = {};
-  for (const key in defaultValues) {
-    if (Object.hasOwnProperty.call(defaultValues, key)) {
-      const value = defaultValues[key];
-      transformedValues[key] =
-        value === "" || value === null ? undefined : value;
-    }
-  }
+// const transformDefaultValues = (
+//   defaultValues: Record<string, any> | undefined
+// ) => {
+//   if (!defaultValues) return defaultValues;
+//   const transformedValues: Record<string, any> = {};
+//   for (const key in defaultValues) {
+//     if (Object.hasOwnProperty.call(defaultValues, key)) {
+//       const value = defaultValues[key];
+//       transformedValues[key] =
+//         value === "" || value === null ? undefined : value;
+//     }
+//   }
 
-  return transformedValues;
-};
+//   return transformedValues;
+// };
 
 export default ResForm;

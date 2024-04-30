@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Divider, Input } from "antd";
 import MenuCard from "../../../component/MenuCard/MenuCard";
 import MenuHeaderCards from "../../../component/MenuHeaderCards/MenuHeaderCards";
@@ -7,22 +8,37 @@ import ResPagination from "../../../component/UI/Pagination";
 import { useState } from "react";
 import ResModal from "../../../component/Modal/Modal";
 import AddMenu from "./AddMenu";
+import { useGetAllMenuQuery } from "../../../redux/features/menu/menuApi";
+import type { SearchProps } from "antd/es/input/Search";
 
 const Menu = () => {
   const [show, setshow] = useState<boolean>(false);
-
+  const [searchTerm, setSearchValue] = useState<string | null>();
+  const [pagination, setpagination] = useState({ page: 1, limit: 12 });
+  const query: Record<string, any> = {};
+  if (searchTerm) query["searchTerm"] = searchTerm;
+  query["page"] = pagination?.page;
+  query["limit"] = pagination?.limit;
+  const { data: menuData } = useGetAllMenuQuery(query);
+  const onSearch: SearchProps["onSearch"] = (value, _e) =>
+    setSearchValue(value);
+  const onChange = (page: number) => {
+    setpagination({ page: page, limit: 12 });
+  };
   return (
     <div>
       <ResModal showModal={show} setShowModal={setshow} title="ADD MENU">
-        <AddMenu />
+        <AddMenu setShow={setshow} />
       </ResModal>
 
       <MenuHeaderCards />
       <div className="flex justify-end gap-x-4 ">
         <Input.Search
+          onSearch={onSearch}
           placeholder="search menu"
           className="w-[400px]"
           size="large"
+          allowClear
         />
         <Button
           onClick={() => setshow((prev) => !prev)}
@@ -34,16 +50,16 @@ const Menu = () => {
       </div>
       <Divider className="bg-primary p-[1px] " />
       <div className="text-20 font-500 flex items-center my-auto">
-        <h1 className="">Showing:</h1>
-        <span>40</span>
+        <h1 className="">Total Menu:</h1>
+        <span>{menuData?.meta?.total}</span>
       </div>
       <div className="flex flex-wrap  justify-center mt-2">
-        {new Array(49).fill(0).map((data) => (
-          <MenuCard key={data} />
+        {menuData?.data?.map((data: any, index: number) => (
+          <MenuCard key={index} data={data} />
         ))}
       </div>
       <div className="flex justify-end mt-2">
-        <ResPagination total={40} />
+        <ResPagination total={menuData?.meta?.total} onChange={onChange} />
       </div>
     </div>
   );
