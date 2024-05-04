@@ -1,21 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
 export type TUser = {
   userId: string;
   role: string;
-  iat: number;
-  exp: number;
+  iat?: number;
+  exp?: number;
 };
 
 type TAuthState = {
   user: null | TUser;
   token: null | string;
+  vendorDetails: any;
 };
 
 const initialState: TAuthState = {
   user: null,
   token: null,
+  vendorDetails: null,
 };
 
 const authSlice = createSlice({
@@ -27,6 +30,10 @@ const authSlice = createSlice({
       state.user = user;
       state.token = token;
     },
+    setvendorDetails: (state, action) => {
+      console.log(action.payload);
+      state.vendorDetails = action.payload;
+    },
     logout: (state) => {
       state.user = null;
       state.token = null;
@@ -34,7 +41,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser, logout } = authSlice.actions;
+export const { setUser, logout, setvendorDetails } = authSlice.actions;
 
 export default authSlice.reducer;
 

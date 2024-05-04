@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Button, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
@@ -8,19 +9,20 @@ import { sidebarItemsGenerator } from "../utils/sidebarItemsGenerator";
 import { adminRoute } from "../router/admin.route";
 import { IoLogInOutline } from "react-icons/io5";
 import { vendorRoute } from "../router/vendor.route";
+import { useCurrentUser } from "../redux/features/auth/authSlice";
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { pathname } = location;
   const collapsed = useAppSelector((state) => state.layout.collapsed);
-  const role: string = "vendor";
+  const { role }: any = useAppSelector(useCurrentUser);
   let SidebarItems;
   switch (role) {
     case "admin":
-      SidebarItems = sidebarItemsGenerator(adminRoute, "admin");
+      SidebarItems = sidebarItemsGenerator(adminRoute, role);
       break;
     case "vendor":
-      SidebarItems = sidebarItemsGenerator(vendorRoute, "vendor");
+      SidebarItems = sidebarItemsGenerator(vendorRoute, role);
       break;
 
     default:

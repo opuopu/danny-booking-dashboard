@@ -2,39 +2,72 @@
 import { Button, Form } from "antd";
 import ResForm from "../../../component/Form/FormProvider";
 import ResInput from "../../../component/Form/ResInput";
-import SingleUpload from "../../../component/SingleUpload";
 import UseImageUpload from "../../../hooks/useImageUpload";
-import ResTextArea from "../../../component/Form/ResTextarea";
 
-const EditVentor = () => {
-  const { imageUrl, setFile } = UseImageUpload();
+import FileUpload from "../../../component/FileUpload";
+import { useAppSelector } from "../../../redux/hooks";
+import { toast } from "sonner";
+import { useUpdateUserMutation } from "../../../redux/features/auth/authApi";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import showImage from "../../../utils/showImage";
+
+const EditVentor = ({ setShowEditModal }: any) => {
+  const { imageUrl, setFile, imageFile } = UseImageUpload();
+  const [editVendor] = useUpdateUserMutation();
+  const vendorData = useAppSelector((state) => state.auth.vendorDetails);
   const onSubmit = async (data: any) => {
-    console.log(data);
+    const formatedData = {
+      fullName: data?.fullName,
+      phoneNumber: data?.phoneNumber,
+    };
+    const toastId = toast.loading("Editing......");
+    const formData = new FormData();
+    if (imageFile) {
+      formData.append("file", imageFile);
+    }
+    formData.append("data", JSON.stringify(formatedData));
+    try {
+      await editVendor({ id: vendorData?._id, body: formData }).unwrap();
+      toast.success("Vendor updated successfully", {
+        id: toastId,
+        duration: 2000,
+      });
+      setShowEditModal((prev: boolean) => !prev);
+    } catch (error) {
+      ErrorResponse(error, toastId);
+    }
   };
+
   return (
-    <ResForm onSubmit={onSubmit}>
+    <ResForm onSubmit={onSubmit} defaultValues={vendorData}>
       <Form.Item className="flex justify-center">
-        <SingleUpload imageUrl={imageUrl} setFile={setFile} />
+        <FileUpload
+          imageUrl={imageUrl ?? showImage(vendorData?.image)}
+          setSelectedFile={setFile}
+        />
         <p className="text-center">upload image</p>
       </Form.Item>
       <ResInput
+        size="large"
         type="text"
-        label="Enter Vendor Name"
-        name="name"
+        label="Enter name"
+        name="fullName"
         placeholder="name"
       />
+
       <ResInput
-        type="number"
-        label="Enter Vendor Number"
-        name="number"
+        size="large"
+        type="phoneNumber"
+        label="Enter phoneNumber"
+        name="phoneNumber"
         placeholder="number"
       />
-      <ResTextArea name="address" label="Enter Address" placeholder="address" />
+
       <Button
         htmlType="submit"
         className="bg-primary text-white w-full h-[36px]"
       >
-        Edit
+        Submit
       </Button>
     </ResForm>
   );

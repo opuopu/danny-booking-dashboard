@@ -21,7 +21,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [login] = useLoginMutation();
-  const onSubmit = async (data: FieldValues) => {
+  const onSubmit = async (data: any) => {
     const toastId = toast.loading("Logging in");
     // navigate("/dashboard");
     try {

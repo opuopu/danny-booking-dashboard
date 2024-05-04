@@ -79,6 +79,7 @@ export const {
   useAddMenuCategortyMutation,
   useGetAllMenuQuery,
   useGetSingleCategoryQuery,
+  useUpdateMenuMutation,
   useEditMyMenuCategoriesMutation,
   useAddMenuMutation,
   useGetMYmenuCategoriesQuery,

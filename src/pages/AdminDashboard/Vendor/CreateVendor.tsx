@@ -1,46 +1,73 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Form, UploadProps } from "antd";
+import { Button, Form } from "antd";
 import ResForm from "../../../component/Form/FormProvider";
-import SingleUpload from "../../../component/SingleUpload";
+
 import UseImageUpload from "../../../hooks/useImageUpload";
 import ResInput from "../../../component/Form/ResInput";
-import ResTextArea from "../../../component/Form/ResTextarea";
 
-const CreateVendor = () => {
-  const { imageUrl, setFile } = UseImageUpload();
+import { useCreateVendorMutation } from "../../../redux/features/auth/authApi";
+import { toast } from "sonner";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import FileUpload from "../../../component/FileUpload";
+
+const CreateVendor = ({ setShow }: any) => {
+  const { imageUrl, setFile, imageFile } = UseImageUpload();
+  const [createVendor] = useCreateVendorMutation();
   const onSubmit = async (data: any) => {
-    console.log(data);
-  };
-  const onchange: UploadProps["onChange"] = (info) => {
-    if (info.file?.originFileObj) {
-      setFile(info.file.originFileObj);
+    const toastId = toast.loading("Creating......");
+    const formData = new FormData();
+    if (imageFile) {
+      formData.append("file", imageFile);
+    }
+    formData.append("data", JSON.stringify(data));
+
+    try {
+      await createVendor(formData).unwrap();
+      toast.success("Vendor created successfully", {
+        id: toastId,
+        duration: 2000,
+      });
+      setShow((prev: boolean) => !prev);
+    } catch (error) {
+      ErrorResponse(error, toastId);
     }
   };
+
   return (
     <ResForm onSubmit={onSubmit}>
       <Form.Item className="flex justify-center">
-        <SingleUpload imageUrl={imageUrl!} onchange={onchange} />
+        <FileUpload imageUrl={imageUrl!} setSelectedFile={setFile} />
         <p className="text-center">upload image</p>
       </Form.Item>
       <ResInput
+        size="large"
         type="text"
         label="Enter Vendor Name"
-        name="name"
+        name="fullName"
         placeholder="name"
       />
       <ResInput
+        size="large"
         type="text"
         label="Enter Vendor Email"
         name="email"
         placeholder="email"
       />
       <ResInput
+        size="large"
+        type="text"
+        label="Enter a password"
+        name="password"
+        placeholder="password"
+      />
+      <ResInput
+        size="large"
         type="number"
         label="Enter Vendor Number"
-        name="number"
+        name="phoneNumber"
         placeholder="number"
       />
-      <ResTextArea name="address" label="Enter Address" placeholder="address" />
+
       <Button
         htmlType="submit"
         className="bg-primary text-white w-full h-[36px]"

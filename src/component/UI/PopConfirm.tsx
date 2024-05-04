@@ -3,13 +3,13 @@ import { Popconfirm } from "antd";
 import { ReactNode } from "react";
 
 interface TresConfirmProps {
-  title: string;
-  description: string;
-  handleOk: (value: any) => void;
+  title?: string;
+  description?: string;
+  handleOk?: () => void;
   children: ReactNode;
 }
 const ResConfirm = ({
-  title,
+  title = "Are You Sure?",
   description,
   handleOk,
   children,

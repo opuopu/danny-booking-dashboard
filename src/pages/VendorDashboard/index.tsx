@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Row, Col, Space } from "antd";
+import { Row, Col, Space, Button } from "antd";
 import VendorDashboardCard from "../../component/VendorDashboardCard";
 import VendorChart from "../../component/VendorChart/VendorChart";
 import DropDown from "../../component/UI/DropDown";
 import { DownOutlined } from "@ant-design/icons";
 import avg from "../../assets/avg.png";
-import { sellingItems } from "../../db";
 import SellingItems from "../../component/SellingItem/SellingItems";
+import { useGetAllMenuQuery } from "../../redux/features/menu/menuApi";
+import { NavLink } from "react-router-dom";
 const VendorDashboard = () => {
+  const { data: menuData } = useGetAllMenuQuery({});
   const items = [{ key: 1, label: 2023, value: 2023 }];
   return (
     <Row gutter={[16, 16]}>
@@ -50,13 +52,20 @@ const VendorDashboard = () => {
       </Col>
       <Col span={10}>
         <div className="bg-white px-6 py-4">
-          <h1 className="text-24 font-600 ">Selling Items</h1>
-          <p className="text-deepGray my-2 text-18">All Sales</p>
+          <div className="flex justify-between items-center">
+            <h1 className="text-24 font-600 ">Menu</h1>
+            <NavLink to={`/vendor/menu`}>
+              <Button className="bg-primary text-white font-500">
+                See All
+              </Button>
+            </NavLink>
+          </div>
+          <p className="text-deepGray my-2 text-18">Latest Menu</p>
           <div
             className="overflow-y-auto pe-4"
             style={{ maxHeight: "calc(100vh - 270px)" }}
           >
-            {sellingItems.map((data: any, index: number) => (
+            {menuData?.data?.map((data: any, index: number) => (
               <SellingItems key={index} data={data} />
             ))}
           </div>

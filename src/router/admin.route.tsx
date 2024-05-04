@@ -17,8 +17,8 @@ import UpdatePassword from "../pages/UpdatePassword";
 
 export const adminRoute = [
   {
-    name: "Vendors",
-    path: "vendor",
+    name: "Dashboard",
+    path: "dashboard",
     icon: <MdPeopleOutline />,
     element: <AdminDashboard />,
   },

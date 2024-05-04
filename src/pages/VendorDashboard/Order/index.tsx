@@ -1,38 +1,40 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useParams } from "react-router-dom";
 import ResTable from "../../../component/Table";
 import VendorOrderCards from "../../../component/VendorOrderCards/VendorOrderCards";
-import { vendorOrderData } from "../../../db";
 import { vendorTableTheme } from "../../../themes";
+import { useGetorderByBookingIdQuery } from "../../../redux/features/order/orderApi";
 
 const Order = () => {
+  const { id } = useParams();
+
+  const { data: orderData, isLoading } = useGetorderByBookingIdQuery(id);
+
+  const formatedData = orderData?.data?.items?.map(
+    (data: any, index: number) => {
+      return {
+        item: data?.menu?.name,
+        amount: data?.amount,
+        quantity: data?.quantity,
+        index,
+      };
+    }
+  );
   const column = [
     {
       title: "#SL",
-      dataIndex: "serial",
-      key: "serial",
+      dataIndex: "index",
+      key: "index",
     },
     {
-      title: "Items",
-      dataIndex: "Items",
-      key: "Items",
-      render: (data: string[]) => {
-        return (
-          <div className="flex gap-x-2">
-            {data.map((item) => (
-              <p key={item}>{item},</p>
-            ))}
-          </div>
-        );
-      },
+      title: "Menu",
+      dataIndex: "item",
+      key: "item",
     },
     {
-      title: "Customer",
-      dataIndex: "customer",
-      key: "customer",
-    },
-    {
-      title: "Date",
-      dataIndex: "Date",
-      key: "Date",
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
     },
     {
       title: "Amount",
@@ -42,14 +44,14 @@ const Order = () => {
   ];
   return (
     <div>
-      <VendorOrderCards />
+      <VendorOrderCards data={orderData?.data} />
       <div className="mt-6">
         <ResTable
           theme={vendorTableTheme}
-          loading={false}
+          loading={isLoading}
           column={column}
-          data={vendorOrderData}
-          pagination={{ total: vendorOrderData.length, pageSize: 11 }}
+          data={formatedData}
+          pagination={{ total: orderData?.meta?.total, pageSize: 11 }}
         />
       </div>
     </div>

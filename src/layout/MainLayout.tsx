@@ -4,12 +4,33 @@ import { Content, Header } from "antd/es/layout/layout";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import HeaderLayout from "./HeaderLayout";
-import { useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { sidebardThemes } from "../themes/sidebarThemes";
 import { paginationTheme } from "../themes/paginationThemes";
+import { useEffect } from "react";
+import { socket } from "../socket";
+import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
+
+import { setNotification } from "../redux/features/notification/notificationSlice";
 
 const MainLayout = () => {
   const collapsed = useAppSelector((state) => state.layout.collapsed);
+  const dispatch = useAppDispatch();
+  const user: TUser | null = useAppSelector(useCurrentUser);
+  useEffect(() => {
+    socket.connect();
+    socket.on("connect", () => {
+      console.log("Connected to server");
+    });
+
+    socket.on(user?.userId as string, (data) => {
+      dispatch(setNotification(data));
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [user, dispatch]);
   return (
     <div>
       <ConfigProvider theme={sidebardThemes}>

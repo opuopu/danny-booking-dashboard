@@ -10,7 +10,7 @@ const MenuCard = ({ data }: any) => {
   return (
     <Col className="p-2">
       <ResModal showModal={showDetails} setShowModal={setshowDetails}>
-        <MenuDetails />
+        <MenuDetails data={data} />
       </ResModal>
       <div className="w-[250px] bg-[#D2D9CC] rounded pb-2 ">
         <div

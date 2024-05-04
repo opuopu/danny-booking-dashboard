@@ -37,16 +37,11 @@ const MenuCategory = () => {
       key: "action",
       render: (data: any, index: number) => {
         return (
-          <div className="flex gap-x-4">
+          <div className="flex gap-x-4" key={index}>
             <EditOutlined
               onClick={() => {
                 setshowEditModal((prev) => !prev);
-                dispatch(
-                  setCategoryDetails({
-                    categoryTitle: data?.title,
-                    categoryId: data?._id,
-                  })
-                );
+                dispatch(setCategoryDetails(data));
               }}
               className="cursor-pointer"
               key={index}

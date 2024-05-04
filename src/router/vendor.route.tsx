@@ -27,6 +27,7 @@ import Menu from "../pages/VendorDashboard/Menu";
 import Profile from "../pages/Profile";
 import { BsBorderStyle } from "react-icons/bs";
 import EditRestaurant from "../pages/VendorDashboard/Restaurant/EditRestaurant";
+import Booking from "../pages/VendorDashboard/Booking";
 
 export const vendorRoute = [
   {
@@ -42,9 +43,13 @@ export const vendorRoute = [
     element: <VendorRestaurant />,
   },
   {
-    name: "Order",
-    path: "order",
+    name: "Booking & Order",
+    path: "booking",
     icon: <BsBorderStyle />,
+    element: <Booking />,
+  },
+  {
+    path: "order/:id",
     element: <Order />,
   },
   {

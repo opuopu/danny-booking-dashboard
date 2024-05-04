@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { MenuOutlined } from "@ant-design/icons";
 import { IoIosNotifications } from "react-icons/io";
 import user from "../assets/person.png";
@@ -5,8 +6,13 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Button } from "antd";
 import { setCollapsed } from "../redux/features/layout/layoutSlice";
 import { NavLink, useLocation } from "react-router-dom";
+import { toast } from "sonner";
 const HeaderLayout = () => {
   const dispatch = useAppDispatch();
+  const notification: any = useAppSelector(
+    (state) => state.notification.notification
+  );
+  toast.info(notification?.message);
   const { pathname } = useLocation();
   const collapsed = useAppSelector((state) => state.layout.collapsed);
   const role = "vendor";

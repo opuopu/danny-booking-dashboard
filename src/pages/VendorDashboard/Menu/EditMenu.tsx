@@ -1,31 +1,65 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Form, UploadProps } from "antd";
+import { Button, Form } from "antd";
 import ResForm from "../../../component/Form/FormProvider";
-import SingleUpload from "../../../component/SingleUpload";
 import UseImageUpload from "../../../hooks/useImageUpload";
 import ResInput from "../../../component/Form/ResInput";
 import ResSelect from "../../../component/Form/ResSelect";
 import ResTextArea from "../../../component/Form/ResTextarea";
-const EditMenu = () => {
-  const { imageUrl, setFile } = UseImageUpload();
+import FileUpload from "../../../component/FileUpload";
+import showImage from "../../../utils/showImage";
+import {
+  useGetMYmenuCategoriesQuery,
+  useUpdateMenuMutation,
+} from "../../../redux/features/menu/menuApi";
+import { toast } from "sonner";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+const EditMenu = ({ data, setShow }: any) => {
+  const { imageUrl, setFile, imageFile } = UseImageUpload();
+  const { data: categoryData } = useGetMYmenuCategoriesQuery(undefined);
+  const [editMenu] = useUpdateMenuMutation();
+  const options = categoryData?.data?.map((data: any) => {
+    return {
+      label: data?.title,
+      value: data?._id,
+    };
+  });
+
   const onSubmit = async (data: any) => {
-    console.log(data);
-  };
-  const onchange: UploadProps["onChange"] = (info) => {
-    if (info.file?.originFileObj) {
-      setFile(info.file.originFileObj);
+    const formData = new FormData();
+    if (imageFile) {
+      formData.append("file", imageFile);
+    }
+    formData.append("data", JSON.stringify(data));
+    const toastId = toast.loading("Editing menu...");
+    try {
+      await editMenu({ id: data?._id, body: formData }).unwrap();
+      toast.success("Menu updated successfully", {
+        id: toastId,
+        duration: 2000,
+      });
+      setShow((prev: boolean) => !prev);
+    } catch (error) {
+      ErrorResponse(error, toastId);
     }
   };
-  const options = [{ label: "true", value: "true" }];
+
+  const options2 = [
+    { label: "true", value: true },
+    { label: "false", value: false },
+  ];
   return (
-    <ResForm onSubmit={onSubmit}>
+    <ResForm onSubmit={onSubmit} defaultValues={data}>
       <Form.Item className="flex justify-center">
-        <SingleUpload imageUrl={imageUrl!} onchange={onchange} />
+        <FileUpload
+          imageUrl={imageUrl ?? showImage(data?.image)}
+          setSelectedFile={setFile}
+        />
       </Form.Item>
       <ResInput
         type="text"
         label="Enter Menu Name"
-        name="menu"
+        name="name"
         placeholder="menu name"
         size="large"
       />
@@ -37,6 +71,7 @@ const EditMenu = () => {
         size="large"
       />
       <ResSelect
+        defaultValue={data?.category}
         label="Select Category"
         name="category"
         options={options}
@@ -45,8 +80,10 @@ const EditMenu = () => {
       />
       <ResSelect
         label="Select Avilable Status"
-        name="status"
-        options={options}
+        name="available"
+        defaultValue={data?.available}
+        // @ts-ignore
+        options={options2}
         placeholder="select status"
         size="large"
       />

@@ -5,10 +5,7 @@ import ResInput from "../../../component/Form/ResInput";
 import { useAppSelector } from "../../../redux/hooks";
 import { toast } from "sonner";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
-import {
-  useEditMyMenuCategoriesMutation,
-  useGetSingleCategoryQuery,
-} from "../../../redux/features/menu/menuApi";
+import { useEditMyMenuCategoriesMutation } from "../../../redux/features/menu/menuApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { menuValidationSchema } from "../../../schema/menu.schema";
 import UseImageUpload from "../../../hooks/useImageUpload";
@@ -21,8 +18,8 @@ import showImage from "../../../utils/showImage";
 
 const EditCategory = ({ setshowEditModal }: any) => {
   const user = useAppSelector(useCurrentUser);
-  const { categoryId } = useAppSelector((state) => state.menu);
-  const { data: categtoryData } = useGetSingleCategoryQuery(categoryId!);
+  const [EditMenuCategory] = useEditMyMenuCategoriesMutation();
+  const categoryData: any = useAppSelector((state) => state.menu.category);
   const { data: restaurantData } = useGetAllRestaurantsQuery({
     owner: user?.userId,
   });
@@ -33,9 +30,8 @@ const EditCategory = ({ setshowEditModal }: any) => {
       value: data?._id,
     };
   });
-  const [EditMenuCategory] = useEditMyMenuCategoriesMutation();
+
   const onSubmit = async (data: any) => {
-    console.log(data);
     const toastId = toast.loading("Createing category....");
     const formData = new FormData();
     if (imageFile) {
@@ -44,7 +40,10 @@ const EditCategory = ({ setshowEditModal }: any) => {
 
     formData.append("data", JSON.stringify(data));
     try {
-      await EditMenuCategory({ id: categoryId, body: formData }).unwrap();
+      await EditMenuCategory({
+        id: categoryData?._id,
+        body: formData,
+      }).unwrap();
       toast.success("Menu category added successfully", {
         id: toastId,
         duration: 2000,
@@ -58,17 +57,17 @@ const EditCategory = ({ setshowEditModal }: any) => {
     <div className="mt-4">
       <ResForm
         onSubmit={onSubmit}
-        defaultValues={categtoryData?.data}
+        defaultValues={categoryData}
         resolver={zodResolver(menuValidationSchema.menuCategorySchema)}
       >
         <Form.Item className="flex justify-center">
           <FileUpload
-            imageUrl={imageUrl ?? showImage(categtoryData?.data?.image)}
+            imageUrl={imageUrl ?? showImage(categoryData?.image)}
             setSelectedFile={setFile}
           />
         </Form.Item>
         <ResSelect
-          defaultValue={categtoryData?.data?.restaurant}
+          defaultValue={categoryData?.restaurant}
           options={options}
           name="restaurant"
           size="large"

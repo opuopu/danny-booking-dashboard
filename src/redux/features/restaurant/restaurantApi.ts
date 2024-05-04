@@ -28,6 +28,14 @@ const restaurantsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.restaurant],
     }),
+    getAllRestaurantForadmin: builder.query({
+      query: (query: Record<string, any>) => ({
+        url: "/restaurants",
+        method: "GET",
+        params: query,
+      }),
+      providesTags: [tagTypes.restaurant],
+    }),
     getAllRestaurants: builder.query({
       query: (query: Record<string, any>) => ({
         url: "/restaurants/dashboard",
@@ -49,8 +57,8 @@ const restaurantsApi = baseApi.injectEndpoints({
 export const {
   useAddRestaurantMutation,
   useGetAllRestaurantsQuery,
-
   useEditRestaurantMutation,
   useGetSingleRestaurantQuery,
   useDeleteFileMutation,
+  useGetAllRestaurantForadminQuery,
 } = restaurantsApi;
