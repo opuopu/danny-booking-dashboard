@@ -17,6 +17,7 @@ import otpSlice from "./features/otp/otpSlice";
 import menuSlice from "./features/menu/menuSlice";
 import tableSlice from "./features/table/tableSlice";
 import notificationSlice from "./features/notification/notificationSlice";
+import restaurantSlice from "./features/restaurant/restaurantSlice";
 
 const persistConfig = {
   key: "auth",
@@ -34,6 +35,7 @@ export const store = configureStore({
     menu: menuSlice,
     table: tableSlice,
     notification: notificationSlice,
+    restaurant: restaurantSlice,
   },
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({

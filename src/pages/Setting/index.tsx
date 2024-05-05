@@ -2,16 +2,19 @@
 import { Col, Row } from "antd";
 import { FaArrowRightToBracket } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
+import { useAppSelector } from "../../redux/hooks";
+import { TUser, useCurrentUser } from "../../redux/features/auth/authSlice";
 
 const Setting = () => {
-  let role = "admin";
+  const User: TUser | null = useAppSelector(useCurrentUser);
+
   return (
     <div className="container mx-auto">
       <Row gutter={[0, 30]}>
         <Col span={24}>
           <div className="flex items-center justify-between text-20  text-black">
             <p className="">Notification</p>
-            <NavLink to={`/${role}/notification`}>
+            <NavLink to={`/${User?.role}/notification`}>
               <FaArrowRightToBracket cursor="pointer" />
             </NavLink>
           </div>
@@ -20,19 +23,19 @@ const Setting = () => {
         <Col span={24}>
           <div className="flex items-center justify-between text-20  text-black">
             <p className="">Change Password</p>
-            <NavLink to={`/${role}/change-password`}>
+            <NavLink to={`/${User?.role}/change-password`}>
               <FaArrowRightToBracket cursor="pointer" />
             </NavLink>
           </div>
           <hr className="text-primary mt-4" />
         </Col>
-        {role === "vendor" && (
+        {User?.role === "admin" && (
           <>
             {" "}
             <Col span={24}>
               <div className="flex items-center justify-between text-20  text-black">
                 <p className="">Privacy Policy</p>
-                <NavLink to={`/${role}/privacy-policy`}>
+                <NavLink to={`/${User?.role}/privacy-policy`}>
                   <FaArrowRightToBracket cursor="pointer" />
                 </NavLink>
               </div>
@@ -41,7 +44,7 @@ const Setting = () => {
             <Col span={24}>
               <div className="flex items-center justify-between text-20  text-black">
                 <p className="">Terms And Condition</p>
-                <NavLink to={`/${role}/terms`}>
+                <NavLink to={`/${User?.role}/terms`}>
                   <FaArrowRightToBracket cursor="pointer" />
                 </NavLink>
               </div>
@@ -50,7 +53,7 @@ const Setting = () => {
             <Col span={24}>
               <div className="flex items-center justify-between text-20  text-black">
                 <p className="">About Us</p>
-                <NavLink to={`/${role}/about`}>
+                <NavLink to={`/${User?.role}/about`}>
                   <FaArrowRightToBracket cursor="pointer" />
                 </NavLink>
               </div>

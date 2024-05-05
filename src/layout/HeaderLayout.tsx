@@ -3,19 +3,23 @@ import { MenuOutlined } from "@ant-design/icons";
 import { IoIosNotifications } from "react-icons/io";
 import user from "../assets/person.png";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { Button } from "antd";
+import { Badge, Button } from "antd";
 import { setCollapsed } from "../redux/features/layout/layoutSlice";
 import { NavLink, useLocation } from "react-router-dom";
 import { toast } from "sonner";
+import { useGetMyNotificationQuery } from "../redux/features/notification/notificationApi";
+import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
 const HeaderLayout = () => {
   const dispatch = useAppDispatch();
+  const { data: notficationData } = useGetMyNotificationQuery({ read: false });
+  const User: TUser | null = useAppSelector(useCurrentUser);
+  const { role }: any = User;
   const notification: any = useAppSelector(
     (state) => state.notification.notification
   );
   toast.info(notification?.message);
   const { pathname } = useLocation();
   const collapsed = useAppSelector((state) => state.layout.collapsed);
-  const role = "vendor";
   return (
     <div className="flex justify-between">
       <div
@@ -43,7 +47,12 @@ const HeaderLayout = () => {
         </h1>
       </div>
       <div className="flex items-center  gap-x-6">
-        <IoIosNotifications className="text-white  text-32 cursor-pointer" />
+        <Badge count={notficationData?.meta?.total}>
+          <NavLink to={`/${role}/notification`}>
+            <IoIosNotifications className="text-white  text-32 cursor-pointer" />{" "}
+          </NavLink>
+        </Badge>
+
         <NavLink to={`/${role}/profile`}>
           <img
             src={user}

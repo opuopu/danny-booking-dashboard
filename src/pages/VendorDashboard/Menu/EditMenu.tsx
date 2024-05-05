@@ -14,6 +14,8 @@ import {
 } from "../../../redux/features/menu/menuApi";
 import { toast } from "sonner";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { menuValidationSchema } from "../../../schema/menu.schema";
 const EditMenu = ({ data, setShow }: any) => {
   const { imageUrl, setFile, imageFile } = UseImageUpload();
   const { data: categoryData } = useGetMYmenuCategoriesQuery(undefined);
@@ -49,7 +51,11 @@ const EditMenu = ({ data, setShow }: any) => {
     { label: "false", value: false },
   ];
   return (
-    <ResForm onSubmit={onSubmit} defaultValues={data}>
+    <ResForm
+      onSubmit={onSubmit}
+      defaultValues={data}
+      resolver={zodResolver(menuValidationSchema.menuSchema)}
+    >
       <Form.Item className="flex justify-center">
         <FileUpload
           imageUrl={imageUrl ?? showImage(data?.image)}

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form } from "antd";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import {
   FieldValues,
   FormProvider,
@@ -30,15 +30,17 @@ const ResForm = ({
     formConfig["resolver"] = resolver;
   }
   // set default value-------------------------
-
-  if (defaultValues) {
-    formConfig["defaultValues"] = defaultValues;
-  }
-
   const methods = useForm(formConfig);
+  useEffect(() => {
+    if (defaultValues) {
+      // Set default values after form is mounted
+      methods.reset(defaultValues, { keepDirtyValues: true });
+    }
+  }, [defaultValues, methods]);
+
   const submit: SubmitHandler<FieldValues> = (data) => {
     onSubmit(data);
-    methods.reset();
+    // methods.reset();
   };
 
   return (

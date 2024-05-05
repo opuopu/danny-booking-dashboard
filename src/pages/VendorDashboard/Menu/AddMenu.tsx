@@ -30,6 +30,9 @@ const AddMenu = ({ setShow }: any) => {
 
   const onSubmit = async (data: any) => {
     const toastId = toast.loading("Adding menu....");
+    if (!imageFile) {
+      toast.error("Please select an image", { id: toastId, duration: 2000 });
+    }
     const formatedData = {
       ...data,
       restaurant: restaurantData?.data[0]?._id,
@@ -58,7 +61,7 @@ const AddMenu = ({ setShow }: any) => {
   return (
     <ResForm
       onSubmit={onSubmit}
-      resolver={zodResolver(menuValidationSchema.AddmenuSchema)}
+      resolver={zodResolver(menuValidationSchema.menuSchema)}
     >
       <Form.Item className="flex justify-center">
         <FileUpload imageUrl={imageUrl} setSelectedFile={setFile} />
@@ -87,6 +90,7 @@ const AddMenu = ({ setShow }: any) => {
       <ResSelect
         label="Select Avilable Status"
         name="status"
+        defaultValue={"true"}
         // @ts-ignore
         options={options}
         placeholder="select status"

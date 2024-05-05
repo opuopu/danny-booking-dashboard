@@ -120,15 +120,17 @@ const Table = () => {
         <EditTable setShow={setShowEditModal} />
       </ResModal>
       <TableCards tableData={tableData} />
-      <div className="flex justify-end mb-4">
-        <Button
-          onClick={() => setShow((prev) => !prev)}
-          className="bg-primary text-white font-500"
-          icon={<PlusCircleOutlined />}
-        >
-          Create Table
-        </Button>
-      </div>
+      {tableData?.data?._id && (
+        <div className="flex justify-end mb-4">
+          <Button
+            onClick={() => setShow((prev) => !prev)}
+            className="bg-primary text-white font-500"
+            icon={<PlusCircleOutlined />}
+          >
+            Create Table
+          </Button>
+        </div>
+      )}
       <div className="mt-6">
         <ResTable
           theme={vendorTableTheme}

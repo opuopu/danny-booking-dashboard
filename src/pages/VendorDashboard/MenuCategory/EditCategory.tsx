@@ -9,27 +9,16 @@ import { useEditMyMenuCategoriesMutation } from "../../../redux/features/menu/me
 import { zodResolver } from "@hookform/resolvers/zod";
 import { menuValidationSchema } from "../../../schema/menu.schema";
 import UseImageUpload from "../../../hooks/useImageUpload";
-import { useCurrentUser } from "../../../redux/features/auth/authSlice";
-import { useGetAllRestaurantsQuery } from "../../../redux/features/restaurant/restaurantApi";
+
 import FileUpload from "../../../component/FileUpload";
 import { Form } from "antd";
-import ResSelect from "../../../component/Form/ResSelect";
 import showImage from "../../../utils/showImage";
 
 const EditCategory = ({ setshowEditModal }: any) => {
-  const user = useAppSelector(useCurrentUser);
   const [EditMenuCategory] = useEditMyMenuCategoriesMutation();
   const categoryData: any = useAppSelector((state) => state.menu.category);
-  const { data: restaurantData } = useGetAllRestaurantsQuery({
-    owner: user?.userId,
-  });
+
   const { setFile, imageUrl, imageFile } = UseImageUpload();
-  const options = restaurantData?.data?.map((data: any) => {
-    return {
-      label: data?.name,
-      value: data?._id,
-    };
-  });
 
   const onSubmit = async (data: any) => {
     const toastId = toast.loading("Createing category....");
@@ -66,13 +55,7 @@ const EditCategory = ({ setshowEditModal }: any) => {
             setSelectedFile={setFile}
           />
         </Form.Item>
-        <ResSelect
-          defaultValue={categoryData?.restaurant}
-          options={options}
-          name="restaurant"
-          size="large"
-          label="Select Restaurant"
-        />
+
         <ResInput
           type="text"
           label="Enter Category Title"

@@ -12,24 +12,30 @@ import UseImageUpload from "../../../hooks/useImageUpload";
 import { useAppSelector } from "../../../redux/hooks";
 import { useCurrentUser } from "../../../redux/features/auth/authSlice";
 import { useGetAllRestaurantsQuery } from "../../../redux/features/restaurant/restaurantApi";
-import ResSelect from "../../../component/Form/ResSelect";
+// import ResSelect from "../../../component/Form/ResSelect";
 
 const AddCategory = ({ setShow }: any) => {
   const { setFile, imageUrl, imageFile } = UseImageUpload();
   const [addcategory] = useAddMenuCategortyMutation();
   const user = useAppSelector(useCurrentUser);
-  console.log(user);
   const { data: restaurantData } = useGetAllRestaurantsQuery({
     owner: user?.userId,
   });
-  const options = restaurantData?.data?.map((data: any) => {
-    return {
-      label: data?.name,
-      value: data?._id,
-    };
-  });
+  // const options = restaurantData?.data?.map((data: any) => {
+  //   return {
+  //     label: data?.name,
+  //     value: data?._id,
+  //   };
+  // });
   const onSubmit = async (data: any) => {
     const toastId = toast.loading("Createing category....");
+    if (!restaurantData?.data[0]) {
+      toast.error("Please create an restaurant before upload category", {
+        id: toastId,
+        duration: 2000,
+      });
+      return;
+    }
     const formData = new FormData();
     if (!imageFile) {
       toast.error("Please select an category image", {
@@ -39,7 +45,10 @@ const AddCategory = ({ setShow }: any) => {
       return;
     }
     formData.append("file", imageFile);
-    formData.append("data", JSON.stringify(data));
+    formData.append(
+      "data",
+      JSON.stringify({ ...data, restaurant: restaurantData?.data[0]?._id })
+    );
     try {
       await addcategory(formData).unwrap();
       toast.success("Menu category added successfully", {
@@ -60,13 +69,13 @@ const AddCategory = ({ setShow }: any) => {
         <Form.Item className="flex justify-center">
           <FileUpload imageUrl={imageUrl} setSelectedFile={setFile} />
         </Form.Item>
-        <ResSelect
+        {/* <ResSelect
           options={options}
           placeholder="Select restaurant"
           name="restaurant"
           size="large"
           label="Select Restaurant"
-        />
+        /> */}
         <ResInput
           type="text"
           label="Enter Category Title"

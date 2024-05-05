@@ -9,6 +9,7 @@ import EditCategory from "./EditCategory";
 import { useGetMYmenuCategoriesQuery } from "../../../redux/features/menu/menuApi";
 import { useAppDispatch } from "../../../redux/hooks";
 import { setCategoryDetails } from "../../../redux/features/menu/menuSlice";
+import moment from "moment";
 
 const MenuCategory = () => {
   const [show, setShow] = useState<boolean>(false);
@@ -28,7 +29,7 @@ const MenuCategory = () => {
     },
     {
       title: "Created At",
-      dataIndex: "date",
+      dataIndex: "createdAt",
       key: "date",
     },
     {
@@ -54,7 +55,8 @@ const MenuCategory = () => {
   const data = categoryData?.data?.map((data: any, index: number) => {
     return {
       serial: index,
-      ...data,
+      createdAt: moment(data?.createdAt).format("YYYY-MM-DD HH:mm: a"),
+      title: data?.title,
     };
   });
   return (

@@ -13,10 +13,7 @@ import ErrorResponse from "../../component/UI/ErrorResponse";
 import { useAppDispatch } from "../../redux/hooks";
 import { setUser, TUser } from "../../redux/features/auth/authSlice";
 import { verifyToken } from "../../utils/verifyToken";
-interface FieldValues {
-  email: string;
-  password: string;
-}
+
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

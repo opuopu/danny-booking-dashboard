@@ -8,6 +8,7 @@ import NewPassword from "../pages/NewPassword";
 import { routeGenerator } from "../utils/routeGenerator";
 import { adminRoute } from "./admin.route";
 import { vendorRoute } from "./vendor.route";
+import PrivateRoute from "./PrivateRoutes";
 
 const router = createBrowserRouter([
   {
@@ -16,12 +17,20 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <MainLayout />,
+    element: (
+      <PrivateRoute role="admin">
+        <MainLayout />
+      </PrivateRoute>
+    ),
     children: routeGenerator(adminRoute),
   },
   {
     path: "/vendor",
-    element: <MainLayout />,
+    element: (
+      <PrivateRoute role="vendor">
+        <MainLayout />
+      </PrivateRoute>
+    ),
     children: routeGenerator(vendorRoute),
   },
   {

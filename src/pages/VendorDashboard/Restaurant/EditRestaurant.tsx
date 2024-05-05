@@ -54,18 +54,19 @@ const EditRestaurant = () => {
     setReviewStatus(value);
   };
   const onSubmit = async (data: any) => {
-    days.forEach((day) => {
-      const dayData = data[day];
-      if (dayData.openingTime && dayData.closingTime) {
-        const openingTime = moment(dayData.openingTime, "hh:mm").format(
-          "HH:mm"
-        ); // Convert to 24-hour format
-        const closingTime = moment(dayData.closingTime, "hh:mm").format(
-          "HH:mm"
-        ); // Convert to 24-hour format
-        data[day] = { openingTime, closingTime }; // Update the day object with formatted times
-      }
-    });
+    console.log(data);
+    // days.forEach((day) => {
+    //   const dayData = data[day];
+    //   if (dayData.openingTime && dayData.closingTime) {
+    //     const openingTime = moment(dayData.openingTime, "hh:mm").format(
+    //       "HH:mm"
+    //     ); // Convert to 24-hour format
+    //     const closingTime = moment(dayData.closingTime, "hh:mm").format(
+    //       "HH:mm"
+    //     ); // Convert to 24-hour format
+    //     data[day] = { openingTime, closingTime }; // Update the day object with formatted times
+    //   }
+    // });
     const formData = new FormData();
     if (fileList && fileList.length > 0) {
       fileList.forEach((file: any) => {
@@ -79,7 +80,7 @@ const EditRestaurant = () => {
     formData.append("data", JSON.stringify({ ...data, reviewStatus }));
     const toastId = toast.loading("Editing...");
     try {
-      const res = await editRestaurant({ id: id, data: formData }).unwrap();
+      // const res = await editRestaurant({ id: id, data: formData }).unwrap();
       toast.success("Restaurant edited successfully", {
         id: toastId,
         duration: 2000,

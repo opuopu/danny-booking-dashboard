@@ -43,9 +43,12 @@ const MultiUpload = ({ fileList, setFileList, removeFile }: TfileProps) => {
 
   // delete and image when delete button is clicked
   const handleRemove = async (file: any) => {
-    // @ts-ignore
-    const result = await removeFile(file);
-    return result;
+    if (removeFile) {
+      // @ts-ignore
+      const result = await removeFile(file);
+      return result;
+    }
+    return true;
   };
   return (
     <>
@@ -57,7 +60,7 @@ const MultiUpload = ({ fileList, setFileList, removeFile }: TfileProps) => {
         onChange={handleChange}
         onRemove={handleRemove}
       >
-        {fileList?.length >= 8 ? null : uploadButton}
+        {fileList?.length >= 5 ? null : uploadButton}
       </Upload>
       {previewImage && (
         <Image

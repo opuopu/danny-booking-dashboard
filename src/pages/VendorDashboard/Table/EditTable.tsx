@@ -30,7 +30,7 @@ const EditTable = ({ setShow }: any) => {
     <ResForm
       defaultValues={formatData}
       onSubmit={onSubmit}
-      resolver={zodResolver(tableValidation.createTableSchema)}
+      resolver={zodResolver(tableValidation.EditableSchema)}
     >
       <ResInput
         type="text"

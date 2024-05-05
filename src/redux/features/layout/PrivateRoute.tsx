@@ -1,17 +1,17 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactNode } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { logout, useCurrentToken } from "../auth/authSlice";
 import { Navigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { logout, useCurrentToken } from "../redux/features/auth/authSlice";
-import { verifyToken } from "../utils/verifyToken";
-interface PrivateRouteProps {
+import { verifyToken } from "../../../utils/verifyToken";
+interface TPrivateRoute {
   children: ReactNode;
   role: string | undefined;
 }
-const PrivateRoute = ({ children, role }: PrivateRouteProps) => {
+const PrivateRoute = ({ children, role }: TPrivateRoute) => {
   const token = useAppSelector(useCurrentToken);
 
-  let user;
+  let user: any;
 
   if (token) {
     user = verifyToken(token);
@@ -19,10 +19,9 @@ const PrivateRoute = ({ children, role }: PrivateRouteProps) => {
 
   const dispatch = useAppDispatch();
 
-  // @ts-ignore
   if (role !== undefined && role !== user?.role) {
     dispatch(logout());
-    return <Navigate to="/login" replace={true} />;
+    <Navigate to="/login" replace={true} />;
   }
   if (!token) {
     return <Navigate to="/login" replace={true} />;

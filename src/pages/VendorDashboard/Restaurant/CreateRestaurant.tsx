@@ -43,14 +43,13 @@ const CreateRestaurant = () => {
         data[day] = { openingTime, closingTime }; // Update the day object with formatted times
       }
     });
-
     const formData = new FormData();
     if (fileList.length > 0) {
       fileList.forEach((file: any) => {
         formData.append("files", file.originFileObj); // Append the file object
       });
     }
-    // formData.append("data", JSON.stringify({ ...data, reviewStatus }));
+    formData.append("data", JSON.stringify({ ...data, reviewStatus }));
     const toastId = toast.loading("Creating new restaurant...");
     try {
       const res = await addRestaurant(formData).unwrap();

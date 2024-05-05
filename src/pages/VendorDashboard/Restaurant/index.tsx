@@ -16,6 +16,7 @@ const VendorRestaurant = () => {
   const [show, setshow] = useState<boolean>(false);
   const query = {};
   const { data: restaurantData } = useGetAllRestaurantsQuery(query);
+  console.log(restaurantData);
   const navigate = useNavigate();
   const column = [
     {
@@ -66,7 +67,6 @@ const VendorRestaurant = () => {
       title: "Action",
       key: "action",
       render: (data: any, index: number) => {
-        console.log(data);
         return (
           <div className="flex justify-center">
             <NavLink to={`/vendor/edit-restaurant/${data?._id}`}>
@@ -87,21 +87,23 @@ const VendorRestaurant = () => {
   };
   return (
     <div>
-      <h1>vendor restaurant</h1>
-      <div className="flex justify-end mb-4">
-        <Button
-          onClick={handleCreateRestaurant}
-          className="bg-primary text-white font-500"
-          icon={<PlusCircleOutlined />}
-        >
-          Create Restaurant
-        </Button>
-      </div>
+      <h1 className="text-32 font-600 mb-4 text-primary">Restaurant</h1>
+      {restaurantData?.data?.length === 0 && (
+        <div className="flex justify-end mb-4">
+          <Button
+            onClick={handleCreateRestaurant}
+            className="bg-primary text-white font-500"
+            icon={<PlusCircleOutlined />}
+          >
+            Create Restaurant
+          </Button>
+        </div>
+      )}
       <ResTable
         column={column}
         data={restaurantData?.data}
         loading={false}
-        pagination={{ total: vendorRestaurantData.length, pageSize: 10 }}
+        // pagination={{ total: vendorRestaurantData.length, pageSize: 10 }}
       />
     </div>
   );
