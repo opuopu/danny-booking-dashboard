@@ -29,6 +29,7 @@ const MainLayout = () => {
 
     return () => {
       socket.disconnect();
+      socket.removeAllListeners();
     };
   }, [user, dispatch]);
   return (

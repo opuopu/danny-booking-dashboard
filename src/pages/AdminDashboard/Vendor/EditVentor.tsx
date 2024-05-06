@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { useUpdateUserMutation } from "../../../redux/features/auth/authApi";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
 import showImage from "../../../utils/showImage";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { authValidationSchema } from "../../../schema/auth.schema";
 
 const EditVentor = ({ setShowEditModal }: any) => {
   const { imageUrl, setFile, imageFile } = UseImageUpload();
@@ -39,7 +41,11 @@ const EditVentor = ({ setShowEditModal }: any) => {
   };
 
   return (
-    <ResForm onSubmit={onSubmit} defaultValues={vendorData}>
+    <ResForm
+      onSubmit={onSubmit}
+      defaultValues={vendorData}
+      resolver={zodResolver(authValidationSchema.EditVendorSchema)}
+    >
       <Form.Item className="flex justify-center">
         <FileUpload
           imageUrl={imageUrl ?? showImage(vendorData?.image)}
@@ -57,7 +63,7 @@ const EditVentor = ({ setShowEditModal }: any) => {
 
       <ResInput
         size="large"
-        type="phoneNumber"
+        type="number"
         label="Enter phoneNumber"
         name="phoneNumber"
         placeholder="number"

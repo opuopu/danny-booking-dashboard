@@ -32,8 +32,8 @@ const FileUpload = ({
       type="button"
       onClick={(e) => handleButton(e)}
     >
-      <PlusOutlined className="text-orange" />
-      <div style={{ marginTop: 8 }} className="text-orange">
+      <PlusOutlined className="text-primary" />
+      <div style={{ marginTop: 8 }} className="text-primary">
         Upload
       </div>
     </button>

@@ -1,10 +1,23 @@
 // import moment from "moment";
+import dayjs from "dayjs";
+
 import { object, string, boolean } from "zod";
 
 const OpeningHoursSchema = object({
-  openingTime: object({}),
-  closingTime: object({}),
-});
+  openingTime: string(), // Assuming openingTime and closingTime are strings
+  closingTime: string(),
+}).refine(
+  ({ openingTime, closingTime }) => {
+    console.log(openingTime, closingTime);
+    // Custom validation: closingTime must not be earlier than openingTime
+    const openingMoment = dayjs(openingTime, "HH:mm");
+    const closingMoment = dayjs(closingTime, "HH:mm");
+    return openingMoment.isBefore(closingMoment, "minute"); // Return true if closingTime is after openingTime
+  },
+  {
+    message: "Closing time must be later than opening time",
+  }
+);
 
 // Define the insertRestaurantSchema
 const insertRestaurantSchema = object({

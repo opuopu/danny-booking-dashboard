@@ -88,17 +88,17 @@ const VendorRestaurant = () => {
   return (
     <div>
       <h1 className="text-32 font-600 mb-4 text-primary">Restaurant</h1>
-      {restaurantData?.data?.length === 0 && (
-        <div className="flex justify-end mb-4">
-          <Button
-            onClick={handleCreateRestaurant}
-            className="bg-primary text-white font-500"
-            icon={<PlusCircleOutlined />}
-          >
-            Create Restaurant
-          </Button>
-        </div>
-      )}
+      {/* {restaurantData?.data?.length === 0 && ( */}
+      <div className="flex justify-end mb-4">
+        <Button
+          onClick={handleCreateRestaurant}
+          className="bg-primary text-white font-500"
+          icon={<PlusCircleOutlined />}
+        >
+          Create Restaurant
+        </Button>
+      </div>
+      {/* )} */}
       <ResTable
         column={column}
         data={restaurantData?.data}

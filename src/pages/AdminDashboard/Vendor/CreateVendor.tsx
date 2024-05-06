@@ -9,12 +9,19 @@ import { useCreateVendorMutation } from "../../../redux/features/auth/authApi";
 import { toast } from "sonner";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
 import FileUpload from "../../../component/FileUpload";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { authValidationSchema } from "../../../schema/auth.schema";
 
 const CreateVendor = ({ setShow }: any) => {
   const { imageUrl, setFile, imageFile } = UseImageUpload();
   const [createVendor] = useCreateVendorMutation();
   const onSubmit = async (data: any) => {
     const toastId = toast.loading("Creating......");
+    if (!imageFile) {
+      toast.error("Please select an image", { id: toastId, duration: 2000 });
+      return;
+    }
+
     const formData = new FormData();
     if (imageFile) {
       formData.append("file", imageFile);
@@ -34,7 +41,10 @@ const CreateVendor = ({ setShow }: any) => {
   };
 
   return (
-    <ResForm onSubmit={onSubmit}>
+    <ResForm
+      onSubmit={onSubmit}
+      resolver={zodResolver(authValidationSchema.createVendorSchema)}
+    >
       <Form.Item className="flex justify-center">
         <FileUpload imageUrl={imageUrl!} setSelectedFile={setFile} />
         <p className="text-center">upload image</p>

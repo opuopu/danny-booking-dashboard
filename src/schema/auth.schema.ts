@@ -30,9 +30,33 @@ const resetPasswordSchema = z.object({
     .min(6, { message: "Confirm Password must be at least 6 characters long" }),
 });
 
+const createVendorSchema = z.object({
+  fullName: z.string({ required_error: "Vendor name  is Required" }),
+  email: z.string({ required_error: "Vendor email  is Required" }),
+  password: z.string({ required_error: "Vendor password is Required" }),
+  phoneNumber: z.coerce
+    .number({ required_error: "Vendor phone number is Required" })
+    .refine((value) => value.toString().length >= 11, {
+      message: "Vendor phone number must be at least 11 digits long",
+    }),
+});
+const EditVendorSchema = z.object({
+  fullName: z
+    .string({ required_error: "Vendor name is Required" })
+    .min(1, { message: "Vendor name is Required" }),
+
+  phoneNumber: z.coerce
+    .number({ required_error: "Vendor phone number is Required" })
+    .refine((value) => value.toString().length >= 11, {
+      message: "Vendor phone number must be at least 11 digits long",
+    }),
+});
+
 export const authValidationSchema = {
   loginValidationSchema,
   fogotpasswordSchema,
   changePasswordSchema,
   resetPasswordSchema,
+  createVendorSchema,
+  EditVendorSchema,
 };

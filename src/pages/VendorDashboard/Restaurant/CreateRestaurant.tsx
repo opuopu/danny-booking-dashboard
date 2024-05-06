@@ -31,28 +31,16 @@ const CreateRestaurant = () => {
       toast.error("Please select 5 image before submitting..");
       return;
     }
-    days.forEach((day) => {
-      const dayData = data[day];
-      if (dayData.openingTime && dayData.closingTime) {
-        const openingTime = moment(dayData.openingTime, "hh:mm").format(
-          "HH:mm"
-        ); // Convert to 24-hour format
-        const closingTime = moment(dayData.closingTime, "hh:mm").format(
-          "HH:mm"
-        ); // Convert to 24-hour format
-        data[day] = { openingTime, closingTime }; // Update the day object with formatted times
-      }
-    });
     const formData = new FormData();
     if (fileList.length > 0) {
       fileList.forEach((file: any) => {
         formData.append("files", file.originFileObj); // Append the file object
       });
     }
-    formData.append("data", JSON.stringify({ ...data, reviewStatus }));
+    // formData.append("data", JSON.stringify({ ...data, reviewStatus }));
     const toastId = toast.loading("Creating new restaurant...");
     try {
-      const res = await addRestaurant(formData).unwrap();
+      // const res = await addRestaurant(formData).unwrap();
       toast.success("Restaurant added successfully", {
         id: toastId,
         duration: 2000,
@@ -65,7 +53,7 @@ const CreateRestaurant = () => {
     <div>
       <ResForm
         onSubmit={onSubmit}
-        // resolver={zodResolver(restaurantSchema.insertRestaurantSchema)}
+        resolver={zodResolver(restaurantSchema.insertRestaurantSchema)}
       >
         <Row gutter={[14, 0]}>
           <Col span={24}>
