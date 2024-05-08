@@ -75,8 +75,8 @@ export const vendorRoute = [
     ],
   },
   {
-    name: "Transaction",
-    path: "transaction",
+    name: "Wallet",
+    path: "wallet",
     icon: <RiMoneyDollarCircleLine />,
     element: <VendorTransaction />,
   },
