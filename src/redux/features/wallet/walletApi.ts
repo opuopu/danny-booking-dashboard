@@ -9,9 +9,9 @@ const walletApi = baseApi.injectEndpoints({
       query: (data) => ({
         url: `/wallet/${data?.id}`,
         method: "POST",
-        params: data?.body,
+        body: data?.body,
       }),
-      invalidatesTags: [tagTypes.wallet],
+      invalidatesTags: [tagTypes.wallet, tagTypes.notification],
     }),
     getVendorWalletDetails: builder.query({
       query: (query) => ({
@@ -27,8 +27,27 @@ const walletApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getVendorWalletDetailsbyAdmin: builder.query({
+      query: (query) => ({
+        url: "/wallet/admin",
+        method: "GET",
+        params: query,
+      }),
+      providesTags: [tagTypes.wallet],
+    }),
+    getSingleWallet: builder.query({
+      query: (id) => ({
+        url: `/wallet/${id}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.wallet],
+    }),
   }),
 });
 
-export const { useSentVendorAmountMutation, useGetVendorWalletDetailsQuery } =
-  walletApi;
+export const {
+  useSentVendorAmountMutation,
+  useGetVendorWalletDetailsQuery,
+  useGetVendorWalletDetailsbyAdminQuery,
+  useGetSingleWalletQuery,
+} = walletApi;

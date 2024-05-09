@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import moment from "moment";
 import ResTable from "../../../component/Table";
 import VendorTransactionCard from "../../../component/VendorTransactionCard/VendorTransactionCard";
 import { vendorTransactionData } from "../../../db";
@@ -16,8 +15,8 @@ const VendorTransaction = () => {
     },
     {
       title: "Amount",
-      dataIndex: "amount",
-      key: "amount",
+      dataIndex: "subTotal",
+      key: "subTotal",
     },
     {
       title: "Date",
@@ -35,8 +34,9 @@ const VendorTransaction = () => {
       return {
         serial: index + 1,
         amount: data?.amount,
-        date: moment(data?.date).format("YYYY-MM-DD"),
+        date: data?.date,
         method: data?.method,
+        subTotal: data?.subTotal,
       };
     }
   );

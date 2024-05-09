@@ -32,7 +32,7 @@ const MenuCard = ({ data }: any) => {
           <h1 className="text-20 font-600 ">${data?.price}</h1>
           {data?.available ? (
             <Tag className="flex items-center bg-primary text-white font-600 cursor-pointer">
-              Avilable
+              Available
             </Tag>
           ) : (
             <Tag className="flex items-center bg-red text-white font-600 cursor-pointer">

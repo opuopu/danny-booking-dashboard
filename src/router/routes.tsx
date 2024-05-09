@@ -9,6 +9,7 @@ import { routeGenerator } from "../utils/routeGenerator";
 import { adminRoute } from "./admin.route";
 import { vendorRoute } from "./vendor.route";
 import PrivateRoute from "./PrivateRoutes";
+import App from "../App";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
     path: "/admin",
     element: (
       <PrivateRoute role="admin">
-        <MainLayout />
+        <App />
       </PrivateRoute>
     ),
     children: routeGenerator(adminRoute),
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
     path: "/vendor",
     element: (
       <PrivateRoute role="vendor">
-        <MainLayout />
+        <App />
       </PrivateRoute>
     ),
     children: routeGenerator(vendorRoute),

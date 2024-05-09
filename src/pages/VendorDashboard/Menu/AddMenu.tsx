@@ -88,7 +88,7 @@ const AddMenu = ({ setShow }: any) => {
         size="large"
       />
       <ResSelect
-        label="Select Avilable Status"
+        label="Select Available Status"
         name="status"
         defaultValue={"true"}
         // @ts-ignore

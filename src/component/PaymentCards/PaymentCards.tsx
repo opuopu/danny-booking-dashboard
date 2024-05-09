@@ -11,7 +11,7 @@ const PaymentCards = () => {
           </div>
           <div>
             <h1 className="text-32 font-600 text-primary text-end">1000000</h1>
-            <h1 className="text-24 font-600 text-gray ">Avilable Balance</h1>
+            <h1 className="text-24 font-600 text-gray ">Available Balance</h1>
           </div>
         </div>
       </div>

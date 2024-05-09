@@ -85,9 +85,9 @@ const EditMenu = ({ data, setShow }: any) => {
         size="large"
       />
       <ResSelect
-        label="Select Avilable Status"
-        name="available"
-        defaultValue={data?.available}
+        label="Select Available Status"
+        name="Available "
+        defaultValue={data?.Available}
         // @ts-ignore
         options={options2}
         placeholder="select status"

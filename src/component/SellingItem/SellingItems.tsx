@@ -17,7 +17,7 @@ const SellingItems = ({ data }: any) => {
           <div>
             <h1>{data?.name}</h1>
             <p className="text-deepGray">
-              Available:{data?.available ? "true" : "false"}
+              Available :{data?.Available ? "true" : "false"}
             </p>
           </div>
         </div>

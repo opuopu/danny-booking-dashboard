@@ -9,6 +9,8 @@ import { NavLink, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import { useGetMyNotificationQuery } from "../redux/features/notification/notificationApi";
 import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
+import { useEffect } from "react";
+
 const HeaderLayout = () => {
   const dispatch = useAppDispatch();
   const { data: notficationData } = useGetMyNotificationQuery({ read: false });
@@ -17,7 +19,10 @@ const HeaderLayout = () => {
   const notification: any = useAppSelector(
     (state) => state.notification.notification
   );
-  toast.info(notification?.message);
+  useEffect(() => {
+    console.log(notification);
+    toast.info(notification?.message);
+  }, [notification]);
   const { pathname } = useLocation();
   const collapsed = useAppSelector((state) => state.layout.collapsed);
   return (

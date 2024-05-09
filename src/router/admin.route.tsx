@@ -4,7 +4,7 @@ import { FaHome } from "react-icons/fa";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import Restaurant from "../pages/AdminDashboard/Restaurant";
 import Transaction from "../pages/AdminDashboard/Transaction";
-import Payment from "../pages/AdminDashboard/Payment";
+// import Payment from "../pages/AdminDashboard/Payment";
 import { CiSettings } from "react-icons/ci";
 import Setting from "../pages/Setting";
 import Notification from "../pages/Notification";
@@ -29,23 +29,17 @@ export const adminRoute = [
     element: <Restaurant />,
   },
   {
-    name: "Transactions",
+    name: "Wallet",
+    path: "wallet",
     icon: <RiMoneyDollarCircleLine />,
-    children: [
-      {
-        name: "See Transaction",
-        path: "transaction",
-        icon: <RiMoneyDollarCircleLine />,
-        element: <Transaction />,
-      },
-      {
-        name: "Make Payment",
-        path: "payment",
-        icon: <RiMoneyDollarCircleLine />,
-        element: <Payment />,
-      },
-    ],
+    element: <Transaction />,
   },
+  // {
+  //   name: "Make Payment",
+  //   path: "payment",
+  //   icon: <RiMoneyDollarCircleLine />,
+  //   element: <Payment />,
+  // },
   {
     name: "Setting",
     path: "setting",

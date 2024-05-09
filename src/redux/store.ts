@@ -18,6 +18,7 @@ import menuSlice from "./features/menu/menuSlice";
 import tableSlice from "./features/table/tableSlice";
 import notificationSlice from "./features/notification/notificationSlice";
 import restaurantSlice from "./features/restaurant/restaurantSlice";
+import walletSlice from "./features/wallet/walletSlice";
 
 const persistConfig = {
   key: "auth",
@@ -36,6 +37,7 @@ export const store = configureStore({
     table: tableSlice,
     notification: notificationSlice,
     restaurant: restaurantSlice,
+    wallet: walletSlice,
   },
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({
