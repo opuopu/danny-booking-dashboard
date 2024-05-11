@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import BookingCard from "../../../component/BookingCard/BookingCard";
-import { DeleteOutlined } from "@ant-design/icons";
+
 import ResConfirm from "../../../component/UI/PopConfirm";
 import { DatePicker, Input, Tag } from "antd";
 import ResTable from "../../../component/Table";
@@ -20,6 +20,7 @@ const Booking = () => {
   const query: Record<string, any> = {};
   if (date) query["date"] = date;
   if (searchTerm) query["searchTerm"] = searchTerm;
+  query["status"] = "active";
   const { data: bookingData, isLoading } = useGetAllBookingQuery(query);
   const [updateBooking] = useUpdateBookingMutation();
   const handleChangeStatus = async (id: string, status: string) => {
@@ -127,21 +128,21 @@ const Booking = () => {
         );
       },
     },
-    {
-      title: "Delete",
-      key: "action",
-      render: (data: any, index: number) => {
-        return (
-          <div className="text-center">
-            <DeleteOutlined
-              onClick={() => {}}
-              className="cursor-pointer"
-              key={index}
-            />
-          </div>
-        );
-      },
-    },
+    // {
+    //   title: "Delete",
+    //   key: "action",
+    //   render: (data: any, index: number) => {
+    //     return (
+    //       <div className="text-center">
+    //         <DeleteOutlined
+    //           onClick={() => {}}
+    //           className="cursor-pointer"
+    //           key={index}
+    //         />
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
   return (
     <div>

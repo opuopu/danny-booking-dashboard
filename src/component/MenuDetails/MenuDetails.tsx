@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Divider } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import ResModal from "../Modal/Modal";
 import EditMenu from "../../pages/VendorDashboard/Menu/EditMenu";
@@ -23,7 +23,7 @@ const MenuDetails = ({ data }: any) => {
       <p className="text-16">{data?.description}</p>
       <div className="flex justify-between relative top-10 text-20 cursor-pointer">
         <EditOutlined onClick={() => setshow((prev) => !prev)} />
-        <DeleteOutlined />
+        {/* <DeleteOutlined /> */}
       </div>
     </div>
   );

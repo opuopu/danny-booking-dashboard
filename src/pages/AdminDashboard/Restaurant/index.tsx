@@ -1,44 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
+import React, { useState } from "react";
 import ResTable from "../../../component/Table";
 
 import RestaurantCard from "../../../component/RestaurantCard/RestaurantCard";
 import { RestaurantTableTheme } from "../../../themes";
 
 import { useGetAllRestaurantForadminQuery } from "../../../redux/features/restaurant/restaurantApi";
-import moment from "moment";
+import { Input } from "antd";
+import { SearchProps } from "antd/es/input";
 
 const Restaurant = () => {
-  const { data: restaurantData, isLoading } = useGetAllRestaurantForadminQuery(
-    {}
-  );
-  const formatedData = restaurantData?.data?.map((data: any, index: number) => {
-    return {
-      serial: index,
-      name: data?.name,
-      vendor: data?.owner?.fullName,
-      location: data?.location,
-      createdAt: moment(data?.createdAt).format("YYYY-MM-DD"),
-    };
-  });
+  const query: Record<string, any> = {};
+  const [searchTerm, setSearchTerm] = useState<string | null>(null);
+  if (searchTerm) query["searchTerm"] = searchTerm;
+  const onSearch: SearchProps["onSearch"] = (value, _e) => setSearchTerm(value);
+  const { data: restaurantData, isLoading } =
+    useGetAllRestaurantForadminQuery(query);
   const column = [
     {
-      title: "#SL",
-      dataIndex: "serial",
-      key: "serial",
-    },
-    {
       title: "Vendor Name",
-      dataIndex: "owner.fullName",
+      dataIndex: "owner",
       key: "vendorName",
-      filters: [
-        {
-          text: "name",
-          value: "name",
-        },
-      ],
-      onFilter: (value: string, record: { [key: string]: any }) =>
-        record.vendorName.indexOf(value) === 0,
     },
     {
       title: "Restaurant Name",
@@ -58,12 +40,21 @@ const Restaurant = () => {
   ];
   return (
     <div>
-      <RestaurantCard total={restaurantData?.meta?.total} />
+      <RestaurantCard total={restaurantData?.data?.length} />
+      <div className="flex justify-end">
+        <Input.Search
+          onSearch={onSearch}
+          placeholder="search vendor by name or restaurant name"
+          className="w-[400px]"
+          size="large"
+          allowClear
+        />
+      </div>
       <div className="mt-4">
         <ResTable
           theme={RestaurantTableTheme}
           column={column}
-          data={formatedData}
+          data={restaurantData?.data}
           pagination={{ total: restaurantData?.meta?.total, pageSize: 10 }}
           loading={isLoading}
         />

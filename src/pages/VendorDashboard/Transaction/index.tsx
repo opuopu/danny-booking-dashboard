@@ -6,7 +6,8 @@ import { useGetVendorWalletDetailsQuery } from "../../../redux/features/wallet/w
 import { vendorTableTheme } from "../../../themes";
 
 const VendorTransaction = () => {
-  const { data: walletData } = useGetVendorWalletDetailsQuery({});
+  const { data: walletData, isLoading } = useGetVendorWalletDetailsQuery({});
+  console.log(walletData?.data[0]?.paymentHistory);
   const column = [
     {
       title: "Serial",
@@ -15,6 +16,16 @@ const VendorTransaction = () => {
     },
     {
       title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
+    },
+    {
+      title: "Percentage",
+      dataIndex: "percentage",
+      key: "percentage",
+    },
+    {
+      title: "Sub Total",
       dataIndex: "subTotal",
       key: "subTotal",
     },
@@ -34,6 +45,7 @@ const VendorTransaction = () => {
       return {
         serial: index + 1,
         amount: data?.amount,
+        percentage: `${data?.percentage}%`,
         date: data?.date,
         method: data?.method,
         subTotal: data?.subTotal,
@@ -48,6 +60,7 @@ const VendorTransaction = () => {
           theme={vendorTableTheme}
           data={formatedData}
           column={column}
+          loading={isLoading}
           pagination={{ total: vendorTransactionData?.length, pageSize: 10 }}
         />
       </div>

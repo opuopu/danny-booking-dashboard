@@ -28,7 +28,19 @@ const bookingApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.booking],
     }),
+    GetBookingStatics: builder.query({
+      query: (query) => ({
+        url: `/booking/statics`,
+        method: "GET",
+        params: query,
+      }),
+      providesTags: [tagTypes.booking],
+    }),
   }),
 });
 
-export const { useGetAllBookingQuery, useUpdateBookingMutation } = bookingApi;
+export const {
+  useGetAllBookingQuery,
+  useUpdateBookingMutation,
+  useGetBookingStaticsQuery,
+} = bookingApi;

@@ -30,7 +30,7 @@ const restaurantsApi = baseApi.injectEndpoints({
     }),
     getAllRestaurantForadmin: builder.query({
       query: (query: Record<string, any>) => ({
-        url: "/restaurants",
+        url: "/restaurants/admin",
         method: "GET",
         params: query,
       }),

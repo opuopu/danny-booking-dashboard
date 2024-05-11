@@ -35,6 +35,14 @@ const walletApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.wallet],
     }),
+    getWalletStaticsForAdmin: builder.query({
+      query: (query) => ({
+        url: "/wallet/admin/statics",
+        method: "GET",
+        params: query,
+      }),
+      providesTags: [tagTypes.wallet],
+    }),
     getSingleWallet: builder.query({
       query: (id) => ({
         url: `/wallet/${id}`,
@@ -50,4 +58,5 @@ export const {
   useGetVendorWalletDetailsQuery,
   useGetVendorWalletDetailsbyAdminQuery,
   useGetSingleWalletQuery,
+  useGetWalletStaticsForAdminQuery,
 } = walletApi;

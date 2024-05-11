@@ -26,6 +26,7 @@ function App() {
       socket.disconnect();
     };
   }, [user]);
+
   return (
     <PrivateRoute role={undefined}>
       <MainLayout />

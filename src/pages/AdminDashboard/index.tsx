@@ -47,11 +47,6 @@ const AdminDashboard = () => {
   };
   const column = [
     {
-      title: "#SL",
-      dataIndex: "index",
-      key: "index",
-    },
-    {
       title: "Vendor Name",
       dataIndex: "fullName",
       key: "name",

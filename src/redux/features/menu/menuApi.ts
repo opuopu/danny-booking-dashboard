@@ -43,13 +43,17 @@ const menuApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.menu],
     }),
     updateMenu: builder.mutation({
-      query: (data) => ({
-        url: `/menu/${data?.id}`,
-        method: "PATCH",
-        body: data?.body,
-      }),
+      query: (data) => {
+        console.log("Data to be sent:", data); // Add this line to log the data
+        return {
+          url: `/menu/${data?.id}`,
+          method: "PATCH",
+          body: data?.body,
+        };
+      },
       invalidatesTags: [tagTypes.menu],
     }),
+
     deleteMenu: builder.mutation({
       query: (id: string) => ({
         url: `/menu/${id}`,

@@ -15,7 +15,7 @@ const HeaderLayout = () => {
   const dispatch = useAppDispatch();
   const { data: notficationData } = useGetMyNotificationQuery({ read: false });
   const User: TUser | null = useAppSelector(useCurrentUser);
-  const { role }: any = User;
+  const { role }: any = User || {};
   const notification: any = useAppSelector(
     (state) => state.notification.notification
   );

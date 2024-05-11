@@ -4,18 +4,19 @@ import { Button, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import logo from "../assets/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { sidebarItemsGenerator } from "../utils/sidebarItemsGenerator";
 import { adminRoute } from "../router/admin.route";
 import { IoLogInOutline } from "react-icons/io5";
 import { vendorRoute } from "../router/vendor.route";
-import { useCurrentUser } from "../redux/features/auth/authSlice";
+import { logout, useCurrentUser } from "../redux/features/auth/authSlice";
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { pathname } = location;
   const collapsed = useAppSelector((state) => state.layout.collapsed);
-  const { role }: any = useAppSelector(useCurrentUser);
+  const { role }: any = useAppSelector(useCurrentUser) || {};
   let SidebarItems;
   switch (role) {
     case "admin":
@@ -29,6 +30,7 @@ const Sidebar = () => {
       break;
   }
   const handeLogout = () => {
+    dispatch(logout());
     navigate("/login");
   };
   return (

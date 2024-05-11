@@ -9,6 +9,7 @@ interface TPrivateRoute {
   role: string | undefined;
 }
 const PrivateRoute = ({ children, role }: TPrivateRoute) => {
+  console.log(role);
   const token = useAppSelector(useCurrentToken);
 
   let user: any;
@@ -21,7 +22,7 @@ const PrivateRoute = ({ children, role }: TPrivateRoute) => {
 
   if (role !== undefined && role !== user?.role) {
     dispatch(logout());
-    <Navigate to="/login" replace={true} />;
+    return <Navigate to="/login" replace={true} />;
   }
   if (!token) {
     return <Navigate to="/login" replace={true} />;

@@ -12,6 +12,7 @@ const BookingCard = () => {
   const { data: totalClosedBook } = useGetAllBookingQuery({
     status: "closed",
   });
+
   const { data: todays } = useGetAllBookingQuery({
     date: dayjs().format("YYYY-MM-DD"),
   });
@@ -45,7 +46,7 @@ const BookingCard = () => {
           <div className="font-600 ">
             <h1 className="text-end text-primary text-32">
               {" "}
-              {totalClosedBook?.length || 0}
+              {totalClosedBook?.data?.length || 0}
             </h1>
             <p className="text-24">Closed Booking</p>
           </div>

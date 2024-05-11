@@ -26,16 +26,18 @@ const EditMenu = ({ data, setShow }: any) => {
       value: data?._id,
     };
   });
-
+  const id = data?._id;
   const onSubmit = async (data: any) => {
     const formData = new FormData();
     if (imageFile) {
       formData.append("file", imageFile);
     }
-    formData.append("data", JSON.stringify(data));
+    if (data) {
+      formData.append("data", JSON.stringify(data));
+    }
     const toastId = toast.loading("Editing menu...");
     try {
-      await editMenu({ id: data?._id, body: formData }).unwrap();
+      await editMenu({ id: id, body: formData }).unwrap();
       toast.success("Menu updated successfully", {
         id: toastId,
         duration: 2000,
@@ -47,8 +49,8 @@ const EditMenu = ({ data, setShow }: any) => {
   };
 
   const options2 = [
-    { label: "true", value: true },
-    { label: "false", value: false },
+    { label: "true", value: "true" },
+    { label: "false", value: "false" },
   ];
   return (
     <ResForm
@@ -86,7 +88,7 @@ const EditMenu = ({ data, setShow }: any) => {
       />
       <ResSelect
         label="Select Available Status"
-        name="Available "
+        name="available"
         defaultValue={data?.Available}
         // @ts-ignore
         options={options2}

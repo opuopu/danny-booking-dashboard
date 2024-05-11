@@ -6,7 +6,6 @@ import { useGetAllMenuQuery } from "../../redux/features/menu/menuApi";
 const MenuHeaderCards = () => {
   const { data: menuData } = useGetAllMenuQuery(undefined);
   const { data: activeData } = useGetAllMenuQuery({ available: true });
-
   return (
     <Row gutter={[16, 16]}>
       <Col span={6}>
@@ -25,7 +24,7 @@ const MenuHeaderCards = () => {
           <img src={AvailableNowLogo} alt="" />
           <div className="font-600 ">
             <h1 className="text-end text-primary text-32">
-              {activeData?.data?.length || 0}
+              {activeData?.meta?.total || 0}
             </h1>
             <p className="text-24">Available</p>
           </div>

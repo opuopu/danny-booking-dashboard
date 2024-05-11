@@ -1,13 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Tooltip } from "antd";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { VendorIncomeChartData } from "../../db";
 
-const VendorChart = () => {
+const VendorChart = ({ data }: any) => {
   return (
     <AreaChart
       width={940}
       height={400}
-      data={VendorIncomeChartData}
+      data={data}
       margin={{
         top: 10,
         right: 30,
@@ -27,13 +27,13 @@ const VendorChart = () => {
         horizontal={false}
       />
       <XAxis dataKey="month" />
-      <YAxis dataKey="income" />
+      <YAxis dataKey="totalBooking" />
       <Tooltip />
       <Area
         type="monotone"
-        dataKey="income"
+        dataKey="totalBooking"
         stroke="#4C9A29"
-        stroke-width="4"
+        strokeWidth="1"
         fill="url(#colorUv)"
       />
     </AreaChart>

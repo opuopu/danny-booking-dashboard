@@ -17,11 +17,15 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { setPaymentHistory } from "../../../redux/features/wallet/walletSlice";
 import ResModal from "../../../component/Modal/Modal";
 import MakePaymentForm from "../../../component/MakePaymentForm";
+import Input, { SearchProps } from "antd/es/input";
 
 const Transaction = () => {
-  const { data: walletData, isLoading } = useGetVendorWalletDetailsbyAdminQuery(
-    {}
-  );
+  const query: Record<string, any> = {};
+  const [searchTerm, setSearchTerm] = useState<string | null>(null);
+  if (searchTerm) query["searchTerm"] = searchTerm;
+  const onSearch: SearchProps["onSearch"] = (value, _e) => setSearchTerm(value);
+  const { data: walletData, isLoading } =
+    useGetVendorWalletDetailsbyAdminQuery(query);
   const [show, setshow] = useState<boolean>(false);
   const [id, setId] = useState<string | null>();
   const dispatch = useAppDispatch();
@@ -139,6 +143,15 @@ const Transaction = () => {
       </Drawers>
       <div className="mb-4">
         <TransactionCards />
+        <div className="flex justify-end">
+          <Input.Search
+            onSearch={onSearch}
+            placeholder="search vendor by name or restaurant name"
+            className="w-[400px]"
+            size="large"
+            allowClear
+          />
+        </div>
       </div>
       <ResTable
         theme={transactionTableTheme}

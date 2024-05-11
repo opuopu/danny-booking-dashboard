@@ -10,6 +10,8 @@ import ResModal from "../../../component/Modal/Modal";
 import AddMenu from "./AddMenu";
 import { useGetAllMenuQuery } from "../../../redux/features/menu/menuApi";
 import type { SearchProps } from "antd/es/input/Search";
+import NoData from "../../../component/NoData/NoData";
+import Loading from "../../../component/UI/Loading";
 
 const Menu = () => {
   const [show, setshow] = useState<boolean>(false);
@@ -19,7 +21,7 @@ const Menu = () => {
   if (searchTerm) query["searchTerm"] = searchTerm;
   query["page"] = pagination?.page;
   query["limit"] = pagination?.limit;
-  const { data: menuData } = useGetAllMenuQuery(query);
+  const { data: menuData, isLoading } = useGetAllMenuQuery(query);
   const onSearch: SearchProps["onSearch"] = (value, _e) =>
     setSearchValue(value);
   const onChange = (page: number) => {
@@ -53,11 +55,18 @@ const Menu = () => {
         <h1 className="">Total Menu:</h1>
         <span>{menuData?.meta?.total}</span>
       </div>
-      <div className="flex flex-wrap  justify-center mt-2">
-        {menuData?.data?.map((data: any, index: number) => (
-          <MenuCard key={index} data={data} />
-        ))}
+      <div className="flex flex-wrap justify-center mt-2">
+        {isLoading ? (
+          <Loading />
+        ) : menuData?.data?.length > 0 ? (
+          menuData.data.map((data: any, index: number) => (
+            <MenuCard key={index} data={data} />
+          ))
+        ) : (
+          <NoData />
+        )}
       </div>
+
       <div className="flex justify-end mt-2">
         <ResPagination total={menuData?.meta?.total} onChange={onChange} />
       </div>

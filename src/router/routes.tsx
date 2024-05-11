@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Login from "../pages/Login";
 import ForgotPassword from "../pages/ForgotPassword";
-import MainLayout from "../layout/MainLayout";
 
 import VerifyOtp from "../pages/VerifyOtp";
 import NewPassword from "../pages/NewPassword";
@@ -14,7 +13,7 @@ import App from "../App";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: <App />,
   },
   {
     path: "/admin",
