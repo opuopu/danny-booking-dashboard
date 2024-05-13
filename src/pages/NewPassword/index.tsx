@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NavLink, useNavigate } from "react-router-dom";
 import bgImage from "./../../assets/bg_2.jpg";
 import { LeftOutlined } from "@ant-design/icons";
@@ -10,14 +11,11 @@ import { toast } from "sonner";
 import ErrorResponse from "../../component/UI/ErrorResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authValidationSchema } from "../../schema/auth.schema";
-interface PasswordProps {
-  newPassword: string;
-  confirmPassword: string;
-}
+
 const NewPassword = () => {
   const [resetPassword] = useResetPasswordMutation();
   const navigate = useNavigate();
-  const onSubmit = async (data: PasswordProps) => {
+  const onSubmit = async (data: any) => {
     const toastId = toast.loading("Password resetting....");
     try {
       await resetPassword(data).unwrap();

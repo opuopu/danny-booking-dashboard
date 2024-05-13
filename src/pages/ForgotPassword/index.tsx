@@ -21,7 +21,7 @@ interface FieldValues {
 const ForgotPassword = () => {
   const [forgotPassword] = useForgotPasswordMutation();
   const navigate = useNavigate();
-  const onSubmit = async (data: FieldValues) => {
+  const onSubmit = async (data: any) => {
     const toastId = toast.loading("Sending Otp..");
     try {
       const res = await forgotPassword(data).unwrap();

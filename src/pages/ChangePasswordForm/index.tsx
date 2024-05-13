@@ -29,7 +29,7 @@ const ChangePasswordFrom = () => {
   const [changePassword] = useChangePasswordMutation();
   const { data: profile } = useProfileQuery(undefined);
   const [forgotPassword] = useForgotPasswordMutation();
-  const onSubmit = async (data: SubmitProps) => {
+  const onSubmit = async (data: any) => {
     console.log(data);
     const toastId = toast("Changing");
     try {
