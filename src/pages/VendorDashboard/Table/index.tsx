@@ -9,7 +9,7 @@ import {
   EditOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { vendorTableTheme } from "../../../themes/tableThemes";
+
 // import ResConfirm from "../../../component/UI/PopConfirm";
 import ResModal from "../../../component/Modal/Modal";
 import CreateTable from "./CreateTable";
@@ -120,20 +120,19 @@ const Table = () => {
         <EditTable setShow={setShowEditModal} />
       </ResModal>
       <TableCards tableData={tableData} />
-      {tableData?.data?._id && (
-        <div className="flex justify-end mb-4">
-          <Button
-            onClick={() => setShow((prev) => !prev)}
-            className="bg-primary text-white font-500"
-            icon={<PlusCircleOutlined />}
-          >
-            Create Table
-          </Button>
-        </div>
-      )}
+
+      <div className="flex justify-end mb-4">
+        <Button
+          onClick={() => setShow((prev) => !prev)}
+          className="bg-primary text-white font-500"
+          icon={<PlusCircleOutlined />}
+        >
+          Create Table
+        </Button>
+      </div>
+
       <div className="mt-6">
         <ResTable
-          theme={vendorTableTheme}
           loading={isLoading}
           data={tableData?.data?.tables}
           column={column}

@@ -1,16 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Col, Row } from "antd";
-import orderLogo from "../../assets/vendorIcon/order.png";
-import dollarLogo from "../../assets/payment.svg";
+
 import { useGetAllBookingQuery } from "../../redux/features/booking/bookingApi";
 import dayjs from "dayjs";
+import {
+  MdOutlineDateRange,
+  MdOutlinePendingActions,
+  MdOutlineRunningWithErrors,
+} from "react-icons/md";
+
 const BookingCard = () => {
   const { data: totalBooking } = useGetAllBookingQuery({ status: "active" });
   const { data: totalCanlledBooking } = useGetAllBookingQuery({
     status: "cancelled",
-  });
-  const { data: totalClosedBook } = useGetAllBookingQuery({
-    status: "closed",
   });
 
   const { data: todays } = useGetAllBookingQuery({
@@ -20,46 +22,35 @@ const BookingCard = () => {
     <Row gutter={[16, 16]}>
       <Col span={6}>
         <div className="flex items-center justify-between bg-white p-6 rounded">
-          <img src={orderLogo} alt="" />
+          <MdOutlinePendingActions size={50} />
           <div className="font-600 ">
             <h1 className="text-end text-primary text-32">
               {totalBooking?.data?.length || 0}
+            </h1>
+            <p className="text-24">Pending Request</p>
+          </div>
+        </div>
+      </Col>
+      <Col span={6}>
+        <div className="flex items-center justify-between bg-white p-6 rounded">
+          <MdOutlineRunningWithErrors size={50} />
+          <div className="font-600 ">
+            <h1 className="text-end text-primary text-32">
+              {totalCanlledBooking?.data?.length || 0}
             </h1>
             <p className="text-24">Ongoing Booking</p>
           </div>
         </div>
       </Col>
-      <Col span={6}>
-        <div className="flex items-center justify-between bg-white p-6 rounded">
-          <img src={orderLogo} alt="" />
-          <div className="font-600 ">
-            <h1 className="text-end text-primary text-32">
-              {totalCanlledBooking?.data?.length || 0}
-            </h1>
-            <p className="text-24">Cancelled Booking</p>
-          </div>
-        </div>
-      </Col>
-      <Col span={6}>
-        <div className="flex items-center justify-between bg-white p-6 rounded">
-          <img src={orderLogo} alt="" />
-          <div className="font-600 ">
-            <h1 className="text-end text-primary text-32">
-              {" "}
-              {totalClosedBook?.data?.length || 0}
-            </h1>
-            <p className="text-24">Closed Booking</p>
-          </div>
-        </div>
-      </Col>
+
       <Col span={6}>
         <div className="flex items-center justify-between bg-white p-6  rounded">
-          <img src={dollarLogo} alt="" />
+          <MdOutlineDateRange size={50} />
           <div className="font-600 ">
             <h1 className="text-end text-primary text-32">
               {todays?.data?.length || 0}
             </h1>
-            <p className="text-24">Today's Booking</p>
+            <p className="text-24">Today's Request</p>
           </div>
         </div>
       </Col>

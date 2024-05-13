@@ -30,25 +30,21 @@ const resetPasswordSchema = z.object({
     .min(6, { message: "Confirm Password must be at least 6 characters long" }),
 });
 
-const createVendorSchema = z.object({
-  fullName: z.string({ required_error: "Vendor name  is Required" }),
-  email: z.string({ required_error: "Vendor email  is Required" }),
-  password: z.string({ required_error: "Vendor password is Required" }),
-  phoneNumber: z.coerce
-    .number({ required_error: "Vendor phone number is Required" })
-    .refine((value) => value.toString().length >= 11, {
-      message: "Vendor phone number must be at least 11 digits long",
-    }),
+const createsubadminSchema = z.object({
+  name: z.string({ required_error: "Worker name  is Required" }),
+  email: z.string({ required_error: "Worker email  is Required" }),
+  designation: z.string({ required_error: "Worker designation  is Required" }),
+  password: z.string({ required_error: "Worker password is Required" }),
 });
-const EditVendorSchema = z.object({
+const EditWorkerSchema = z.object({
   fullName: z
-    .string({ required_error: "Vendor name is Required" })
-    .min(1, { message: "Vendor name is Required" }),
+    .string({ required_error: "Worker name is Required" })
+    .min(1, { message: "Worker name is Required" }),
 
   phoneNumber: z.coerce
-    .number({ required_error: "Vendor phone number is Required" })
+    .number({ required_error: "Worker phone number is Required" })
     .refine((value) => value.toString().length >= 11, {
-      message: "Vendor phone number must be at least 11 digits long",
+      message: "Worker phone number must be at least 11 digits long",
     }),
 });
 
@@ -57,6 +53,6 @@ export const authValidationSchema = {
   fogotpasswordSchema,
   changePasswordSchema,
   resetPasswordSchema,
-  createVendorSchema,
-  EditVendorSchema,
+  createsubadminSchema,
+  EditWorkerSchema,
 };

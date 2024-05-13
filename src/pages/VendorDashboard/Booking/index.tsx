@@ -10,10 +10,9 @@ import {
   useUpdateBookingMutation,
 } from "../../../redux/features/booking/bookingApi";
 import dayjs from "dayjs";
-import { GrView } from "react-icons/gr";
-import { NavLink } from "react-router-dom";
 import { toast } from "sonner";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
+import { DeleteOutlined } from "@ant-design/icons";
 const Booking = () => {
   const [date, setDate] = useState<string | null>(dayjs().format("YYYY-MM-DD"));
   const [searchTerm, setSearchTerm] = useState<string | null>();
@@ -43,7 +42,24 @@ const Booking = () => {
   const onDateChange = async (date: any) => {
     setDate(dayjs(date).format("YYYY-MM-DD"));
   };
+  const customerData = [];
 
+  for (let i = 1; i <= 20; i++) {
+    customerData.push({
+      key: i,
+      name: `Customer ${i}`,
+      email: `customer${i}@example.com`,
+      bookingId: `B00${i}`,
+      seats: Math.floor(Math.random() * 10) + 1, // Random number of seats between 1 and 10
+      date: `2024-05-${Math.floor(Math.random() * 30) + 1}`, // Random date within May 2024
+      time:
+        `${Math.floor(Math.random() * 12) + 1}:${Math.floor(
+          Math.random() * 60
+        )}` + (Math.random() < 0.5 ? " AM" : " PM"), // Random time
+      status: Math.random() < 0.5 ? "Confirmed" : "Pending", // Random status
+    });
+  }
+  const status = "active";
   const column = [
     // {
     //   title: "#SL",
@@ -51,8 +67,8 @@ const Booking = () => {
     //   key: "index",
     // },
     {
-      title: "Name",
-      dataIndex: "userName",
+      title: "Customer Name",
+      dataIndex: "name",
       key: "name",
     },
     {
@@ -62,13 +78,8 @@ const Booking = () => {
     },
     {
       title: "Booking Number",
-      dataIndex: "id",
-      key: "id",
-    },
-    {
-      title: "Table No",
-      dataIndex: "tableNo",
-      key: "tableNo",
+      dataIndex: "bookingId",
+      key: "bookingId",
     },
     {
       title: "Seats",
@@ -94,22 +105,22 @@ const Booking = () => {
       title: "Action",
       key: "status",
       render: (data: any) => {
-        return data.status === "active" ? (
+        return status === "active" ? (
           <>
             <ResConfirm
               description="This action cannot be undone"
-              handleOk={() => handleChangeStatus(data?._id, "cancelled")}
+              handleOk={() => handleChangeStatus(data?._id, "reject")}
             >
               {/* Render the Cancel and Closed tags */}
               <Tag color="red" className="cursor-pointer">
-                Cancel
+                Reject
               </Tag>
             </ResConfirm>
             <ResConfirm
               description="This action cannot be undone"
               handleOk={() => handleChangeStatus(data?._id, "closed")}
             >
-              <Tag className="cursor-pointer">Closed</Tag>
+              <Tag className="cursor-pointer">Accept</Tag>
             </ResConfirm>
           </>
         ) : (
@@ -117,32 +128,22 @@ const Booking = () => {
         );
       },
     },
+
     {
-      title: "Menu",
+      title: "Delete",
       key: "action",
       render: (data: any, index: number) => {
         return (
-          <NavLink to={`/vendor/order/${data?._id}`}>
-            <GrView className="cursor-pointer" key={index} />
-          </NavLink>
+          <div className="text-center">
+            <DeleteOutlined
+              onClick={() => {}}
+              className="cursor-pointer"
+              key={index}
+            />
+          </div>
         );
       },
     },
-    // {
-    //   title: "Delete",
-    //   key: "action",
-    //   render: (data: any, index: number) => {
-    //     return (
-    //       <div className="text-center">
-    //         <DeleteOutlined
-    //           onClick={() => {}}
-    //           className="cursor-pointer"
-    //           key={index}
-    //         />
-    //       </div>
-    //     );
-    //   },
-    // },
   ];
   return (
     <div>
@@ -157,7 +158,7 @@ const Booking = () => {
         />
         <Input.Search
           onSearch={onSearch}
-          placeholder="search vendor by email or name or bookingId"
+          placeholder="customer email | name | booking ID"
           className="w-[400px]"
           size="large"
           allowClear
@@ -166,7 +167,7 @@ const Booking = () => {
       <ResTable
         loading={isLoading}
         column={column}
-        data={bookingData?.data}
+        data={customerData}
         pagination={{ total: bookingData?.meta?.total, pageSize: 8 }}
       />
     </div>

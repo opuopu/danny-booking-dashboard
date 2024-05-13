@@ -8,14 +8,14 @@ import { setCollapsed } from "../redux/features/layout/layoutSlice";
 import { NavLink, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import { useGetMyNotificationQuery } from "../redux/features/notification/notificationApi";
-import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
+// import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
 import { useEffect } from "react";
 
 const HeaderLayout = () => {
   const dispatch = useAppDispatch();
   const { data: notficationData } = useGetMyNotificationQuery({ read: false });
-  const User: TUser | null = useAppSelector(useCurrentUser);
-  const { role }: any = User || {};
+  // const User: TUser | null = useAppSelector(useCurrentUser);
+  const role = "admin";
   const notification: any = useAppSelector(
     (state) => state.notification.notification
   );

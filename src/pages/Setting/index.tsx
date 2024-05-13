@@ -2,12 +2,14 @@
 import { Col, Row } from "antd";
 import { FaArrowRightToBracket } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
-import { useAppSelector } from "../../redux/hooks";
-import { TUser, useCurrentUser } from "../../redux/features/auth/authSlice";
+// import { useAppSelector } from "../../redux/hooks";
+// import { TUser, useCurrentUser } from "../../redux/features/auth/authSlice";
 
 const Setting = () => {
-  const User: TUser | null = useAppSelector(useCurrentUser);
-
+  // const User: TUser | null = useAppSelector(useCurrentUser);
+  const User = {
+    role: "admin",
+  };
   return (
     <div className="container mx-auto">
       <Row gutter={[0, 30]}>
@@ -29,38 +31,6 @@ const Setting = () => {
           </div>
           <hr className="text-primary mt-4" />
         </Col>
-        {User?.role === "admin" && (
-          <>
-            {" "}
-            <Col span={24}>
-              <div className="flex items-center justify-between text-20  text-black">
-                <p className="">Privacy Policy</p>
-                <NavLink to={`/${User?.role}/privacy-policy`}>
-                  <FaArrowRightToBracket cursor="pointer" />
-                </NavLink>
-              </div>
-              <hr className="text-primary mt-4" />
-            </Col>
-            <Col span={24}>
-              <div className="flex items-center justify-between text-20  text-black">
-                <p className="">Terms And Condition</p>
-                <NavLink to={`/${User?.role}/terms`}>
-                  <FaArrowRightToBracket cursor="pointer" />
-                </NavLink>
-              </div>
-              <hr className="text-primary mt-4" />
-            </Col>
-            <Col span={24}>
-              <div className="flex items-center justify-between text-20  text-black">
-                <p className="">About Us</p>
-                <NavLink to={`/${User?.role}/about`}>
-                  <FaArrowRightToBracket cursor="pointer" />
-                </NavLink>
-              </div>
-              <hr className="text-primary mt-4" />
-            </Col>
-          </>
-        )}
       </Row>
     </div>
   );

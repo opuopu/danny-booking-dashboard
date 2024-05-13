@@ -16,7 +16,7 @@ const ResConfirm = ({
 }: TresConfirmProps) => {
   return (
     <Popconfirm
-      okButtonProps={{ style: { backgroundColor: "#4C9A29", color: "white" } }}
+      okButtonProps={{ style: { backgroundColor: "#0B835C", color: "white" } }}
       title={title}
       description={description}
       onConfirm={handleOk}

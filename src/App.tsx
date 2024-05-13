@@ -5,7 +5,7 @@ import MainLayout from "./layout/MainLayout";
 import { TUser, useCurrentUser } from "./redux/features/auth/authSlice";
 import { setNotification } from "./redux/features/notification/notificationSlice";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
-import PrivateRoute from "./router/PrivateRoutes";
+// import PrivateRoute from "./router/PrivateRoutes";
 import { socket } from "./socket";
 
 function App() {
@@ -28,9 +28,9 @@ function App() {
   }, [user]);
 
   return (
-    <PrivateRoute role={undefined}>
-      <MainLayout />
-    </PrivateRoute>
+    // <PrivateRoute role={undefined}>
+    <MainLayout />
+    // {/* </PrivateRoute> */}
   );
 }
 

@@ -6,29 +6,20 @@ import logo from "../assets/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { sidebarItemsGenerator } from "../utils/sidebarItemsGenerator";
-import { adminRoute } from "../router/admin.route";
+
 import { IoLogInOutline } from "react-icons/io5";
-import { vendorRoute } from "../router/vendor.route";
-import { logout, useCurrentUser } from "../redux/features/auth/authSlice";
+import { vendorRoute } from "../router/admin.route.";
+import { logout } from "../redux/features/auth/authSlice";
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { pathname } = location;
   const collapsed = useAppSelector((state) => state.layout.collapsed);
-  const { role }: any = useAppSelector(useCurrentUser) || {};
-  let SidebarItems;
-  switch (role) {
-    case "admin":
-      SidebarItems = sidebarItemsGenerator(adminRoute, role);
-      break;
-    case "vendor":
-      SidebarItems = sidebarItemsGenerator(vendorRoute, role);
-      break;
+  // const { role }: any = useAppSelector(useCurrentUser) || "vendor";
+  const role: any = "admin";
+  const SidebarItems = sidebarItemsGenerator(vendorRoute, role);
 
-    default:
-      break;
-  }
   const handeLogout = () => {
     dispatch(logout());
     navigate("/login");
@@ -59,7 +50,7 @@ const Sidebar = () => {
           alignItems: "center",
         }}
       >
-        <img src={logo} alt="" />
+        <img src={logo} alt="" width={100} />
       </div>
       <Menu
         style={{
