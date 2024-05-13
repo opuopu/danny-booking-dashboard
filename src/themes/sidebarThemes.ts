@@ -27,6 +27,7 @@ export const sidebardThemes: ThemeConfig = {
 
   token: {
     colorPrimary: "#0B835C",
+
     colorInfo: "#0B835C",
     colorLink: "#0B835C",
     colorSuccess: "#0B835C",

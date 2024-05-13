@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, TimePicker } from "antd";
+import { ConfigProvider, Form, TimePicker } from "antd";
 import { SizeType } from "antd/es/config-provider/SizeContext";
 import dayjs from "dayjs";
 import { Controller } from "react-hook-form";
