@@ -3,7 +3,7 @@ import { useState } from "react";
 import ResTable from "../../../component/Table";
 import TableCards from "../../../component/TableCards/TableCards";
 
-import { Button } from "antd";
+import { Button, Dropdown, MenuProps } from "antd";
 import {
   // DeleteOutlined,
   EditOutlined,
@@ -14,40 +14,49 @@ import {
 import ResModal from "../../../component/Modal/Modal";
 import CreateTable from "./CreateTable";
 import EditTable from "./EditTable";
-import { useGetTablesQuery } from "../../../redux/features/table/tableApi";
 import { useAppDispatch } from "../../../redux/hooks";
 import { setTable } from "../../../redux/features/table/tableSlice";
+import { tableData } from "../../../db";
+import { TCommonTheme } from "../../../themes";
+import { FaChevronDown } from "react-icons/fa6";
 
 const Table = () => {
   const [show, setShow] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
-  const { data: tableData, isLoading } = useGetTablesQuery(undefined);
-
-  // const handleBookedTable = (id: string, type: string) => {
-  //   console.log(id, type);
-  // };
-  // const handleDeleteTable = async (id: string) => {
-  //   console.log(id);
-  // };
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: <a target="_blank">Branch 1</a>,
+    },
+    {
+      key: "2",
+      label: <a target="_blank">Branch 2</a>,
+    },
+    {
+      key: "3",
+      label: <a target="_blank">Branch 3</a>,
+    },
+  ];
 
   const dispatch = useAppDispatch();
 
   const column = [
     {
-      title: "Table No",
-      dataIndex: "tableNo",
-      key: "tableNo",
+      title: "Total Tables",
+      dataIndex: "totalTables",
+      key: "totalTables",
     },
     {
-      title: "Table Name",
-      dataIndex: "tableName",
-      key: "tableName",
+      title: "Number of Persons",
+      dataIndex: "persons",
+      key: "persons",
     },
     {
-      title: "Seats",
-      dataIndex: "seats",
-      key: "seat",
+      title: "Select Branch",
+      dataIndex: "Branch",
+      key: "branch",
     },
+
     // {
     //   title: "Status",
     //   key: "status",
@@ -121,7 +130,12 @@ const Table = () => {
       </ResModal>
       <TableCards tableData={tableData} />
 
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-end mb-4 gap-x-4">
+        <Dropdown menu={{ items }} placement="bottomLeft" arrow>
+          <Button className="border border-primary flex items-center gap-x-2">
+            Select Branch <FaChevronDown />
+          </Button>
+        </Dropdown>
         <Button
           onClick={() => setShow((prev) => !prev)}
           className="bg-primary text-white font-500"
@@ -133,10 +147,10 @@ const Table = () => {
 
       <div className="mt-6">
         <ResTable
-          loading={isLoading}
-          data={tableData?.data?.tables}
+          theme={TCommonTheme}
+          data={tableData}
           column={column}
-          pagination={{ total: tableData?.data?.length, pageSize: 10 }}
+          pagination={{ total: tableData?.length, pageSize: 10 }}
         />
       </div>
     </div>

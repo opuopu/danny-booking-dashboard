@@ -11,7 +11,6 @@ import { toast } from "sonner";
 
 const EditTable = ({ setShow }: any) => {
   const table = useAppSelector((state) => state.table.table);
-  const formatData = { ...table, seats: Number(table?.seats) };
   const [editTable] = useEditTableMutation();
   const onSubmit = async (data: any) => {
     const toastId = toast.loading("Editing....");
@@ -28,30 +27,22 @@ const EditTable = ({ setShow }: any) => {
   };
   return (
     <ResForm
-      defaultValues={formatData}
       onSubmit={onSubmit}
-      resolver={zodResolver(tableValidation.EditableSchema)}
+      resolver={zodResolver(tableValidation.createTableSchema)}
     >
       <ResInput
-        type="text"
+        type="number"
         size="large"
-        name="tableName"
-        placeholder="Enter Table Name"
-        label="Enter Table Name"
-      />
-      <ResInput
-        type="text"
-        size="large"
-        name="tableNo"
-        placeholder="Enter Table No"
-        label="Enter Table No"
+        name="Total Tables"
+        placeholder="Enter Total Tables"
+        label="Enter total tables"
       />
       <ResInput
         type="number"
         size="large"
-        name="seats"
-        placeholder="Enter Total Seats"
-        label="Enter Total Seats"
+        name="Number of Persons"
+        placeholder="Number of Persons"
+        label="Enter Number of Persons"
       />
 
       <div className="pt-4">

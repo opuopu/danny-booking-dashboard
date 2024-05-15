@@ -11,7 +11,6 @@ import ErrorResponse from "../../../component/UI/ErrorResponse";
 import FileUpload from "../../../component/FileUpload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authValidationSchema } from "../../../schema/auth.schema";
-import ResTimePicker from "../../../component/Form/ResTimepicker";
 
 const CreateSubAdmin = ({ setShow }: any) => {
   const { imageUrl, setFile, imageFile } = UseImageUpload();
@@ -65,12 +64,7 @@ const CreateSubAdmin = ({ setShow }: any) => {
         name="email"
         placeholder="email"
       />
-      <ResTimePicker
-        size="large"
-        label="Enter Worker Email"
-        name="email"
-        placeholder="email"
-      />
+
       <ResInput
         size="large"
         type="text"
