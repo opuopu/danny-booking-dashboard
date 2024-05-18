@@ -11,10 +11,21 @@ import ErrorResponse from "../../../component/UI/ErrorResponse";
 import FileUpload from "../../../component/FileUpload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authValidationSchema } from "../../../schema/auth.schema";
+import ResSelect from "../../../component/Form/ResSelect";
 
 const CreateSubAdmin = ({ setShow }: any) => {
   const { imageUrl, setFile, imageFile } = UseImageUpload();
   const [createVendor] = useCreateVendorMutation();
+  const options = [
+    {
+      label: "Branch 1",
+      value: "Branch 1",
+    },
+    {
+      label: "Branch 2",
+      value: "Branch 2",
+    },
+  ];
   const onSubmit = async (data: any) => {
     const toastId = toast.loading("Creating......");
     if (!imageFile) {
@@ -65,6 +76,13 @@ const CreateSubAdmin = ({ setShow }: any) => {
         placeholder="email"
       />
 
+      <ResSelect
+        size="large"
+        options={options}
+        label="Select Branch"
+        name="branch"
+        placeholder="branch"
+      />
       <ResInput
         size="large"
         type="text"

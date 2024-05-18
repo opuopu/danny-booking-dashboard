@@ -15,7 +15,7 @@ import ResModal from "../../../component/Modal/Modal";
 import CreateTable from "./CreateTable";
 import EditTable from "./EditTable";
 import { useAppDispatch } from "../../../redux/hooks";
-import { setTable } from "../../../redux/features/table/tableSlice";
+
 import { tableData } from "../../../db";
 import { TCommonTheme } from "../../../themes";
 import { FaChevronDown } from "react-icons/fa6";
@@ -52,7 +52,12 @@ const Table = () => {
       key: "persons",
     },
     {
-      title: "Select Branch",
+      title: "Tables",
+      dataIndex: "tables",
+      key: "tables",
+    },
+    {
+      title: "Branch",
       dataIndex: "Branch",
       key: "branch",
     },
@@ -98,7 +103,6 @@ const Table = () => {
             <EditOutlined
               onClick={() => {
                 setShowEditModal((prev) => !prev);
-                dispatch(setTable(data));
               }}
               className="cursor-pointer"
               key={index}
@@ -119,7 +123,7 @@ const Table = () => {
   return (
     <div>
       <ResModal setShowModal={setShow} showModal={show} title="CREATE TABLE">
-        <CreateTable restaurantId={tableData?.data?._id} setShow={setShow} />
+        <CreateTable restaurantId={"1"} setShow={setShow} />
       </ResModal>
       <ResModal
         showModal={showEditModal}

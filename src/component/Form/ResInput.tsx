@@ -10,9 +10,17 @@ interface InputProps {
   size?: SizeType;
   placeholder?: string;
   labelColor?: string;
+  onChange?: (value: any) => void;
 }
 
-const ResInput = ({ type, name, label, size, placeholder }: InputProps) => {
+const ResInput = ({
+  type,
+  name,
+  label,
+  size,
+  placeholder,
+  onChange,
+}: InputProps) => {
   return (
     <Controller
       name={name}
@@ -33,6 +41,10 @@ const ResInput = ({ type, name, label, size, placeholder }: InputProps) => {
           ) : (
             <Input
               {...field}
+              onChange={(e) => {
+                field.onChange(e);
+                if (onChange) onChange(e);
+              }}
               type={type}
               id={name}
               size={size}
