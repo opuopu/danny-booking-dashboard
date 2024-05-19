@@ -5,12 +5,16 @@ import ResForm from "../../../component/Form/FormProvider";
 import ResInput from "../../../component/Form/ResInput";
 import { toast } from "sonner";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
+import { useCreateBranchMutation } from "../../../redux/features/branch/branchApi";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 
 const CreateBranch = ({ setShow }: any) => {
-  const onSubmit = async (data: any) => {
+  const [addbranch] = useCreateBranchMutation();
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Creating......");
     try {
-      toast.success("Sub admin created successfully", {
+      await addbranch(data).unwrap();
+      toast.success("Branch created successfully", {
         id: toastId,
         duration: 2000,
       });

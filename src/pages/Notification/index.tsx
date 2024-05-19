@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import ErrorResponse from "../../component/UI/ErrorResponse";
 import ResPagination from "../../component/UI/Pagination";
 import { useState } from "react";
+import NoData from "../../component/NoData/NoData";
 
 const Notification = () => {
   const [page, setPage] = useState<number>(1);
@@ -40,21 +41,32 @@ const Notification = () => {
   return (
     <div>
       <div className="flex justify-end">
-        <Button onClick={submit} className="bg-primary text-white ">
-          Mark As Read
-        </Button>
+        {notificationData?.data && (
+          <Button onClick={submit} className="bg-primary text-white ">
+            Mark As Read
+          </Button>
+        )}
       </div>
       <div className="container mx-auto mt-4">
-        <Row gutter={[16, 16]}>
-          {notificationData?.data?.map((data: any, index: number) => (
-            <NotificationCard key={index} data={data} />
-          ))}
-        </Row>
+        {notificationData?.data ? (
+          <Row gutter={[16, 16]}>
+            {notificationData.data.map((data: any, index: number) => (
+              <NotificationCard key={index} data={data} />
+            ))}
+          </Row>
+        ) : (
+          <div className="flex justify-center items-center">
+            <NoData />
+          </div>
+        )}
+
         <div className=" text-end mt-4">
-          <ResPagination
-            total={notificationData?.meta?.total as number}
-            onChange={onChange}
-          />
+          {notificationData?.data && (
+            <ResPagination
+              total={notificationData?.meta?.total as number}
+              onChange={onChange}
+            />
+          )}
         </div>
       </div>
     </div>

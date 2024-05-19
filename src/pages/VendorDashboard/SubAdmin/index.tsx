@@ -8,11 +8,18 @@ import { useState } from "react";
 import ResModal from "../../../component/Modal/Modal";
 import CreateSubAdmin from "./CreateSubAdmin";
 import EditSubAdmin from "./EditSubAdmin";
+import { useGetAllUserQuery } from "../../../redux/features/auth/authApi";
+import { useAppDispatch } from "../../../redux/hooks";
+import { setSubAdminDetails } from "../../../redux/features/auth/authSlice";
 
 const SubAdmin = () => {
+  const { data: sData, isLoading: Sloading } = useGetAllUserQuery({
+    role: "sub_admin",
+  });
   const [show, setShow] = useState<boolean | null>(null);
   const [showEditModal, setShowEditModal] = useState<boolean | null>(null);
-  console.log(show, showEditModal, setShow);
+
+  const dispatch = useAppDispatch();
   const subAdminColumn = [
     {
       title: "Worker Name",
@@ -20,18 +27,17 @@ const SubAdmin = () => {
       key: "name",
     },
     {
+      title: "Worker Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
       title: "Designation",
       dataIndex: "designation",
       key: "designation",
     },
     {
-      title: "Branch",
-      dataIndex: "branch",
-      key: "branch",
-    },
-    {
       title: "Action",
-
       key: "action",
       render: (data: any, index: number) => {
         return (
@@ -39,6 +45,7 @@ const SubAdmin = () => {
             <EditOutlined
               onClick={() => {
                 setShowEditModal((prev) => !prev);
+                dispatch(setSubAdminDetails(data));
               }}
               className="cursor-pointer"
               key={index}
@@ -63,14 +70,14 @@ const SubAdmin = () => {
         showModal={show as boolean}
         setShowModal={setShow}
       >
-        <CreateSubAdmin />
+        <CreateSubAdmin setShow={setShow} />
       </ResModal>
       <ResModal
         title="Edit Sub Admin"
         showModal={showEditModal as boolean}
         setShowModal={setShowEditModal}
       >
-        <EditSubAdmin />
+        <EditSubAdmin setShowEditModal={setShowEditModal} />
       </ResModal>
       <Button
         className="bg-primary text-white font-500 block ms-auto"
@@ -80,8 +87,9 @@ const SubAdmin = () => {
       </Button>
       <div className="mt-4">
         <ResTable
+          loading={Sloading}
           column={subAdminColumn}
-          data={subAdminData}
+          data={sData?.data}
           pagination={{ total: subAdminData?.length, pageSize: 10 }}
         />
       </div>

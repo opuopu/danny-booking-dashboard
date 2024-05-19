@@ -19,6 +19,7 @@ import { useAppDispatch } from "../../../redux/hooks";
 import { tableData } from "../../../db";
 import { TCommonTheme } from "../../../themes";
 import { FaChevronDown } from "react-icons/fa6";
+import { setSubAdminDetails } from "../../../redux/features/auth/authSlice";
 
 const Table = () => {
   const [show, setShow] = useState<boolean>(false);

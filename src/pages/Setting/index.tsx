@@ -2,14 +2,14 @@
 import { Col, Row } from "antd";
 import { FaArrowRightToBracket } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
+import { useAppSelector } from "../../redux/hooks";
+import { TUser, useCurrentUser } from "../../redux/features/auth/authSlice";
 // import { useAppSelector } from "../../redux/hooks";
 // import { TUser, useCurrentUser } from "../../redux/features/auth/authSlice";
 
 const Setting = () => {
-  // const User: TUser | null = useAppSelector(useCurrentUser);
-  const User = {
-    role: "admin",
-  };
+  const User: TUser | null = useAppSelector(useCurrentUser);
+
   return (
     <div className="container mx-auto">
       <Row gutter={[0, 30]}>

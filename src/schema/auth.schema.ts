@@ -34,18 +34,16 @@ const createsubadminSchema = z.object({
   name: z.string({ required_error: "Worker name  is Required" }),
   email: z.string({ required_error: "Worker email  is Required" }),
   designation: z.string({ required_error: "Worker designation  is Required" }),
+  branch: z.string().optional(),
   password: z.string({ required_error: "Worker password is Required" }),
 });
-const EditWorkerSchema = z.object({
-  fullName: z
+const editSubAdminSchema = z.object({
+  name: z
     .string({ required_error: "Worker name is Required" })
     .min(1, { message: "Worker name is Required" }),
-
-  phoneNumber: z.coerce
-    .number({ required_error: "Worker phone number is Required" })
-    .refine((value) => value.toString().length >= 11, {
-      message: "Worker phone number must be at least 11 digits long",
-    }),
+  designation: z
+    .string({ required_error: "Worker designation is Required" })
+    .min(1, { message: "Worker designation is Required" }),
 });
 
 export const authValidationSchema = {
@@ -54,5 +52,5 @@ export const authValidationSchema = {
   changePasswordSchema,
   resetPasswordSchema,
   createsubadminSchema,
-  EditWorkerSchema,
+  editSubAdminSchema,
 };

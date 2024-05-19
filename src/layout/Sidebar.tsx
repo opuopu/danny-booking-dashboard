@@ -17,7 +17,7 @@ const Sidebar = () => {
   const { pathname } = location;
   const collapsed = useAppSelector((state) => state.layout.collapsed);
   // const { role }: any = useAppSelector(useCurrentUser) || "vendor";
-  const role: any = "admin";
+  const role: any = "super_admin";
   const SidebarItems = sidebarItemsGenerator(vendorRoute, role);
 
   const handeLogout = () => {

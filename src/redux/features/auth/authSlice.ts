@@ -12,13 +12,13 @@ export type TUser = {
 type TAuthState = {
   user: null | TUser;
   token: null | string;
-  vendorDetails: any;
+  subAdminDetails: any;
 };
 
 const initialState: TAuthState = {
   user: null,
   token: null,
-  vendorDetails: null,
+  subAdminDetails: null,
 };
 
 const authSlice = createSlice({
@@ -30,9 +30,8 @@ const authSlice = createSlice({
       state.user = user;
       state.token = token;
     },
-    setvendorDetails: (state, action) => {
-      console.log(action.payload);
-      state.vendorDetails = action.payload;
+    setSubAdminDetails: (state, action) => {
+      state.subAdminDetails = action.payload;
     },
     logout: (state) => {
       state.user = null;
@@ -41,7 +40,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser, logout, setvendorDetails } = authSlice.actions;
+export const { setUser, logout, setSubAdminDetails } = authSlice.actions;
 
 export default authSlice.reducer;
 

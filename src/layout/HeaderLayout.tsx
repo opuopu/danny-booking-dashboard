@@ -10,17 +10,19 @@ import { toast } from "sonner";
 import { useGetMyNotificationQuery } from "../redux/features/notification/notificationApi";
 // import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
 import { useEffect } from "react";
+import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
+import { useProfileQuery } from "../redux/features/auth/authApi";
+import showImage from "../utils/showImage";
 
 const HeaderLayout = () => {
   const dispatch = useAppDispatch();
   const { data: notficationData } = useGetMyNotificationQuery({ read: false });
-  // const User: TUser | null = useAppSelector(useCurrentUser);
-  const role = "admin";
+  const { data: pData } = useProfileQuery(undefined);
+  const User: TUser | null = useAppSelector(useCurrentUser);
   const notification: any = useAppSelector(
     (state) => state.notification.notification
   );
   useEffect(() => {
-    console.log(notification);
     toast.info(notification?.message);
   }, [notification]);
   const { pathname } = useLocation();
@@ -53,16 +55,16 @@ const HeaderLayout = () => {
       </div>
       <div className="flex items-center  gap-x-6">
         <Badge count={notficationData?.meta?.total}>
-          <NavLink to={`/${role}/notification`}>
+          <NavLink to={`/${User?.role}/notification`}>
             <IoIosNotifications className="text-white  text-32 cursor-pointer" />{" "}
           </NavLink>
         </Badge>
 
-        <NavLink to={`/${role}/profile`}>
+        <NavLink to={`/${User?.role}/profile`}>
           <img
-            src={user}
+            src={showImage(pData?.data?.image) || user}
             width={40}
-            className="rounded-full object-cover"
+            className=" object-cover rounded-full"
             alt=""
           />
         </NavLink>

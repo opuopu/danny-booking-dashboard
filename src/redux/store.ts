@@ -14,11 +14,10 @@ import { baseApi } from "./api/baseApi";
 import authSlice from "./features/auth/authSlice";
 import layoutSlice from "./features/layout/layoutSlice";
 import otpSlice from "./features/otp/otpSlice";
-import menuSlice from "./features/menu/menuSlice";
+
 import tableSlice from "./features/table/tableSlice";
 import notificationSlice from "./features/notification/notificationSlice";
-import restaurantSlice from "./features/restaurant/restaurantSlice";
-import walletSlice from "./features/wallet/walletSlice";
+import branchSlice from "./features/branch/branchSlice";
 
 const persistConfig = {
   key: "auth",
@@ -33,11 +32,9 @@ export const store = configureStore({
     auth: persistedAuthReducer,
     otp: otpSlice,
     layout: layoutSlice,
-    menu: menuSlice,
     table: tableSlice,
     notification: notificationSlice,
-    restaurant: restaurantSlice,
-    wallet: walletSlice,
+    branch: branchSlice,
   },
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({

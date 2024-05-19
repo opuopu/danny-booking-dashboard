@@ -18,7 +18,7 @@ interface ProfilePros {
 const ProfileForm = ({ ProfileData, imageFile }: any) => {
   const [updateProfile] = useUpdateProfileMutation();
   const defaultValues = {
-    fullName: ProfileData?.data?.fullName,
+    name: ProfileData?.data?.name,
   };
   const onSubmit = async (data: ProfilePros) => {
     console.log(data);
@@ -48,7 +48,7 @@ const ProfileForm = ({ ProfileData, imageFile }: any) => {
         labelColor="#FD8533"
         label="Name"
         type="text"
-        name="fullName"
+        name="name"
         placeholder="your name"
       />
       {/* <ResInput

@@ -6,6 +6,7 @@ import showImage from "../../utils/showImage";
 const Profile = () => {
   const { imageUrl, setFile, imageFile } = UseImageUpload();
   const { data: profile } = useProfileQuery(undefined);
+  console.log(profile);
   return (
     <div className="flex justify-center">
       <div className="">
@@ -16,9 +17,7 @@ const Profile = () => {
               setSelectedFile={setFile}
             />
           </div>
-          <h1 className="text-40 text-black font-600">
-            {profile?.data?.fullName}
-          </h1>
+          <h1 className="text-40 text-black font-600">{profile?.data?.name}</h1>
         </div>
         <div className="w-[800px]">
           <ProfileForm ProfileData={profile} imageFile={imageFile} />

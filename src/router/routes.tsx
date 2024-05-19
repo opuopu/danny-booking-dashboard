@@ -13,7 +13,7 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/admin",
+    path: "/super_admin",
     element: (
       // <PrivateRoute role="vendor">
       <App />

@@ -9,7 +9,7 @@
 }
 .otpInput1 {
   background-color: white !important;
-  border: 1px solid #4c9a29;
+  border: 1px solid #0b835c;
   text-align: center;
   color: black;
   width: 70px;
@@ -18,7 +18,7 @@
 }
 .otpInput2 {
   background-color: white !important;
-  border: 1px solid #4c9a29;
+  border: 1px solid #0b835c;
   text-align: center;
   color: white;
   width: 70px;
@@ -30,7 +30,7 @@
   font-weight: 400;
   font-size: 18px;
   font-weight: 600 !important;
-  background: #4c9a29;
+  background: #0b835c;
   align-self: flex-end; /* Assuming you meant to align it to the bottom */
   margin-top: 20px;
   border: none;
@@ -41,7 +41,7 @@
   font-size: 18px;
 
   color: black !important;
-  background-color: #4c9a29 !important;
+  background-color: #0b835c !important;
   align-self: flex-end; /* Assuming you meant to align it to the bottom */
   margin-top: 20px;
   border: none;

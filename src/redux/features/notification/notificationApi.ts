@@ -11,7 +11,7 @@ const notificationApi = baseApi.injectEndpoints({
         method: "GET",
         params: query,
       }),
-      providesTags: [tagTypes.notification, tagTypes.wallet],
+      providesTags: [tagTypes.notification],
       transformResponse: (response: TResponseRedux<any>) => {
         return {
           data: response?.data,
@@ -24,7 +24,7 @@ const notificationApi = baseApi.injectEndpoints({
         url: `/notifications`,
         method: "PATCH",
       }),
-      invalidatesTags: [tagTypes.notification, tagTypes.wallet],
+      invalidatesTags: [tagTypes.notification],
     }),
   }),
 });

@@ -5,28 +5,28 @@ import ResForm from "../../../component/Form/FormProvider";
 import UseImageUpload from "../../../hooks/useImageUpload";
 import ResInput from "../../../component/Form/ResInput";
 
-import { useCreateVendorMutation } from "../../../redux/features/auth/authApi";
 import { toast } from "sonner";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
 import FileUpload from "../../../component/FileUpload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authValidationSchema } from "../../../schema/auth.schema";
 import ResSelect from "../../../component/Form/ResSelect";
+import { useCreateSubAdminMutation } from "../../../redux/features/auth/authApi";
+import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
 
 const CreateSubAdmin = ({ setShow }: any) => {
   const { imageUrl, setFile, imageFile } = UseImageUpload();
-  const [createVendor] = useCreateVendorMutation();
-  const options = [
-    {
-      label: "Branch 1",
-      value: "Branch 1",
-    },
-    {
-      label: "Branch 2",
-      value: "Branch 2",
-    },
-  ];
+  const { data: bData } = useGetAllBranchQuery({});
+  const [createSubAdmin] = useCreateSubAdminMutation();
+  const options = bData?.data?.map((data: any) => ({
+    label: data?.name,
+    value: data?._id,
+  }));
   const onSubmit = async (data: any) => {
+    const formatedData = {
+      ...data,
+      role: "sub_admin",
+    };
     const toastId = toast.loading("Creating......");
     if (!imageFile) {
       toast.error("Please select an image", { id: toastId, duration: 2000 });
@@ -37,10 +37,9 @@ const CreateSubAdmin = ({ setShow }: any) => {
     if (imageFile) {
       formData.append("file", imageFile);
     }
-    formData.append("data", JSON.stringify(data));
-
+    formData.append("data", JSON.stringify(formatedData));
     try {
-      await createVendor(formData).unwrap();
+      await createSubAdmin(formData).unwrap();
       toast.success("Sub admin created successfully", {
         id: toastId,
         duration: 2000,
@@ -97,7 +96,6 @@ const CreateSubAdmin = ({ setShow }: any) => {
         name="password"
         placeholder="password"
       />
-
       <Button
         htmlType="submit"
         className="bg-primary text-white w-full h-[36px]"

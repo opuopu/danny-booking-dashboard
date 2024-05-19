@@ -9,11 +9,15 @@ import ResTable from "../../../component/Table";
 
 import { branchData } from "../../../db/branchData";
 import { EditOutlined } from "@ant-design/icons";
+import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
+import { useAppDispatch } from "../../../redux/hooks";
+import { setBranch } from "../../../redux/features/branch/branchSlice";
 
 const Branch = () => {
   const [show, setShow] = useState<boolean | null>(null);
   const [showEditModal, setShowEditModal] = useState<boolean | null>(null);
-  console.log(show, showEditModal, setShow);
+  const { data: bData, isLoading: bLoading } = useGetAllBranchQuery({});
+  const dispatch = useAppDispatch();
   const branchColumn = [
     {
       title: "Branch Name",
@@ -26,8 +30,12 @@ const Branch = () => {
       key: "location",
     },
     {
+      title: "Branch ID",
+      dataIndex: "_id",
+      key: "_Id",
+    },
+    {
       title: "Action",
-
       key: "action",
       render: (data: any, index: number) => {
         return (
@@ -35,6 +43,7 @@ const Branch = () => {
             <EditOutlined
               onClick={() => {
                 setShowEditModal((prev) => !prev);
+                dispatch(setBranch(data));
               }}
               className="cursor-pointer"
               key={index}
@@ -59,14 +68,14 @@ const Branch = () => {
         showModal={show as boolean}
         setShowModal={setShow}
       >
-        <CreateBranch />
+        <CreateBranch setShow={setShow} />
       </ResModal>
       <ResModal
-        title="Edit Sub Admin"
+        title="Edit Branch"
         showModal={showEditModal as boolean}
         setShowModal={setShowEditModal}
       >
-        <EditBranch />
+        <EditBranch setShowEditModal={setShowEditModal} />
       </ResModal>
       <Button
         className="bg-primary text-white font-500 block ms-auto"
@@ -77,7 +86,8 @@ const Branch = () => {
       <div className="mt-4">
         <ResTable
           column={branchColumn}
-          data={branchData}
+          data={bData?.data}
+          loading={bLoading}
           pagination={{ total: branchData?.length, pageSize: 10 }}
         />
       </div>

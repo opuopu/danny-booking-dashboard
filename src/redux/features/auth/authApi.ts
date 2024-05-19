@@ -4,9 +4,9 @@ import { baseApi } from "../../api/baseApi";
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    createVendor: builder.mutation({
+    createSubAdmin: builder.mutation({
       query: (userInfo) => ({
-        url: "/users/create-vendor",
+        url: "/users/create-user",
         method: "POST",
         body: userInfo,
       }),
@@ -82,7 +82,7 @@ const authApi = baseApi.injectEndpoints({
 export const {
   useLoginMutation,
   useProfileQuery,
-  useCreateVendorMutation,
+  useCreateSubAdminMutation,
   useForgotPasswordMutation,
   useChangePasswordMutation,
   useResetPasswordMutation,

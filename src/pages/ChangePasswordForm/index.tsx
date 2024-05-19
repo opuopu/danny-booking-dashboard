@@ -30,8 +30,7 @@ const ChangePasswordFrom = () => {
   const { data: profile } = useProfileQuery(undefined);
   const [forgotPassword] = useForgotPasswordMutation();
   const onSubmit = async (data: any) => {
-    console.log(data);
-    const toastId = toast("Changing");
+    const toastId = toast.loading("Changing....");
     try {
       const res: any = await changePassword(data).unwrap();
       toast.success("Password changed successfully", {
@@ -86,7 +85,7 @@ const ChangePasswordFrom = () => {
             placeholder="enter your new  password"
           />
           <ResInput
-            label="Old Password"
+            label="Confirm Password"
             type="password"
             size="large"
             name="confirmPassword"
