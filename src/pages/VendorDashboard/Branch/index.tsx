@@ -30,6 +30,11 @@ const Branch = () => {
       key: "location",
     },
     {
+      title: "Tables",
+      dataIndex: "tables",
+      key: "tables",
+    },
+    {
       title: "Branch ID",
       dataIndex: "_id",
       key: "_Id",

@@ -48,6 +48,13 @@ const EditBranch = ({ setShowEditModal }: any) => {
         name="location"
         placeholder="location"
       />
+      <ResInput
+        size="large"
+        type="number"
+        label="Enter Total number of tables"
+        name="tables"
+        placeholder="tables"
+      />
 
       <Button
         htmlType="submit"

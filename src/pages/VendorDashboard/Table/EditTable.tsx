@@ -1,21 +1,43 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button } from "antd";
+import { Button, Divider } from "antd";
 import ResForm from "../../../component/Form/FormProvider";
 import ResInput from "../../../component/Form/ResInput";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { tableValidation } from "../../../schema/table.schema";
-import { useAppSelector } from "../../../redux/hooks";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { tableValidation } from "../../../schema/table.schema";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { useEditTableMutation } from "../../../redux/features/table/tableApi";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
 import { toast } from "sonner";
+import { FaPlusCircle } from "react-icons/fa";
+import {
+  setTable1Capacity,
+  setTable2Capacity,
+  setTable3Capacity,
+} from "../../../redux/features/table/tableSlice";
+import ResSelect from "../../../component/Form/ResSelect";
+import { FaEquals } from "react-icons/fa6";
 
 const EditTable = ({ setShow }: any) => {
-  const table = useAppSelector((state) => state.table.table);
+  const dispatch = useAppDispatch();
+  const options = [
+    { value: "branch 1", label: "Branch 1" },
+    { value: "branch 2", label: "Branch 2" },
+    { value: "branch 3", label: "Branch 3" },
+  ];
+  const defaultValues = {
+    branchName: undefined,
+    totalTables: 0,
+    numberOfPersons: 0,
+    table1Capacity: 0,
+    table2Capacity: 0,
+    table3Capacity: 0,
+  };
+  const mergedTables = useAppSelector((state) => state.table.mergedTables);
   const [editTable] = useEditTableMutation();
   const onSubmit = async (data: any) => {
     const toastId = toast.loading("Editing....");
     try {
-      await editTable({ body: data, id: table?._id }).unwrap();
+      // await editTable({ body: data, id: table?._id }).unwrap();
       toast.success("Table successfully updated", {
         id: toastId,
         duration: 2000,
@@ -28,29 +50,69 @@ const EditTable = ({ setShow }: any) => {
   return (
     <ResForm
       onSubmit={onSubmit}
-      resolver={zodResolver(tableValidation.createTableSchema)}
+      defaultValues={defaultValues}
+      // resolver={zodResolver(tableValidation.createTableSchema)}
     >
-      <ResInput
-        type="number"
+      <ResSelect
+        name="branch"
         size="large"
-        name="Total Tables"
-        placeholder="Enter Total Tables"
-        label="Enter total tables"
+        options={options}
+        placeholder="Select Branch"
+        label="Select Branch Name"
       />
+
       <ResInput
         type="number"
         size="large"
-        name="Number of Persons"
+        name="numberOfPersons"
         placeholder="Number of Persons"
         label="Enter Number of Persons"
       />
+      <h5 className="flex justify-center text-20 font-600 text-primary	">
+        Merge Tables
+      </h5>
+      <Divider className="mt-1" />
+      <div className="flex gap-x-4 items-center ">
+        <ResInput
+          onChange={(e) => dispatch(setTable1Capacity(e.target.value))}
+          type="number"
+          size="large"
+          name="table1Capacity"
+          placeholder="Table 1"
+          label="Table 1"
+        />
+        <FaPlusCircle size={30} color="#0B835C" />
+
+        <ResInput
+          onChange={(e) => dispatch(setTable2Capacity(e.target.value))}
+          type="number"
+          size="large"
+          name="table2Capacity"
+          placeholder="Table 2"
+          label="Table 2"
+        />
+        <FaPlusCircle size={30} color="#0B835C" />
+
+        <ResInput
+          onChange={(e) => dispatch(setTable3Capacity(e.target.value))}
+          type="number"
+          size="large"
+          name="setTable3Capacity"
+          placeholder="Table 3"
+          label="Table 3"
+        />
+        <FaEquals size={30} color="#0B835C" />
+        <h5 className=" border-primary px-4 py-2 rounded border-2 ">
+          {mergedTables}
+        </h5>
+      </div>
 
       <div className="pt-4">
         <Button
           htmlType="submit"
           className="bg-primary text-white font-600 w-full h-[38px] "
         >
-          EDIT TABLE
+          CREATE TABLE
         </Button>
       </div>
     </ResForm>

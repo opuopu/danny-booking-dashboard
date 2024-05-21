@@ -30,12 +30,13 @@ const ResDatePicker = ({
           help={error ? error.message : ""}
         >
           <DatePicker
+            className="w-full"
             showTime={showTime}
             {...field}
             id={name}
             size={size}
             placeholder={placeholder}
-            format="YYYY-MM-DD HH:mm"
+            format="YYYY-MM-DD"
           />
         </Form.Item>
       )}

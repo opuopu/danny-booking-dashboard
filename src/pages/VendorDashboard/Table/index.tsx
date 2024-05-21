@@ -14,12 +14,12 @@ import {
 import ResModal from "../../../component/Modal/Modal";
 import CreateTable from "./CreateTable";
 import EditTable from "./EditTable";
-import { useAppDispatch } from "../../../redux/hooks";
+// import { useAppDispatch } from "../../../redux/hooks";
 
 import { tableData } from "../../../db";
 import { TCommonTheme } from "../../../themes";
 import { FaChevronDown } from "react-icons/fa6";
-import { setSubAdminDetails } from "../../../redux/features/auth/authSlice";
+// import { setSubAdminDetails } from "../../../redux/features/auth/authSlice";
 
 const Table = () => {
   const [show, setShow] = useState<boolean>(false);
@@ -39,14 +39,7 @@ const Table = () => {
     },
   ];
 
-  const dispatch = useAppDispatch();
-
   const column = [
-    {
-      title: "Total Tables",
-      dataIndex: "totalTables",
-      key: "totalTables",
-    },
     {
       title: "Number of Persons",
       dataIndex: "persons",

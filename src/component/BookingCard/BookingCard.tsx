@@ -20,7 +20,7 @@ const BookingCard = () => {
   });
   return (
     <Row gutter={[16, 16]}>
-      <Col span={6}>
+      {/* <Col span={6}>
         <div className="flex items-center justify-between bg-white p-6 rounded">
           <MdOutlinePendingActions size={50} />
           <div className="font-600 ">
@@ -30,7 +30,7 @@ const BookingCard = () => {
             <p className="text-24">Pending Request</p>
           </div>
         </div>
-      </Col>
+      </Col> */}
       <Col span={6}>
         <div className="flex items-center justify-between bg-white p-6 rounded">
           <MdOutlineRunningWithErrors size={50} />
@@ -38,7 +38,7 @@ const BookingCard = () => {
             <h1 className="text-end text-primary text-32">
               {totalCanlledBooking?.data?.length || 0}
             </h1>
-            <p className="text-24">Ongoing Booking</p>
+            <p className="text-24">Ongoing Reservation</p>
           </div>
         </div>
       </Col>
@@ -50,7 +50,7 @@ const BookingCard = () => {
             <h1 className="text-end text-primary text-32">
               {todays?.data?.length || 0}
             </h1>
-            <p className="text-24">Today's Request</p>
+            <p className="text-24">Today's Reservation</p>
           </div>
         </div>
       </Col>

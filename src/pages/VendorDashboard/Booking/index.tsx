@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import BookingCard from "../../../component/BookingCard/BookingCard";
 
 import ResConfirm from "../../../component/UI/PopConfirm";
-import { DatePicker, Input, Tag } from "antd";
+import { Button, DatePicker, Input, Tag } from "antd";
 import ResTable from "../../../component/Table";
 import {
   useGetAllBookingQuery,
@@ -12,7 +12,9 @@ import {
 import dayjs from "dayjs";
 import { toast } from "sonner";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import ResModal from "../../../component/Modal/Modal";
+import AddBooking from "./AddBooking";
 const Booking = () => {
   const [date, setDate] = useState<string | null>(dayjs().format("YYYY-MM-DD"));
   const [searchTerm, setSearchTerm] = useState<string | null>();
@@ -21,6 +23,7 @@ const Booking = () => {
   if (searchTerm) query["searchTerm"] = searchTerm;
   query["status"] = "active";
   const { data: bookingData, isLoading } = useGetAllBookingQuery(query);
+  const [show, setshow] = useState<boolean | null>(null);
   const [updateBooking] = useUpdateBookingMutation();
   const handleChangeStatus = async (id: string, status: string) => {
     const toastId = toast.loading("Updating...");
@@ -120,7 +123,7 @@ const Booking = () => {
               description="This action cannot be undone"
               handleOk={() => handleChangeStatus(data?._id, "closed")}
             >
-              <Tag className="cursor-pointer">Accept</Tag>
+              <Tag className="cursor-pointer">closed</Tag>
             </ResConfirm>
           </>
         ) : (
@@ -147,6 +150,13 @@ const Booking = () => {
   ];
   return (
     <div>
+      <ResModal
+        showModal={show as boolean}
+        setShowModal={setshow}
+        title="Add A Reservation"
+      >
+        <AddBooking />
+      </ResModal>
       <BookingCard />
 
       <div className="flex justify-end gap-x-4 my-4">
@@ -163,6 +173,13 @@ const Booking = () => {
           size="large"
           allowClear
         />
+        <Button
+          onClick={() => setshow((prev) => !prev)}
+          icon={<PlusCircleOutlined />}
+          className="h-10 bg-primary text-white font-600"
+        >
+          Add Reservation
+        </Button>
       </div>
       <ResTable
         loading={isLoading}

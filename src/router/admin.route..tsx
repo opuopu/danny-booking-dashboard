@@ -1,8 +1,4 @@
-import {
-  MdDashboard,
-  MdManageHistory,
-  MdOutlineTableRestaurant,
-} from "react-icons/md";
+import { MdDashboard, MdOutlineTableRestaurant } from "react-icons/md";
 import { CiSettings } from "react-icons/ci";
 import Setting from "../pages/Setting";
 import Notification from "../pages/Notification";
@@ -50,13 +46,13 @@ export const vendorRoute = [
     icon: <BsBorderStyle />,
     element: <Booking />,
   },
-  {
-    name: "Control Panel",
-    path: "control",
-    icon: <MdManageHistory />,
+  // {
+  //   name: "Control Panel",
+  //   path: "control",
+  //   icon: <MdManageHistory />,
 
-    element: <Booking />,
-  },
+  //   element: <Booking />,
+  // },
 
   {
     name: "Setting",
