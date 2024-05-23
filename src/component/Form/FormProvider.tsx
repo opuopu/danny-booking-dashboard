@@ -7,6 +7,7 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
+import { toast } from "sonner";
 
 type TFormConfig = {
   defaultValues?: Record<string, any>;
@@ -31,14 +32,21 @@ const ResForm = ({
   }
   // set default value-------------------------
   const methods = useForm(formConfig);
+  const {
+    formState: { dirtyFields },
+  } = methods;
   useEffect(() => {
     if (defaultValues) {
       // Set default values after form is mounted
-      methods.reset(defaultValues, { keepDirtyValues: true });
+      methods.reset(defaultValues);
     }
   }, [defaultValues, methods]);
 
   const submit: SubmitHandler<FieldValues> = (data) => {
+    if (Object.keys(dirtyFields).length === 0) {
+      toast.warning("Please update some values before submitting..");
+      return;
+    }
     onSubmit(data);
     // methods.reset();
   };
@@ -51,21 +59,5 @@ const ResForm = ({
     </FormProvider>
   );
 };
-// Function to transform default values
-// const transformDefaultValues = (
-//   defaultValues: Record<string, any> | undefined
-// ) => {
-//   if (!defaultValues) return defaultValues;
-//   const transformedValues: Record<string, any> = {};
-//   for (const key in defaultValues) {
-//     if (Object.hasOwnProperty.call(defaultValues, key)) {
-//       const value = defaultValues[key];
-//       transformedValues[key] =
-//         value === "" || value === null ? undefined : value;
-//     }
-//   }
-
-//   return transformedValues;
-// };
 
 export default ResForm;

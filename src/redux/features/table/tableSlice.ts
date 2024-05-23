@@ -5,6 +5,7 @@ const initialState = {
   table2Capacity: 0,
   table3Capacity: 0,
   mergedTables: 0,
+  table: null,
 };
 
 const tableSlice = createSlice({
@@ -26,8 +27,22 @@ const tableSlice = createSlice({
       state.mergedTables =
         state.table1Capacity + state.table2Capacity + state.table3Capacity;
     },
+
+    setTable: (state, action) => {
+      state.mergedTables =
+        action.payload.table1Capacity +
+        action.payload.table2Capacity +
+        action.payload.table3Capacity;
+      const tableData = { ...action.payload };
+      delete tableData?.branch;
+      state.table = tableData;
+    },
   },
 });
-export const { setTable1Capacity, setTable2Capacity, setTable3Capacity } =
-  tableSlice.actions;
+export const {
+  setTable1Capacity,
+  setTable2Capacity,
+  setTable3Capacity,
+  setTable,
+} = tableSlice.actions;
 export default tableSlice.reducer;

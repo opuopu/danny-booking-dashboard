@@ -19,77 +19,60 @@ import EditTable from "./EditTable";
 import { tableData } from "../../../db";
 import { TCommonTheme } from "../../../themes";
 import { FaChevronDown } from "react-icons/fa6";
-// import { setSubAdminDetails } from "../../../redux/features/auth/authSlice";
+import { useGetTablesQuery } from "../../../redux/features/table/tableApi";
+import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
+import { useAppDispatch } from "../../../redux/hooks";
+import { setTable } from "../../../redux/features/table/tableSlice";
 
 const Table = () => {
   const [show, setShow] = useState<boolean>(false);
+  const [branch, setBranch] = useState<string | null>(null);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
-  const items: MenuProps["items"] = [
-    {
-      key: "1",
-      label: <a target="_blank">Branch 1</a>,
-    },
-    {
-      key: "2",
-      label: <a target="_blank">Branch 2</a>,
-    },
-    {
-      key: "3",
-      label: <a target="_blank">Branch 3</a>,
-    },
-  ];
-
+  const { data: BData } = useGetAllBranchQuery({});
+  const dispatch = useAppDispatch();
+  const query: Record<string, any> = {};
+  if (branch) {
+    query["branch"] = branch;
+  }
+  const { data: Tdata, isLoading, isFetching } = useGetTablesQuery(query);
+  const formatedData = Tdata?.data?.map((data: any) => ({
+    ...data,
+    branch: data?.branch?.name,
+  }));
+  const items: MenuProps["items"] = BData?.data?.map((data: any) => ({
+    key: data?._id, // Ensure each item has a unique key
+    label: <h5>{data?.name}</h5>,
+    value: data?._id,
+  }));
+  const onClick: MenuProps["onClick"] = ({ key }) => {
+    setBranch(key);
+  };
   const column = [
     {
       title: "Number of Persons",
-      dataIndex: "persons",
-      key: "persons",
+      dataIndex: "seats",
+      key: "seats",
     },
     {
       title: "Tables",
-      dataIndex: "tables",
       key: "tables",
+      render: (data: any, index: number) => {
+        const totalTables =
+          data?.table1Capacity + data?.table2Capacity + data?.table3Capacity;
+        return (
+          <p key={index}>
+            {`${data?.table1Capacity} + ${data?.table2Capacity} + ${data?.table3Capacity} = ${totalTables}`}
+          </p>
+        );
+      },
     },
     {
       title: "Branch",
-      dataIndex: "Branch",
+      dataIndex: "branch",
       key: "branch",
     },
-
-    // {
-    //   title: "Status",
-    //   key: "status",
-    //   render: (data: any) => {
-    //     return data.status === "free" ? (
-    //       <ResConfirm
-    //         title="are you sure?"
-    //         description="this action cannot be undone"
-    //         handleOk={() => handleBookedTable(data?.id, "booked")}
-    //       >
-    //         <Tag color="#4C9A29" className="cursor-pointer">
-    //           FREE
-    //         </Tag>
-    //       </ResConfirm>
-    //     ) : (
-    //       <ResConfirm
-    //         title="are you sure?"
-    //         description="this action cannot be undone"
-    //         handleOk={() => handleBookedTable(data?.id, "free")}
-    //       >
-    //         <Tag
-    //           color="#ff0000
-    //         "
-    //           className="cursor-pointer"
-    //         >
-    //           BOOKED
-    //         </Tag>
-    //       </ResConfirm>
-    //     );
-    //   },
-    // },
     {
       title: "Action",
-
       key: "action",
       render: (data: any, index: number) => {
         return (
@@ -97,6 +80,7 @@ const Table = () => {
             <EditOutlined
               onClick={() => {
                 setShowEditModal((prev) => !prev);
+                dispatch(setTable(data));
               }}
               className="cursor-pointer"
               key={index}
@@ -117,7 +101,7 @@ const Table = () => {
   return (
     <div>
       <ResModal setShowModal={setShow} showModal={show} title="CREATE TABLE">
-        <CreateTable restaurantId={"1"} setShow={setShow} />
+        <CreateTable setShow={setShow} />
       </ResModal>
       <ResModal
         showModal={showEditModal}
@@ -129,7 +113,7 @@ const Table = () => {
       <TableCards tableData={tableData} />
 
       <div className="flex justify-end mb-4 gap-x-4">
-        <Dropdown menu={{ items }} placement="bottomLeft" arrow>
+        <Dropdown menu={{ items, onClick }} placement="bottomLeft" arrow>
           <Button className="border border-primary flex items-center gap-x-2">
             Select Branch <FaChevronDown />
           </Button>
@@ -145,8 +129,9 @@ const Table = () => {
 
       <div className="mt-6">
         <ResTable
+          loading={isLoading || isFetching}
           theme={TCommonTheme}
-          data={tableData}
+          data={formatedData}
           column={column}
           pagination={{ total: tableData?.length, pageSize: 10 }}
         />

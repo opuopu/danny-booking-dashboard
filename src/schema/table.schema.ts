@@ -1,20 +1,26 @@
 import * as z from "zod";
 
 const createTableSchema = z.object({
-  tableName: z.string({ required_error: "Table name is required" }),
-  tableNo: z.string({ required_error: "Table number is required" }),
+  branch: z.string({ required_error: "Branch is Required" }),
   seats: z.coerce
     .number({ required_error: "Seats is required" })
     .min(1, { message: "At least 1 seat is required" }),
+  table1Capacity: z.coerce
+    .number({ required_error: "Required" })
+    .min(1, { message: "Required" }),
+  table2Capacity: z.coerce.number().optional(),
+  table3Capacity: z.coerce.number().optional(),
 });
 const EditableSchema = z.object({
-  tableName: z.string().min(1, { message: "Table name is required" }),
-  tableNo: z
-    .string({ required_error: "Table number is required" })
-    .min(1, { message: "Table number is required" }),
+  branch: z.string().optional(),
   seats: z.coerce
     .number({ required_error: "Seats is required" })
     .min(1, { message: "At least 1 seat is required" }),
+  table1Capacity: z.coerce
+    .number({ required_error: "Required" })
+    .min(1, { message: "Required" }),
+  table2Capacity: z.coerce.number().optional(),
+  table3Capacity: z.coerce.number().optional(),
 });
 
 export const tableValidation = {

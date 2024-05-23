@@ -13,8 +13,16 @@ const tableApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.table],
     }),
     getTables: builder.query({
-      query: () => ({
-        url: `/tables/owner`,
+      query: (query) => ({
+        url: `/tables`,
+        method: "GET",
+        params: query,
+      }),
+      providesTags: [tagTypes.table],
+    }),
+    getSingleTable: builder.query({
+      query: (id: string) => ({
+        url: `/table/${id}`,
         method: "GET",
       }),
       providesTags: [tagTypes.table],
@@ -34,14 +42,6 @@ const tableApi = baseApi.injectEndpoints({
         method: "DELETE",
       }),
       invalidatesTags: [tagTypes.table],
-    }),
-
-    getSingleTable: builder.query({
-      query: (id: string) => ({
-        url: `/table/${id}`,
-        method: "GET",
-      }),
-      providesTags: [tagTypes.table],
     }),
   }),
 });

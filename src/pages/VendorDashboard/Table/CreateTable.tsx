@@ -17,36 +17,36 @@ import {
   setTable2Capacity,
   setTable3Capacity,
 } from "../../../redux/features/table/tableSlice";
+import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { tableValidation } from "../../../schema/table.schema";
 
 interface TTableProps {
-  restaurantId: string;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const CreateTable = ({ restaurantId, setShow }: TTableProps) => {
+const CreateTable = ({ setShow }: TTableProps) => {
   const mergedTables = useAppSelector((state) => state.table.mergedTables);
-  const [addTable] = useAddTableMutation();
   const dispatch = useAppDispatch();
-  const options = [
-    { value: "branch 1", label: "Branch 1" },
-    { value: "branch 2", label: "Branch 2" },
-    { value: "branch 3", label: "Branch 3" },
-  ];
+  const [addTable] = useAddTableMutation();
+  const { data: bData } = useGetAllBranchQuery({});
+  const options = bData?.data?.map((data: any) => {
+    return {
+      label: data?.name,
+      value: data?._id,
+    };
+  });
   const defaultValues = {
     branchName: undefined,
     totalTables: 0,
-    numberOfPersons: 0,
+    seats: 0,
     table1Capacity: 0,
     table2Capacity: 0,
     table3Capacity: 0,
   };
   const onSubmit = async (data: any) => {
-    data.seats = Number(data?.seats);
     const toastId = toast.loading("Creating...");
     try {
-      await addTable({
-        ...data,
-        restaurant: restaurantId,
-      }).unwrap();
+      await addTable(data).unwrap();
       toast.success("Table added successfully", {
         id: toastId,
         duration: 2000,
@@ -61,7 +61,7 @@ const CreateTable = ({ restaurantId, setShow }: TTableProps) => {
     <ResForm
       onSubmit={onSubmit}
       defaultValues={defaultValues}
-      // resolver={zodResolver(tableValidation.createTableSchema)}
+      resolver={zodResolver(tableValidation.createTableSchema)}
     >
       <ResSelect
         name="branch"
@@ -74,7 +74,7 @@ const CreateTable = ({ restaurantId, setShow }: TTableProps) => {
       <ResInput
         type="number"
         size="large"
-        name="numberOfPersons"
+        name="seats"
         placeholder="Number of Persons"
         label="Enter Number of Persons"
       />
@@ -107,7 +107,7 @@ const CreateTable = ({ restaurantId, setShow }: TTableProps) => {
           onChange={(e) => dispatch(setTable3Capacity(e.target.value))}
           type="number"
           size="large"
-          name="setTable3Capacity"
+          name="table3Capacity"
           placeholder="Table 3"
           label="Table 3"
         />

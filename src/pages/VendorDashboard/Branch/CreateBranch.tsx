@@ -43,7 +43,7 @@ const CreateBranch = ({ setShow }: any) => {
       <ResInput
         size="large"
         type="number"
-        label="Please enter the total number of tables."
+        label="Enter Total number of tables"
         name="tables"
         placeholder="tables"
       />

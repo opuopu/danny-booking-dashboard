@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Divider } from "antd";
 import ResForm from "../../../component/Form/FormProvider";
@@ -16,28 +17,19 @@ import {
 } from "../../../redux/features/table/tableSlice";
 import ResSelect from "../../../component/Form/ResSelect";
 import { FaEquals } from "react-icons/fa6";
+import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { tableValidation } from "../../../schema/table.schema";
 
 const EditTable = ({ setShow }: any) => {
   const dispatch = useAppDispatch();
-  const options = [
-    { value: "branch 1", label: "Branch 1" },
-    { value: "branch 2", label: "Branch 2" },
-    { value: "branch 3", label: "Branch 3" },
-  ];
-  const defaultValues = {
-    branchName: undefined,
-    totalTables: 0,
-    numberOfPersons: 0,
-    table1Capacity: 0,
-    table2Capacity: 0,
-    table3Capacity: 0,
-  };
+  const table: any = useAppSelector((state) => state.table.table);
   const mergedTables = useAppSelector((state) => state.table.mergedTables);
   const [editTable] = useEditTableMutation();
   const onSubmit = async (data: any) => {
     const toastId = toast.loading("Editing....");
     try {
-      // await editTable({ body: data, id: table?._id }).unwrap();
+      await editTable({ body: data, id: table?._id }).unwrap();
       toast.success("Table successfully updated", {
         id: toastId,
         duration: 2000,
@@ -50,21 +42,13 @@ const EditTable = ({ setShow }: any) => {
   return (
     <ResForm
       onSubmit={onSubmit}
-      defaultValues={defaultValues}
-      // resolver={zodResolver(tableValidation.createTableSchema)}
+      defaultValues={table}
+      resolver={zodResolver(tableValidation.EditableSchema)}
     >
-      <ResSelect
-        name="branch"
-        size="large"
-        options={options}
-        placeholder="Select Branch"
-        label="Select Branch Name"
-      />
-
       <ResInput
         type="number"
         size="large"
-        name="numberOfPersons"
+        name="seats"
         placeholder="Number of Persons"
         label="Enter Number of Persons"
       />
@@ -112,7 +96,7 @@ const EditTable = ({ setShow }: any) => {
           htmlType="submit"
           className="bg-primary text-white font-600 w-full h-[38px] "
         >
-          CREATE TABLE
+          EDIT TABLE
         </Button>
       </div>
     </ResForm>
