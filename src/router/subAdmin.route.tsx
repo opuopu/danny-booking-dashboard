@@ -1,4 +1,3 @@
-import { UserOutlined } from "@ant-design/icons";
 import { CiSettings } from "react-icons/ci";
 import { MdDashboard } from "react-icons/md";
 import { TbBrandBooking } from "react-icons/tb";
@@ -8,31 +7,17 @@ import Setting from "../pages/Setting";
 
 import Otp from "../pages/Otp";
 import Profile from "../pages/Profile";
+import SubAdminDashboard from "../pages/SubAdminDashboard";
+import Table from "../pages/SubAdminDashboard/Table";
 import UpdatePassword from "../pages/UpdatePassword";
-import VendorDashboard from "../pages/VendorDashboard";
 import Booking from "../pages/VendorDashboard/Booking";
-import Branch from "../pages/VendorDashboard/Branch";
-import SubAdmin from "../pages/VendorDashboard/SubAdmin";
-import Table from "../pages/VendorDashboard/Table";
 
-export const vendorRoute = [
+export const subAdminRoute = [
   {
     name: "Dashboard",
     path: "dashboard",
     icon: <MdDashboard />,
-    element: <VendorDashboard />,
-  },
-  {
-    name: "Sub Admin",
-    path: "sub_admin",
-    icon: <UserOutlined />,
-    element: <SubAdmin />,
-  },
-  {
-    name: "Branch",
-    path: "branch",
-    icon: <MdDashboard />,
-    element: <Branch />,
+    element: <SubAdminDashboard />,
   },
   {
     name: "Table",
@@ -40,20 +25,13 @@ export const vendorRoute = [
     icon: <MdDashboard />,
     element: <Table />,
   },
+
   {
     name: "Booking",
     path: "booking",
     icon: <TbBrandBooking />,
     element: <Booking />,
   },
-
-  // {
-  //   name: "Control Panel",
-  //   path: "control",
-  //   icon: <MdManageHistory />,
-
-  //   element: <Booking />,
-  // },
 
   {
     name: "Setting",

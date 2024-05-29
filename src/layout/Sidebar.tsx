@@ -2,24 +2,35 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Button, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
-import logo from "../assets/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { sidebarItemsGenerator } from "../utils/sidebarItemsGenerator";
 
 import { IoLogInOutline } from "react-icons/io5";
+import { logout, useCurrentUser } from "../redux/features/auth/authSlice";
 import { vendorRoute } from "../router/admin.route.";
-import { logout } from "../redux/features/auth/authSlice";
+import { subAdminRoute } from "../router/subAdmin.route";
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { pathname } = location;
   const collapsed = useAppSelector((state) => state.layout.collapsed);
-  // const { role }: any = useAppSelector(useCurrentUser) || "vendor";
-  const role: any = "super_admin";
-  const SidebarItems = sidebarItemsGenerator(vendorRoute, role);
+  const { role }: any = useAppSelector(useCurrentUser);
 
+  let SidebarItems;
+  switch (role) {
+    case "super_admin":
+      SidebarItems = sidebarItemsGenerator(vendorRoute, role);
+      break;
+    case "sub_admin":
+      SidebarItems = sidebarItemsGenerator(subAdminRoute, role);
+      break;
+
+    default:
+      break;
+  }
   const handeLogout = () => {
     dispatch(logout());
     navigate("/login");

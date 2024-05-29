@@ -1,11 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
-import Login from "../pages/Login";
+import App from "../App";
 import ForgotPassword from "../pages/ForgotPassword";
-import VerifyOtp from "../pages/VerifyOtp";
+import Login from "../pages/Login";
 import NewPassword from "../pages/NewPassword";
+import VerifyOtp from "../pages/VerifyOtp";
 import { routeGenerator } from "../utils/routeGenerator";
 import { vendorRoute } from "./admin.route.";
-import App from "../App";
+import PrivateRoute from "./PrivateRoutes";
+import { subAdminRoute } from "./subAdmin.route";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -15,11 +17,20 @@ const router = createBrowserRouter([
   {
     path: "/super_admin",
     element: (
-      // <PrivateRoute role="vendor">
-      <App />
-      // </PrivateRoute>
+      <PrivateRoute role="super_admin">
+        <App />
+      </PrivateRoute>
     ),
     children: routeGenerator(vendorRoute),
+  },
+  {
+    path: "/sub_admin",
+    element: (
+      <PrivateRoute role="sub_admin">
+        <App />
+      </PrivateRoute>
+    ),
+    children: routeGenerator(subAdminRoute),
   },
   {
     path: "/login",
