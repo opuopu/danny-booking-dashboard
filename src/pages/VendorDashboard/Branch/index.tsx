@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Button } from "antd";
 import { useState } from "react";
 import ResModal from "../../../component/Modal/Modal";
+import ResTable from "../../../component/Table";
 import CreateBranch from "./CreateBranch";
 import EditBranch from "./EditBranch";
-import { Button } from "antd";
-import ResTable from "../../../component/Table";
 
-import { branchData } from "../../../db/branchData";
 import { EditOutlined } from "@ant-design/icons";
+import { branchData } from "../../../db/branchData";
 import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
-import { useAppDispatch } from "../../../redux/hooks";
 import { setBranch } from "../../../redux/features/branch/branchSlice";
+import { useAppDispatch } from "../../../redux/hooks";
 
 const Branch = () => {
   const [show, setShow] = useState<boolean | null>(null);
@@ -69,6 +69,7 @@ const Branch = () => {
   return (
     <div>
       <ResModal
+        width={1000}
         title="Add Branch"
         showModal={show as boolean}
         setShowModal={setShow}
