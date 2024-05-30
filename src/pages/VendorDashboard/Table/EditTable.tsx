@@ -5,21 +5,17 @@ import ResForm from "../../../component/Form/FormProvider";
 import ResInput from "../../../component/Form/ResInput";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { tableValidation } from "../../../schema/table.schema";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { useEditTableMutation } from "../../../redux/features/table/tableApi";
-import ErrorResponse from "../../../component/UI/ErrorResponse";
-import { toast } from "sonner";
 import { FaPlusCircle } from "react-icons/fa";
+import { FaEquals } from "react-icons/fa6";
+import { toast } from "sonner";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import { useEditTableMutation } from "../../../redux/features/table/tableApi";
 import {
   setTable1Capacity,
   setTable2Capacity,
   setTable3Capacity,
 } from "../../../redux/features/table/tableSlice";
-import ResSelect from "../../../component/Form/ResSelect";
-import { FaEquals } from "react-icons/fa6";
-import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { tableValidation } from "../../../schema/table.schema";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 const EditTable = ({ setShow }: any) => {
   const dispatch = useAppDispatch();
@@ -43,7 +39,7 @@ const EditTable = ({ setShow }: any) => {
     <ResForm
       onSubmit={onSubmit}
       defaultValues={table}
-      resolver={zodResolver(tableValidation.EditableSchema)}
+      // resolver={zodResolver(tableValidation.EditableSchema)}
     >
       <ResInput
         type="number"
@@ -51,6 +47,13 @@ const EditTable = ({ setShow }: any) => {
         name="seats"
         placeholder="Number of Persons"
         label="Enter Number of Persons"
+      />
+      <ResInput
+        type="number"
+        size="large"
+        name="total"
+        placeholder="total tables"
+        label="Enter total tables"
       />
       <h5 className="flex justify-center text-20 font-600 text-primary	">
         Merge Tables
@@ -81,7 +84,7 @@ const EditTable = ({ setShow }: any) => {
           onChange={(e) => dispatch(setTable3Capacity(e.target.value))}
           type="number"
           size="large"
-          name="setTable3Capacity"
+          name="table3Capacity"
           placeholder="Table 3"
           label="Table 3"
         />

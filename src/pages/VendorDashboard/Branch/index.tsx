@@ -77,6 +77,7 @@ const Branch = () => {
         <CreateBranch setShow={setShow} />
       </ResModal>
       <ResModal
+        width={1000}
         title="Edit Branch"
         showModal={showEditModal as boolean}
         setShowModal={setShowEditModal}

@@ -8,11 +8,14 @@ import ResInput from "../../../component/Form/ResInput";
 import ResSelect from "../../../component/Form/ResSelect";
 import ResTimePicker from "../../../component/Form/ResTimepicker";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
+import { daysOfWeekend } from "../../../constant/days";
 import { useCreateBranchMutation } from "../../../redux/features/branch/branchApi";
 
 const CreateBranch = ({ setShow }: any) => {
   const [addbranch] = useCreateBranchMutation();
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    console.log(data);
     const toastId = toast.loading("Creating......");
     try {
       await addbranch(data).unwrap();
@@ -55,9 +58,9 @@ const CreateBranch = ({ setShow }: any) => {
         </Col>
         <Col span={8}>
           <ResSelect
-            options={[]}
+            options={daysOfWeekend}
             label="Select Closed Date"
-            name="closed"
+            name="daysOfWeek"
             placeholder="closed date"
           />
         </Col>
@@ -65,7 +68,7 @@ const CreateBranch = ({ setShow }: any) => {
           <ResInput
             type="number"
             label="Enter Time Limitation"
-            name="limit"
+            name="endTimeLimit"
             placeholder="limit"
           />
         </Col>

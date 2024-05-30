@@ -8,7 +8,6 @@ import Setting from "../pages/Setting";
 import Otp from "../pages/Otp";
 import Profile from "../pages/Profile";
 import SubAdminDashboard from "../pages/SubAdminDashboard";
-import Table from "../pages/SubAdminDashboard/Table";
 import UpdatePassword from "../pages/UpdatePassword";
 import Booking from "../pages/VendorDashboard/Booking";
 
@@ -19,12 +18,12 @@ export const subAdminRoute = [
     icon: <MdDashboard />,
     element: <SubAdminDashboard />,
   },
-  {
-    name: "Table",
-    path: "table",
-    icon: <MdDashboard />,
-    element: <Table />,
-  },
+  // {
+  //   name: "Table",
+  //   path: "table",
+  //   icon: <MdDashboard />,
+  //   element: <Table />,
+  // },
 
   {
     name: "Booking",

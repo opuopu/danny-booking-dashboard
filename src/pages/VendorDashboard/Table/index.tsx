@@ -3,12 +3,12 @@ import { useState } from "react";
 import ResTable from "../../../component/Table";
 import TableCards from "../../../component/TableCards/TableCards";
 
-import { Button, Dropdown, MenuProps } from "antd";
 import {
   // DeleteOutlined,
   EditOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
+import { Button, Dropdown, MenuProps } from "antd";
 
 // import ResConfirm from "../../../component/UI/PopConfirm";
 import ResModal from "../../../component/Modal/Modal";
@@ -16,13 +16,13 @@ import CreateTable from "./CreateTable";
 import EditTable from "./EditTable";
 // import { useAppDispatch } from "../../../redux/hooks";
 
-import { tableData } from "../../../db";
-import { TCommonTheme } from "../../../themes";
 import { FaChevronDown } from "react-icons/fa6";
-import { useGetTablesQuery } from "../../../redux/features/table/tableApi";
+import { tableData } from "../../../db";
 import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useGetTablesQuery } from "../../../redux/features/table/tableApi";
 import { setTable } from "../../../redux/features/table/tableSlice";
+import { useAppDispatch } from "../../../redux/hooks";
+import { TCommonTheme } from "../../../themes";
 
 const Table = () => {
   const [show, setShow] = useState<boolean>(false);
@@ -52,6 +52,11 @@ const Table = () => {
       title: "Number of Persons",
       dataIndex: "seats",
       key: "seats",
+    },
+    {
+      title: "Total Tables",
+      dataIndex: "total",
+      key: "total",
     },
     {
       title: "Tables",
@@ -110,7 +115,7 @@ const Table = () => {
       >
         <EditTable setShow={setShowEditModal} />
       </ResModal>
-      <TableCards tableData={tableData} />
+      <TableCards branchId={branch!} />
 
       <div className="flex justify-end mb-4 gap-x-4">
         <Dropdown menu={{ items, onClick }} placement="bottomLeft" arrow>

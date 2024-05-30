@@ -1,25 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Button, Divider } from "antd";
 import React from "react";
+import { toast } from "sonner";
 import ResForm from "../../../component/Form/FormProvider";
 import ResInput from "../../../component/Form/ResInput";
-import { Button, Divider } from "antd";
-import { useAddTableMutation } from "../../../redux/features/table/tableApi";
-import { toast } from "sonner";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
+import { useAddTableMutation } from "../../../redux/features/table/tableApi";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { tableValidation } from "../../../schema/table.schema";
-import ResSelect from "../../../component/Form/ResSelect";
 import { FaPlusCircle } from "react-icons/fa";
 import { FaEquals } from "react-icons/fa6";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import ResSelect from "../../../component/Form/ResSelect";
+import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
 import {
   setTable1Capacity,
   setTable2Capacity,
   setTable3Capacity,
 } from "../../../redux/features/table/tableSlice";
-import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { tableValidation } from "../../../schema/table.schema";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 interface TTableProps {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -60,8 +58,7 @@ const CreateTable = ({ setShow }: TTableProps) => {
   return (
     <ResForm
       onSubmit={onSubmit}
-      defaultValues={defaultValues}
-      resolver={zodResolver(tableValidation.createTableSchema)}
+      // resolver={zodResolver(tableValidation.EditableSchema)}
     >
       <ResSelect
         name="branch"
@@ -70,13 +67,19 @@ const CreateTable = ({ setShow }: TTableProps) => {
         placeholder="Select Branch"
         label="Select Branch Name"
       />
-
       <ResInput
         type="number"
         size="large"
         name="seats"
         placeholder="Number of Persons"
         label="Enter Number of Persons"
+      />
+      <ResInput
+        type="number"
+        size="large"
+        name="total"
+        placeholder="total tables"
+        label="Enter total tables"
       />
       <h5 className="flex justify-center text-20 font-600 text-primary	">
         Merge Tables
@@ -122,7 +125,7 @@ const CreateTable = ({ setShow }: TTableProps) => {
           htmlType="submit"
           className="bg-primary text-white font-600 w-full h-[38px] "
         >
-          CREATE TABLE
+          EDIT TABLE
         </Button>
       </div>
     </ResForm>
