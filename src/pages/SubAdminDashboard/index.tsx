@@ -9,7 +9,7 @@ import ResTable from "../../component/Table";
 import { dashboardBookingColumnData } from "../../db";
 import { TCommonTheme } from "../../themes";
 
-const VendorDashboard = () => {
+const SubAdminDashboard = () => {
   const [year, setYear] = useState(dayjs().format("YYYY"));
   console.log(year);
   return (
@@ -55,4 +55,4 @@ const VendorDashboard = () => {
   );
 };
 
-export default VendorDashboard;
+export default SubAdminDashboard;
