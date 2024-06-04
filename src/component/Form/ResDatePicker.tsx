@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DatePicker, Form } from "antd";
 import { SizeType } from "antd/es/config-provider/SizeContext";
+import dayjs from "dayjs";
 import { Controller } from "react-hook-form";
 
 interface InputProps {
@@ -37,6 +38,10 @@ const ResDatePicker = ({
             size={size}
             placeholder={placeholder}
             format="YYYY-MM-DD"
+            onChange={(date) => {
+              field.onChange(date ? date.format("YYYY-MM-DD") : ""); // Set HH:mm format on change
+            }}
+            value={field.value ? dayjs(field.value, "YYYY-MM-DD") : null}
           />
         </Form.Item>
       )}

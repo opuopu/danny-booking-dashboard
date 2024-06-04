@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MenuOutlined } from "@ant-design/icons";
+import { Badge, Button, Input } from "antd";
 import { IoIosNotifications } from "react-icons/io";
-import user from "../assets/person.png";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { Badge, Button } from "antd";
-import { setCollapsed } from "../redux/features/layout/layoutSlice";
 import { NavLink, useLocation } from "react-router-dom";
 import { toast } from "sonner";
+import user from "../assets/person.png";
+import { setCollapsed } from "../redux/features/layout/layoutSlice";
 import { useGetMyNotificationQuery } from "../redux/features/notification/notificationApi";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 // import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
 import { useEffect } from "react";
-import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
 import { useProfileQuery } from "../redux/features/auth/authApi";
+import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
+import { setBookingSearch } from "../redux/features/booking/bookingSlice";
 import showImage from "../utils/showImage";
 
 const HeaderLayout = () => {
@@ -26,6 +27,10 @@ const HeaderLayout = () => {
     toast.info(notification?.message);
   }, [notification]);
   const { pathname } = useLocation();
+
+  const onSearch = async (val: string) => {
+    dispatch(setBookingSearch(val));
+  };
   const collapsed = useAppSelector((state) => state.layout.collapsed);
   return (
     <div className="flex justify-between">
@@ -54,6 +59,15 @@ const HeaderLayout = () => {
         </h1>
       </div>
       <div className="flex items-center  gap-x-6">
+        {pathname === "/super_admin/booking" && (
+          <Input.Search
+            onSearch={onSearch}
+            placeholder="customer email | name | booking ID"
+            className="w-[400px]"
+            size="large"
+            allowClear
+          />
+        )}
         <Badge count={notficationData?.meta?.total}>
           <NavLink to={`/${User?.role}/notification`}>
             <IoIosNotifications className="text-white  text-32 cursor-pointer" />{" "}
