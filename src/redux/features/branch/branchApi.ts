@@ -30,10 +30,12 @@ const branchApi = baseApi.injectEndpoints({
       providesTags: [tagTypes.branch],
     }),
     getSingleBranch: builder.query({
-      query: (id: string) => ({
-        url: `/branch/${id}`,
-        method: "GET",
-      }),
+      query: (id: string) => {
+        return {
+          url: `/branch/${id}`,
+          method: "GET",
+        };
+      },
       providesTags: [tagTypes.branch],
     }),
   }),

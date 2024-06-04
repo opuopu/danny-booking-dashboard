@@ -6,8 +6,9 @@ import { useGetSingleBranchQuery } from "../../redux/features/branch/branchApi";
 // import tableLogo from "../../assets/vendorIcon/table.png";
 
 const TableCards = ({ branchId }: { branchId: string }) => {
+  console.log(branchId);
   const { data: bData } = useGetSingleBranchQuery(branchId);
-
+  console.log(bData);
   return (
     <Row gutter={[16, 16]}>
       <Col span={6}>

@@ -22,7 +22,7 @@ const tableApi = baseApi.injectEndpoints({
     }),
     getSingleTable: builder.query({
       query: (id: string) => ({
-        url: `/table/${id}`,
+        url: `/tables/${id}`,
         method: "GET",
       }),
       providesTags: [tagTypes.table],
