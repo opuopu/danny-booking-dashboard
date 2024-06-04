@@ -2,7 +2,7 @@
 import { Col, DatePicker, Row, Space } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { dashboardBookingColumn } from "../../Columns";
+
 import BookingChart from "../../component/BookingChart/BookingChart";
 import DashboardCard from "../../component/DashboardCard";
 import ResTable from "../../component/Table";
@@ -47,7 +47,7 @@ const SubAdminDashboard = () => {
         <ResTable
           theme={TCommonTheme}
           scroll={{ x: 10, y: 310 }}
-          column={dashboardBookingColumn}
+          column={[]}
           data={dashboardBookingColumnData}
         />
       </div>

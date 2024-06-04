@@ -1,13 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Col, Row } from "antd";
 
-import { useGetAllBookingQuery } from "../../redux/features/booking/bookingApi";
 import dayjs from "dayjs";
-import {
-  MdOutlineDateRange,
-  MdOutlinePendingActions,
-  MdOutlineRunningWithErrors,
-} from "react-icons/md";
+import { MdOutlineDateRange, MdOutlineRunningWithErrors } from "react-icons/md";
+import { useGetAllBookingQuery } from "../../redux/features/booking/bookingApi";
 
 const BookingCard = () => {
   const { data: totalBooking } = useGetAllBookingQuery({ status: "active" });

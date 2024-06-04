@@ -9,4 +9,8 @@ export const notificationArray = [
   { title: "Notification 8", date: "2024-04-08" },
   { title: "Notification 9", date: "2024-04-09" },
   { title: "Notification 10", date: "2024-04-10" },
+  { title: "Notification 10", date: "2024-04-10" },
+  { title: "Notification 10", date: "2024-04-10" },
+  { title: "Notification 10", date: "2024-04-10" },
+  { title: "Notification 10", date: "2024-04-10" },
 ];

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { TResponseRedux } from "../../../types";
 import { tagTypes } from "../../../types/tagTypes";
 import { baseApi } from "../../api/baseApi";
 
@@ -7,18 +8,25 @@ const bookingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     GetAllBooking: builder.query({
       query: (query) => ({
-        url: "/booking/owner",
+        url: "/booking/",
+        method: "GET",
+        params: query,
+      }),
+      transformResponse: (response: TResponseRedux<any[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+      providesTags: [tagTypes.booking],
+    }),
+    FindAllBrancesBooking: builder.query({
+      query: (query) => ({
+        url: "/booking/all",
         method: "GET",
         params: query,
       }),
       providesTags: [tagTypes.booking],
-      // transformResponse: (response: TResponseRedux<any>) => {
-      //   console.log("response", response);
-      //   return {
-      //     data: response.data,
-      //     meta: response.meta,
-      //   };
-      // },
     }),
     UpdateBooking: builder.mutation({
       query: (data) => ({
@@ -43,4 +51,5 @@ export const {
   useGetAllBookingQuery,
   useUpdateBookingMutation,
   useGetBookingStaticsQuery,
+  useFindAllBrancesBookingQuery,
 } = bookingApi;
