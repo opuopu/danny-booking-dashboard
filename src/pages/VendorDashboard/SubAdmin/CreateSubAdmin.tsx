@@ -2,18 +2,17 @@
 import { Button, Form } from "antd";
 import ResForm from "../../../component/Form/FormProvider";
 
-import UseImageUpload from "../../../hooks/useImageUpload";
 import ResInput from "../../../component/Form/ResInput";
+import UseImageUpload from "../../../hooks/useImageUpload";
 
-import { toast } from "sonner";
-import ErrorResponse from "../../../component/UI/ErrorResponse";
-import FileUpload from "../../../component/FileUpload";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { authValidationSchema } from "../../../schema/auth.schema";
+import { toast } from "sonner";
+import FileUpload from "../../../component/FileUpload";
 import ResSelect from "../../../component/Form/ResSelect";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
 import { useCreateSubAdminMutation } from "../../../redux/features/auth/authApi";
 import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
-
+import { authValidationSchema } from "../../../schema/auth.schema";
 const CreateSubAdmin = ({ setShow }: any) => {
   const { imageUrl, setFile, imageFile } = UseImageUpload();
   const { data: bData } = useGetAllBranchQuery({});

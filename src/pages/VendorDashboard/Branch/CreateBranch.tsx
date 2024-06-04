@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Col, Divider, Row } from "antd";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
@@ -10,6 +11,31 @@ import ResTimePicker from "../../../component/Form/ResTimepicker";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
 import { daysOfWeekend } from "../../../constant/days";
 import { useCreateBranchMutation } from "../../../redux/features/branch/branchApi";
+import { branchValidation } from "../../../schema/branch.schema";
+
+const days: string[] = [
+  "saturday",
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+];
+const defaultTimes = {
+  openTime: "09:00",
+  closeTime: "20:00",
+};
+interface TimeValues {
+  openTime: string;
+  closeTime: string;
+}
+
+const values: { [key: string]: TimeValues } = {};
+
+days.forEach((day: string) => {
+  values[day] = { ...defaultTimes };
+});
 
 const CreateBranch = ({ setShow }: any) => {
   const [addbranch] = useCreateBranchMutation();
@@ -30,7 +56,11 @@ const CreateBranch = ({ setShow }: any) => {
   };
 
   return (
-    <ResForm onSubmit={onSubmit}>
+    <ResForm
+      onSubmit={onSubmit}
+      defaultValues={values}
+      resolver={zodResolver(branchValidation.createBranch)}
+    >
       <Row gutter={16}>
         <Col span={12}>
           <ResInput
@@ -67,7 +97,7 @@ const CreateBranch = ({ setShow }: any) => {
         <Col span={8}>
           <ResInput
             type="number"
-            label="Enter Time Limitation"
+            label="Enter Time Limitation(minute)"
             name="endTimeLimit"
             placeholder="limit"
           />

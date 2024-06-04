@@ -6,11 +6,10 @@ import { MdOutlineDateRange, MdOutlineRunningWithErrors } from "react-icons/md";
 import { useGetAllBookingQuery } from "../../redux/features/booking/bookingApi";
 
 const BookingCard = () => {
-  const { data: totalBooking } = useGetAllBookingQuery({ status: "active" });
+  const { data: totalBooking } = useGetAllBookingQuery({ status: "onGoing" });
   const { data: totalCanlledBooking } = useGetAllBookingQuery({
     status: "cancelled",
   });
-
   const { data: todays } = useGetAllBookingQuery({
     date: dayjs().format("YYYY-MM-DD"),
   });

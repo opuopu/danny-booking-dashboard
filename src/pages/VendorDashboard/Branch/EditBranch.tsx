@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Col, Divider, Row } from "antd";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
@@ -11,12 +12,8 @@ import ErrorResponse from "../../../component/UI/ErrorResponse";
 import { daysOfWeekend } from "../../../constant/days";
 import { useUpdateBranchMutation } from "../../../redux/features/branch/branchApi";
 import { useAppSelector } from "../../../redux/hooks";
-interface Tbranch {
-  name: string;
-  location: string;
-  _id: string;
-  daysOfWeek: string;
-}
+import { branchValidation } from "../../../schema/branch.schema";
+
 const EditBranch = ({ setShowEditModal }: any) => {
   const [editBranch] = useUpdateBranchMutation();
 
@@ -36,7 +33,11 @@ const EditBranch = ({ setShowEditModal }: any) => {
   };
 
   return (
-    <ResForm onSubmit={onSubmit} defaultValues={branchData!}>
+    <ResForm
+      onSubmit={onSubmit}
+      defaultValues={branchData!}
+      resolver={zodResolver(branchValidation.editBranch)}
+    >
       <Row gutter={16}>
         <Col span={12}>
           <ResInput

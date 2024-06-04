@@ -34,7 +34,7 @@ const createsubadminSchema = z.object({
   name: z.string({ required_error: "Worker name  is Required" }),
   email: z.string({ required_error: "Worker email  is Required" }),
   designation: z.string({ required_error: "Worker designation  is Required" }),
-  branch: z.string().optional(),
+  branch: z.string({ required_error: "Please select a branch" }),
   password: z.string({ required_error: "Worker password is Required" }),
 });
 const editSubAdminSchema = z.object({
