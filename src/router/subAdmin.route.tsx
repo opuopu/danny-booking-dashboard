@@ -8,8 +8,8 @@ import Setting from "../pages/Setting";
 import Otp from "../pages/Otp";
 import Profile from "../pages/Profile";
 import SubAdminDashboard from "../pages/SubAdminDashboard";
+import Booking from "../pages/SubAdminDashboard/Booking";
 import UpdatePassword from "../pages/UpdatePassword";
-import Booking from "../pages/VendorDashboard/Booking";
 
 export const subAdminRoute = [
   {

@@ -1,27 +1,27 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Row } from "antd";
+import { Row } from "antd";
 import NotificationCard from "../../component/NotificationCom/NotificationCard";
 
-import GuruPagination from "../../component/UI/Pagination";
-import { notificationArray } from "../../db";
+import { useState } from "react";
+import { toast } from "sonner";
+import NoData from "../../component/NoData/NoData";
+import ErrorResponse from "../../component/UI/ErrorResponse";
+import ResPagination from "../../component/UI/Pagination";
+import { useCurrentUser } from "../../redux/features/auth/authSlice";
 import {
   useGetMyNotificationQuery,
   useMarkAsReadMutation,
 } from "../../redux/features/notification/notificationApi";
-import { toast } from "sonner";
-import ErrorResponse from "../../component/UI/ErrorResponse";
-import ResPagination from "../../component/UI/Pagination";
-import { useState } from "react";
-import NoData from "../../component/NoData/NoData";
+import { useAppSelector } from "../../redux/hooks";
 
 const Notification = () => {
   const [page, setPage] = useState<number>(1);
+  const User = useAppSelector(useCurrentUser);
   const query: Record<string, any> = {};
   if (page) query["page"] = page;
-  query["limit"] = 10;
+  if (User?.branch) query["branch"] = User?.branch;
   const { data: notificationData } = useGetMyNotificationQuery(query);
-
   const onChange = (page: number, pageSize: number) => {
     setPage(page);
   };
@@ -29,7 +29,7 @@ const Notification = () => {
   const submit = async () => {
     const toastId = toast.loading("Updating...");
     try {
-      await updateNotification({}).unwrap();
+      await updateNotification({ read: true }).unwrap();
       toast.success("Mark as read successfully", {
         id: toastId,
         duration: 2000,
@@ -41,16 +41,16 @@ const Notification = () => {
   return (
     <div>
       <div className="flex justify-end">
-        {notificationData?.data && (
+        {/* {notificationData?.data && (
           <Button onClick={submit} className="bg-primary text-white ">
             Mark As Read
           </Button>
-        )}
+        )} */}
       </div>
       <div className="container mx-auto mt-4">
         {notificationData?.data ? (
           <Row gutter={[16, 16]}>
-            {notificationData.data.map((data: any, index: number) => (
+            {notificationData?.data?.map((data: any, index: number) => (
               <NotificationCard key={index} data={data} />
             ))}
           </Row>

@@ -3,13 +3,18 @@ import { Col, Row } from "antd";
 
 import dayjs from "dayjs";
 import { MdOutlineDateRange, MdOutlineRunningWithErrors } from "react-icons/md";
+import { useCurrentUser } from "../../redux/features/auth/authSlice";
 import { useGetAllBookingQuery } from "../../redux/features/booking/bookingApi";
+import { useAppSelector } from "../../redux/hooks";
 
 const BookingCard = () => {
-  const { data: totalBooking } = useGetAllBookingQuery({ status: "onGoing" });
-  const { data: totalCanlledBooking } = useGetAllBookingQuery({
-    status: "cancelled",
-  });
+  const query: Record<string, any> = {};
+  const User = useAppSelector(useCurrentUser);
+  query["status"] = "onGoing";
+  if (User?.branch) {
+    query["branch"] = User?.branch;
+  }
+  const { data: totalOngoingBooking } = useGetAllBookingQuery(query);
   const { data: todays } = useGetAllBookingQuery({
     date: dayjs().format("YYYY-MM-DD"),
   });
@@ -31,7 +36,7 @@ const BookingCard = () => {
           <MdOutlineRunningWithErrors size={50} />
           <div className="font-600 ">
             <h1 className="text-end text-primary text-32">
-              {totalCanlledBooking?.data?.length || 0}
+              {totalOngoingBooking?.data?.length ?? 0}
             </h1>
             <p className="text-24">Ongoing Reservation</p>
           </div>

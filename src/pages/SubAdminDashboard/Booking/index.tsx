@@ -1,74 +1,44 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import { useState } from "react";
 import BookingCard from "../../../component/BookingCard/BookingCard";
 
-import ResConfirm from "../../../component/UI/PopConfirm";
-import { Button, DatePicker, Input, Tag } from "antd";
-import ResTable from "../../../component/Table";
-import {
-  useGetAllBookingQuery,
-  useUpdateBookingMutation,
-} from "../../../redux/features/booking/bookingApi";
-import dayjs from "dayjs";
-import { toast } from "sonner";
-import ErrorResponse from "../../../component/UI/ErrorResponse";
 import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import { Button, DatePicker, Select, TimePicker } from "antd";
+import dayjs from "dayjs";
 import ResModal from "../../../component/Modal/Modal";
+import ResTable from "../../../component/Table";
+import { TUser, useCurrentUser } from "../../../redux/features/auth/authSlice";
+import { useFindAllBrancesBookingQuery } from "../../../redux/features/booking/bookingApi";
+import { setBookingFiletring } from "../../../redux/features/booking/bookingSlice";
+import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import AddBooking from "./AddBooking";
 const Booking = () => {
-  const [date, setDate] = useState<string | null>(dayjs().format("YYYY-MM-DD"));
-  const [searchTerm, setSearchTerm] = useState<string | null>();
+  const { data: Bdata } = useGetAllBranchQuery({});
+  const { searchTerm, arrivalTime, expiryTime, branch, date } = useAppSelector(
+    (state) => state.booking
+  );
+  const dispatch = useAppDispatch();
+  const [show, setshow] = useState<boolean | null>(null);
+  const User: TUser | null = useAppSelector(useCurrentUser);
   const query: Record<string, any> = {};
+  if (branch) query["branch"] = User?.branch;
   if (date) query["date"] = date;
   if (searchTerm) query["searchTerm"] = searchTerm;
-  query["status"] = "active";
-  const { data: bookingData, isLoading } = useGetAllBookingQuery(query);
-  const [show, setshow] = useState<boolean | null>(null);
-  const [updateBooking] = useUpdateBookingMutation();
-  const handleChangeStatus = async (id: string, status: string) => {
-    const toastId = toast.loading("Updating...");
-    const data = { status };
-    try {
-      await updateBooking({ id, body: data }).unwrap();
-      toast.success("Status updated successfully", {
-        id: toastId,
-        duration: 2000,
-      });
-    } catch (err) {
-      ErrorResponse(err, toastId);
-    }
-  };
-  const onSearch = async (val: string) => {
-    setSearchTerm(val);
-  };
+  if (arrivalTime) query["arrivalTime"] = arrivalTime;
+  if (expiryTime) query["expiryTime"] = expiryTime;
+  const {
+    data: bookingData,
+    isLoading,
+    isFetching,
+  } = useFindAllBrancesBookingQuery(query);
 
-  const onDateChange = async (date: any) => {
-    setDate(dayjs(date).format("YYYY-MM-DD"));
-  };
-  const customerData = [];
+  const options = Bdata?.data?.map((data: any) => ({
+    label: data?.name,
+    value: data?._id,
+  }));
 
-  for (let i = 1; i <= 20; i++) {
-    customerData.push({
-      key: i,
-      name: `Customer ${i}`,
-      email: `customer${i}@example.com`,
-      bookingId: `B00${i}`,
-      seats: Math.floor(Math.random() * 10) + 1, // Random number of seats between 1 and 10
-      date: `2024-05-${Math.floor(Math.random() * 30) + 1}`, // Random date within May 2024
-      time:
-        `${Math.floor(Math.random() * 12) + 1}:${Math.floor(
-          Math.random() * 60
-        )}` + (Math.random() < 0.5 ? " AM" : " PM"), // Random time
-      status: Math.random() < 0.5 ? "Confirmed" : "Pending", // Random status
-    });
-  }
-  const status = "active";
   const column = [
-    // {
-    //   title: "#SL",
-    //   dataIndex: "index",
-    //   key: "index",
-    // },
     {
       title: "Customer Name",
       dataIndex: "name",
@@ -86,8 +56,14 @@ const Booking = () => {
     },
     {
       title: "Seats",
-      dataIndex: "seats",
-      key: "seats",
+      render: (data: any) => {
+        return (
+          <p>
+            {data?.table1Capacity ?? 0}+{data?.table2Capacity ?? 0}+
+            {data?.table3Capacity ?? 0}={data?.seats}
+          </p>
+        );
+      },
     },
     {
       title: "Date",
@@ -103,33 +79,6 @@ const Booking = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-    },
-    {
-      title: "Action",
-      key: "status",
-      render: (data: any) => {
-        return status === "active" ? (
-          <>
-            <ResConfirm
-              description="This action cannot be undone"
-              handleOk={() => handleChangeStatus(data?._id, "reject")}
-            >
-              {/* Render the Cancel and Closed tags */}
-              <Tag color="red" className="cursor-pointer">
-                Reject
-              </Tag>
-            </ResConfirm>
-            <ResConfirm
-              description="This action cannot be undone"
-              handleOk={() => handleChangeStatus(data?._id, "closed")}
-            >
-              <Tag className="cursor-pointer">closed</Tag>
-            </ResConfirm>
-          </>
-        ) : (
-          <p>N/A</p>
-        );
-      },
     },
 
     {
@@ -155,24 +104,51 @@ const Booking = () => {
         setShowModal={setshow}
         title="Add A Reservation"
       >
-        <AddBooking />
+        <AddBooking setShow={setshow} />
       </ResModal>
       <BookingCard />
 
       <div className="flex justify-end gap-x-4 my-4">
+        <TimePicker
+          className="w-[200px]"
+          placeholder="start time"
+          format="HH:mm"
+          onChange={(time) =>
+            dispatch(
+              setBookingFiletring({ arrivalTime: dayjs(time).format("HH:mm") })
+            )
+          }
+        />
+        <TimePicker
+          className="w-[200px]"
+          placeholder="end time"
+          format="HH:mm"
+          onChange={(time) =>
+            dispatch(
+              setBookingFiletring({ expiryTime: dayjs(time).format("HH:mm") })
+            )
+          }
+        />
+
+        <Select
+          onChange={(value: string) =>
+            dispatch(setBookingFiletring({ branch: value }))
+          }
+          options={options}
+          style={{ width: 200, height: 40 }}
+          placeholder="Select Branch"
+        />
         <DatePicker
           defaultValue={dayjs(dayjs(), "YYYY-MM-DD")}
           className="w-[200px]"
           size="large"
-          onChange={onDateChange}
+          onChange={(date) =>
+            dispatch(
+              setBookingFiletring({ date: dayjs(date).format("YYYY-MM-DD") })
+            )
+          }
         />
-        <Input.Search
-          onSearch={onSearch}
-          placeholder="customer email | name | booking ID"
-          className="w-[400px]"
-          size="large"
-          allowClear
-        />
+
         <Button
           onClick={() => setshow((prev) => !prev)}
           icon={<PlusCircleOutlined />}
@@ -182,10 +158,10 @@ const Booking = () => {
         </Button>
       </div>
       <ResTable
-        loading={isLoading}
+        loading={isLoading || isFetching}
         column={column}
-        data={customerData}
-        pagination={{ total: bookingData?.meta?.total, pageSize: 8 }}
+        data={bookingData?.data}
+        pagination={{ total: bookingData?.data?.length, pageSize: 8 }}
       />
     </div>
   );

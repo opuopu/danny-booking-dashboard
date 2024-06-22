@@ -6,6 +6,7 @@ import { TUser, useCurrentUser } from "./redux/features/auth/authSlice";
 import { setNotification } from "./redux/features/notification/notificationSlice";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 // import PrivateRoute from "./router/PrivateRoutes";
+import PrivateRoute from "./router/PrivateRoutes";
 import { socket } from "./socket";
 
 function App() {
@@ -15,10 +16,9 @@ function App() {
     socket.connect();
     const handleNotificationEvent = (data: any) => {
       dispatch(setNotification(data));
-      console.log(data);
     };
 
-    socket.on(user?.userId as string, handleNotificationEvent);
+    socket.on("notification", handleNotificationEvent);
 
     return () => {
       // Clean up the event listener when the component is unmounted
@@ -28,9 +28,9 @@ function App() {
   }, [user]);
 
   return (
-    // <PrivateRoute role={undefined}>
-    <MainLayout />
-    // {/* </PrivateRoute> */}
+    <PrivateRoute role={undefined}>
+      <MainLayout />
+    </PrivateRoute>
   );
 }
 

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TResponseRedux } from "../../../types";
 import { tagTypes } from "../../../types/tagTypes";
 import { baseApi } from "../../api/baseApi";
 
@@ -12,12 +11,12 @@ const notificationApi = baseApi.injectEndpoints({
         params: query,
       }),
       providesTags: [tagTypes.notification],
-      transformResponse: (response: TResponseRedux<any>) => {
-        return {
-          data: response?.data,
-          meta: response?.meta,
-        };
-      },
+      // transformResponse: (response: TResponseRedux<any>) => {
+      //   return {
+      //     data: response?.data,
+      //     meta: response?.meta,
+      //   };
+      // },
     }),
     markAsRead: builder.mutation({
       query: () => ({

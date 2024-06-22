@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MenuOutlined } from "@ant-design/icons";
 import { Badge, Button, Input } from "antd";
-import { IoIosNotifications } from "react-icons/io";
 import { NavLink, useLocation } from "react-router-dom";
 import { toast } from "sonner";
+import notificationIcon from "../assets/notification.png";
 import user from "../assets/person.png";
 import { setCollapsed } from "../redux/features/layout/layoutSlice";
-import { useGetMyNotificationQuery } from "../redux/features/notification/notificationApi";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 // import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
 import { useEffect } from "react";
@@ -17,14 +16,13 @@ import showImage from "../utils/showImage";
 
 const HeaderLayout = () => {
   const dispatch = useAppDispatch();
-  const { data: notficationData } = useGetMyNotificationQuery({ read: false });
   const { data: pData } = useProfileQuery(undefined);
   const User: TUser | null = useAppSelector(useCurrentUser);
   const notification: any = useAppSelector(
     (state) => state.notification.notification
   );
   useEffect(() => {
-    toast.info(notification?.message);
+    toast.info(notification);
   }, [notification]);
   const { pathname } = useLocation();
 
@@ -51,26 +49,23 @@ const HeaderLayout = () => {
             marginRight: "10px",
           }}
         />
-        <h1 className="text-white text-20">
-          {pathname
-            .split(/[/ -]/)
-            .map((part) => part.toUpperCase())
-            .join(" ")}
-        </h1>
+
+        <h1 className="text-white text-20">Dashboard</h1>
       </div>
       <div className="flex items-center  gap-x-6">
-        {pathname === "/super_admin/booking" && (
-          <Input.Search
-            onSearch={onSearch}
-            placeholder="customer email | name | booking ID"
-            className="w-[400px]"
-            size="large"
-            allowClear
-          />
-        )}
-        <Badge count={notficationData?.meta?.total}>
+        {pathname === "/super_admin/booking" ||
+          (pathname === "/sub_admin/booking" && (
+            <Input.Search
+              onSearch={onSearch}
+              placeholder="customer email | name | booking ID"
+              className="w-[400px]"
+              size="large"
+              allowClear
+            />
+          ))}
+        <Badge color="red">
           <NavLink to={`/${User?.role}/notification`}>
-            <IoIosNotifications className="text-white  text-32 cursor-pointer" />{" "}
+            <img src={notificationIcon} alt="" width={30} />
           </NavLink>
         </Badge>
 

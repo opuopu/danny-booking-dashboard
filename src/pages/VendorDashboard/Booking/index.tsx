@@ -8,19 +8,23 @@ import dayjs from "dayjs";
 import ResModal from "../../../component/Modal/Modal";
 import ResTable from "../../../component/Table";
 import { useFindAllBrancesBookingQuery } from "../../../redux/features/booking/bookingApi";
+import { setBookingFiletring } from "../../../redux/features/booking/bookingSlice";
 import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import AddBooking from "./AddBooking";
 const Booking = () => {
-  const query: Record<string, any> = {};
-  const [date, setDate] = useState<string | null>(dayjs().format("YYYY-MM-DD"));
-  const [branch, setBranch] = useState<string | null>(null);
   const { data: Bdata } = useGetAllBranchQuery({});
-  const searchTerm = useAppSelector((state) => state.booking.searchTerm);
+  const { searchTerm, arrivalTime, expiryTime, branch, date } = useAppSelector(
+    (state) => state.booking
+  );
+  const dispatch = useAppDispatch();
   const [show, setshow] = useState<boolean | null>(null);
+  const query: Record<string, any> = {};
   if (branch) query["branch"] = branch;
   if (date) query["date"] = date;
   if (searchTerm) query["searchTerm"] = searchTerm;
+  if (arrivalTime) query["arrivalTime"] = arrivalTime;
+  if (expiryTime) query["expiryTime"] = expiryTime;
   const {
     data: bookingData,
     isLoading,
@@ -32,9 +36,6 @@ const Booking = () => {
     value: data?._id,
   }));
 
-  const onDateChange = async (date: any) => {
-    setDate(dayjs(date).format("YYYY-MM-DD"));
-  };
   const column = [
     {
       title: "Customer Name",
@@ -110,17 +111,27 @@ const Booking = () => {
           className="w-[200px]"
           placeholder="start time"
           format="HH:mm"
-          onChange={(time) => console.log(dayjs(time).format("HH:mm"))}
+          onChange={(time) =>
+            dispatch(
+              setBookingFiletring({ arrivalTime: dayjs(time).format("HH:mm") })
+            )
+          }
         />
         <TimePicker
           className="w-[200px]"
           placeholder="end time"
           format="HH:mm"
-          onChange={(time) => console.log(dayjs(time).format("HH:mm"))}
+          onChange={(time) =>
+            dispatch(
+              setBookingFiletring({ expiryTime: dayjs(time).format("HH:mm") })
+            )
+          }
         />
 
         <Select
-          onChange={(value: string) => setBranch(value)}
+          onChange={(value: string) =>
+            dispatch(setBookingFiletring({ branch: value }))
+          }
           options={options}
           style={{ width: 200, height: 40 }}
           placeholder="Select Branch"
@@ -129,7 +140,11 @@ const Booking = () => {
           defaultValue={dayjs(dayjs(), "YYYY-MM-DD")}
           className="w-[200px]"
           size="large"
-          onChange={onDateChange}
+          onChange={(date) =>
+            dispatch(
+              setBookingFiletring({ date: dayjs(date).format("YYYY-MM-DD") })
+            )
+          }
         />
 
         <Button
