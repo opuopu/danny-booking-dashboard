@@ -8,14 +8,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { monthlyData } from "../../db";
-const BookingChart = () => {
+const BookingChart = ({ statistics }: any) => {
   return (
     <ResponsiveContainer width="100%" height={270}>
       <AreaChart
         width={940}
         height={400}
-        data={monthlyData}
+        data={statistics}
         margin={{
           top: 10,
           right: 30,

@@ -6,12 +6,15 @@ import { useState } from "react";
 import BookingChart from "../../component/BookingChart/BookingChart";
 import DashboardCard from "../../component/DashboardCard";
 import ResTable from "../../component/Table";
-import { useFindAllBrancesBookingQuery } from "../../redux/features/booking/bookingApi";
+import {
+  useFindAllBrancesBookingQuery,
+  useGetBookingStaticsQuery,
+} from "../../redux/features/booking/bookingApi";
 import { TCommonTheme } from "../../themes";
 
 const VendorDashboard = () => {
   const [year, setYear] = useState(dayjs().format("YYYY"));
-
+  const { data: statistics } = useGetBookingStaticsQuery({ year: year });
   const {
     data: RData,
     isLoading,
@@ -76,7 +79,7 @@ const VendorDashboard = () => {
               </Space>
             </div>
             {/* section 2 */}
-            <BookingChart />
+            <BookingChart statistics={statistics?.data} />
           </div>
         </Col>
         <Col span={8}>
