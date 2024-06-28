@@ -13,7 +13,7 @@ import { logout, setUser } from "../features/auth/authSlice";
 import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://192.168.10.61:5000/api/v1",
+  baseUrl: "http://143.198.197.69:5010/api/v1",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const otpToken = sessionStorage.getItem("token");

@@ -101,7 +101,7 @@ const Table = () => {
       >
         <EditTable setShow={setShowEditModal} />
       </ResModal>
-      <TableCards tableData={tableData} />
+      <TableCards branchId={branch as string} />
 
       <div className="flex justify-end mb-4 gap-x-4">
         <Button
