@@ -3,7 +3,7 @@
 import { Button, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { useLocation, useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.svg";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { sidebarItemsGenerator } from "../utils/sidebarItemsGenerator";
 
@@ -56,7 +56,7 @@ const Sidebar = () => {
         style={{
           color: "white",
           display: "flex",
-
+          marginTop: "10px",
           justifyContent: "center",
           alignItems: "center",
         }}
