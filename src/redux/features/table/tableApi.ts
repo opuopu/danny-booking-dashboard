@@ -37,10 +37,12 @@ const tableApi = baseApi.injectEndpoints({
     }),
 
     deleteTable: builder.mutation({
-      query: (data) => ({
-        url: `/tables/${data?.id}`,
-        method: "DELETE",
-      }),
+      query: (id) => {
+        return {
+          url: `/tables/${id}`,
+          method: "DELETE",
+        };
+      },
       invalidatesTags: [tagTypes.table],
     }),
   }),

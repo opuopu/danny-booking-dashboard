@@ -3,18 +3,16 @@ import { useState } from "react";
 import BookingCard from "../../../component/BookingCard/BookingCard";
 
 import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
-import { Button, DatePicker, Select, TimePicker } from "antd";
+import { Button, DatePicker, TimePicker } from "antd";
 import dayjs from "dayjs";
 import ResModal from "../../../component/Modal/Modal";
 import ResTable from "../../../component/Table";
 import { TUser, useCurrentUser } from "../../../redux/features/auth/authSlice";
 import { useFindAllBrancesBookingQuery } from "../../../redux/features/booking/bookingApi";
 import { setBookingFiletring } from "../../../redux/features/booking/bookingSlice";
-import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import AddBooking from "./AddBooking";
 const Booking = () => {
-  const { data: Bdata } = useGetAllBranchQuery({});
   const { searchTerm, arrivalTime, expiryTime, branch, date } = useAppSelector(
     (state) => state.booking
   );
@@ -33,10 +31,10 @@ const Booking = () => {
     isFetching,
   } = useFindAllBrancesBookingQuery(query);
 
-  const options = Bdata?.data?.map((data: any) => ({
-    label: data?.name,
-    value: data?._id,
-  }));
+  // const options = Bdata?.data?.map((data: any) => ({
+  //   label: data?.name,
+  //   value: data?._id,
+  // }));
 
   const column = [
     {
@@ -130,14 +128,14 @@ const Booking = () => {
           }
         />
 
-        <Select
+        {/* <Select
           onChange={(value: string) =>
             dispatch(setBookingFiletring({ branch: value }))
           }
           options={options}
           style={{ width: 200, height: 40 }}
           placeholder="Select Branch"
-        />
+        /> */}
         <DatePicker
           defaultValue={dayjs(dayjs(), "YYYY-MM-DD")}
           className="w-[200px]"

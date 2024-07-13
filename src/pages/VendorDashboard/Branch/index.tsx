@@ -7,9 +7,15 @@ import ResTable from "../../../component/Table";
 import CreateBranch from "./CreateBranch";
 import EditBranch from "./EditBranch";
 
-import { EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { toast } from "sonner";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import ResConfirm from "../../../component/UI/PopConfirm";
 import { branchData } from "../../../db/branchData";
-import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
+import {
+  useDeleteBranchMutation,
+  useGetAllBranchQuery,
+} from "../../../redux/features/branch/branchApi";
 import { setBranch } from "../../../redux/features/branch/branchSlice";
 import { useAppDispatch } from "../../../redux/hooks";
 
@@ -17,7 +23,21 @@ const Branch = () => {
   const [show, setShow] = useState<boolean | null>(null);
   const [showEditModal, setShowEditModal] = useState<boolean | null>(null);
   const { data: bData, isLoading: bLoading } = useGetAllBranchQuery({});
+  const [deleteBranch] = useDeleteBranchMutation();
   const dispatch = useAppDispatch();
+
+  const handleDeleteTable = async (id: string) => {
+    const toastId = toast.loading("Deleting...");
+    try {
+      await deleteBranch({ id, body: { isDeleted: true } }).unwrap();
+      toast.success("Branch deleted successfully", {
+        id: toastId,
+        duration: 2000,
+      });
+    } catch (error: any) {
+      ErrorResponse(error, toastId);
+    }
+  };
   const branchColumn = [
     {
       title: "Branch Name",
@@ -53,13 +73,13 @@ const Branch = () => {
               className="cursor-pointer"
               key={index}
             />
-            {/* <ResConfirm
-                title="are you sure?"
-                description="this action cannot be undone"
-                handleOk={() => handleDeleteTable(data?.id)}
-              >
-                <DeleteOutlined className="cursor-pointer" key={index} />
-              </ResConfirm> */}
+            <ResConfirm
+              title="are you sure?"
+              description="this action cannot be undone"
+              handleOk={() => handleDeleteTable(data?._id)}
+            >
+              <DeleteOutlined className="cursor-pointer" key={index} />
+            </ResConfirm>
           </div>
         );
       },

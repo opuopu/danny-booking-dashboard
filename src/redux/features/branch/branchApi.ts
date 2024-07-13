@@ -38,6 +38,14 @@ const branchApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.branch],
     }),
+    deleteBranch: builder.mutation({
+      query: (data) => ({
+        url: `/branch/${data?.id}`,
+        method: "PATCH",
+        body: data?.body,
+      }),
+      invalidatesTags: [tagTypes.branch],
+    }),
   }),
 });
 
@@ -46,4 +54,5 @@ export const {
   useGetAllBranchQuery,
   useUpdateBranchMutation,
   useGetSingleBranchQuery,
+  useDeleteBranchMutation,
 } = branchApi;

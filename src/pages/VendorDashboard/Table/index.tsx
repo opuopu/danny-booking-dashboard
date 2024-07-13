@@ -4,6 +4,7 @@ import ResTable from "../../../component/Table";
 import TableCards from "../../../component/TableCards/TableCards";
 
 import {
+  DeleteOutlined,
   // DeleteOutlined,
   EditOutlined,
   PlusCircleOutlined,
@@ -17,9 +18,15 @@ import EditTable from "./EditTable";
 // import { useAppDispatch } from "../../../redux/hooks";
 
 import { FaChevronDown } from "react-icons/fa6";
+import { toast } from "sonner";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import ResConfirm from "../../../component/UI/PopConfirm";
 import { tableData } from "../../../db";
 import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
-import { useGetTablesQuery } from "../../../redux/features/table/tableApi";
+import {
+  useDeleteTableMutation,
+  useGetTablesQuery,
+} from "../../../redux/features/table/tableApi";
 import { setTable } from "../../../redux/features/table/tableSlice";
 import { useAppDispatch } from "../../../redux/hooks";
 import { TCommonTheme } from "../../../themes";
@@ -29,7 +36,9 @@ const Table = () => {
   const [branch, setBranch] = useState<string | null>(null);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const { data: BData } = useGetAllBranchQuery({});
+  const [deleteTable] = useDeleteTableMutation();
   const dispatch = useAppDispatch();
+
   const query: Record<string, any> = {};
   if (branch) {
     query["branch"] = branch;
@@ -47,6 +56,19 @@ const Table = () => {
   const onClick: MenuProps["onClick"] = ({ key }) => {
     setBranch(key);
   };
+  const handleDeleteTable = async (id: string) => {
+    const toastId = toast.loading("Deleting...");
+    try {
+      await deleteTable({ id }).unwrap();
+      toast.success("Table deleted successfully", {
+        id: toastId,
+        duration: 2000,
+      });
+    } catch (error: any) {
+      ErrorResponse(error, toastId);
+    }
+  };
+
   const column = [
     {
       title: "Number of Persons",
@@ -91,13 +113,13 @@ const Table = () => {
               key={index}
             />
 
-            {/* <ResConfirm
+            <ResConfirm
               title="are you sure?"
               description="this action cannot be undone"
-              handleOk={() => handleDeleteTable(data?.id)}
+              handleOk={() => handleDeleteTable(data?._id)}
             >
               <DeleteOutlined className="cursor-pointer" key={index} />
-            </ResConfirm> */}
+            </ResConfirm>
           </div>
         );
       },

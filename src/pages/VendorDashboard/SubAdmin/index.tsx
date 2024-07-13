@@ -2,23 +2,41 @@
 import { Button } from "antd";
 import ResTable from "../../../component/Table";
 
-import { subAdminData } from "../../../db";
-import { EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { toast } from "sonner";
 import ResModal from "../../../component/Modal/Modal";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import ResConfirm from "../../../component/UI/PopConfirm";
+import { subAdminData } from "../../../db";
+import {
+  useDeleteSubAdminMutation,
+  useGetAllUserQuery,
+} from "../../../redux/features/auth/authApi";
+import { setSubAdminDetails } from "../../../redux/features/auth/authSlice";
+import { useAppDispatch } from "../../../redux/hooks";
 import CreateSubAdmin from "./CreateSubAdmin";
 import EditSubAdmin from "./EditSubAdmin";
-import { useGetAllUserQuery } from "../../../redux/features/auth/authApi";
-import { useAppDispatch } from "../../../redux/hooks";
-import { setSubAdminDetails } from "../../../redux/features/auth/authSlice";
 
 const SubAdmin = () => {
   const { data: sData, isLoading: Sloading } = useGetAllUserQuery({
     role: "sub_admin",
   });
+  const [deleteSubAdmin] = useDeleteSubAdminMutation();
   const [show, setShow] = useState<boolean | null>(null);
   const [showEditModal, setShowEditModal] = useState<boolean | null>(null);
-
+  const handleDeleteTable = async (id: string) => {
+    const toastId = toast.loading("Deleting...");
+    try {
+      await deleteSubAdmin({ id }).unwrap();
+      toast.success("Sub Admin Deleted successfully", {
+        id: toastId,
+        duration: 2000,
+      });
+    } catch (error: any) {
+      ErrorResponse(error, toastId);
+    }
+  };
   const dispatch = useAppDispatch();
   const subAdminColumn = [
     {
@@ -50,13 +68,13 @@ const SubAdmin = () => {
               className="cursor-pointer"
               key={index}
             />
-            {/* <ResConfirm
-                title="are you sure?"
-                description="this action cannot be undone"
-                handleOk={() => handleDeleteTable(data?.id)}
-              >
-                <DeleteOutlined className="cursor-pointer" key={index} />
-              </ResConfirm> */}
+            <ResConfirm
+              title="are you sure?"
+              description="this action cannot be undone"
+              handleOk={() => handleDeleteTable(data?._id)}
+            >
+              <DeleteOutlined className="cursor-pointer" key={index} />
+            </ResConfirm>
           </div>
         );
       },

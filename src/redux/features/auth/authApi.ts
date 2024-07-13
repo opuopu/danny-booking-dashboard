@@ -76,6 +76,14 @@ const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.user],
     }),
+    deleteSubAdmin: builder.mutation({
+      query: (id) => ({
+        url: `/users/update/${id}`,
+        method: "PATCH",
+        body: { isDeleted: true },
+      }),
+      invalidatesTags: [tagTypes.user],
+    }),
   }),
 });
 
@@ -89,4 +97,5 @@ export const {
   useUpdateProfileMutation,
   useUpdateUserMutation,
   useGetAllUserQuery,
+  useDeleteSubAdminMutation,
 } = authApi;
