@@ -7,3 +7,8 @@
   margin: 0;
   padding: 0;
 }
+
+.ant-btn.css-dev-only-do-not-override-elsxm7.ant-btn-primary.ant-btn-sm {
+  /* Your custom styles here */
+  background-color: #0b835c !important; /* Example: changing the background color */
+}
