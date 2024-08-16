@@ -4,8 +4,8 @@ import { defineConfig } from "vite";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server: {
-    host: "192.168.10.61",
-    port: 5173,
-  },
+  // server: {
+  //   host: "192.168.10.61",
+  //   port: 5173,
+  // },
 });

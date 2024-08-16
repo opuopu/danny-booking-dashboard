@@ -1,16 +1,23 @@
 import { ConfigProvider, Layout } from "antd";
 
 import { Content, Header } from "antd/es/layout/layout";
-import { Outlet } from "react-router-dom";
-import Sidebar from "./Sidebar";
-import HeaderLayout from "./HeaderLayout";
+import { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
 import { useAppSelector } from "../redux/hooks";
-import { sidebardThemes } from "../themes/sidebarThemes";
 import { paginationTheme } from "../themes/paginationThemes";
+import { sidebardThemes } from "../themes/sidebarThemes";
+import HeaderLayout from "./HeaderLayout";
+import Sidebar from "./Sidebar";
 
 const MainLayout = () => {
   const collapsed = useAppSelector((state) => state.layout.collapsed);
+  const User: TUser = useAppSelector(useCurrentUser)!;
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    navigate(`/${User!.role}/dashboard`);
+  }, []);
   return (
     <div>
       <ConfigProvider theme={sidebardThemes}>

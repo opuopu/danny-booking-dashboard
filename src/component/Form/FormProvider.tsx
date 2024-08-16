@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form } from "antd";
 import { ReactNode, useEffect } from "react";
@@ -7,7 +8,6 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { toast } from "sonner";
 
 type TFormConfig = {
   defaultValues?: Record<string, any>;
@@ -43,12 +43,12 @@ const ResForm = ({
   }, [defaultValues, methods]);
 
   const submit: SubmitHandler<FieldValues> = (data) => {
-    if (Object.keys(dirtyFields).length === 0) {
-      toast.warning("Please update some values before submitting..");
-      return;
-    }
+    // if (Object.keys(dirtyFields).length === 0) {
+    //   toast.warning("Please update some values before submitting..");
+    //   return;
+    // }
     onSubmit(data);
-    // methods.reset();
+    methods.reset();
   };
 
   return (
