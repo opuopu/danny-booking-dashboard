@@ -1,4 +1,4 @@
 import { io } from "socket.io-client";
-const URL = "http://192.168.10.138:7005";
+const URL = "https://socket.mamnon.de";
 
 export const socket = io(URL);
