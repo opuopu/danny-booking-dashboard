@@ -13,7 +13,7 @@ import { logout, setUser } from "../features/auth/authSlice";
 import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://192.168.10.138:7000/api/v1",
+  baseUrl: "https://api.mamnon.de/api/v1",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const otpToken = sessionStorage.getItem("token");
@@ -47,13 +47,10 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     //* Send Refresh
     console.log("Sending refresh token");
 
-    const res = await fetch(
-      "http://192.168.10.61:5000/api/v1/auth/refresh-token",
-      {
-        method: "POST",
-        credentials: "include",
-      }
-    );
+    const res = await fetch("https://api.mamnon.de/api/v1/auth/refresh-token", {
+      method: "POST",
+      credentials: "include",
+    });
 
     const data = await res.json();
     if (data?.data?.accessToken) {
