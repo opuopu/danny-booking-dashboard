@@ -48,7 +48,7 @@ const Notification = () => {
         )} */}
       </div>
       <div className="container mx-auto mt-4">
-        {notificationData?.data ? (
+        {notificationData?.data.length > 0 ? (
           <Row gutter={[16, 16]}>
             {notificationData?.data?.map((data: any, index: number) => (
               <NotificationCard key={index} data={data} />
