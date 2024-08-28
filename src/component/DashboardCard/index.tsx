@@ -25,7 +25,7 @@ const DashboardCard = () => {
   });
   return (
     <Row gutter={[16, 30]}>
-      <Col span={24}>
+      <Col xl={24} md={24} sm={24} lg={12}>
         <div className="w-[400px]">
           <div className="flex items-center justify-between  bg-white px-6 py-3 rounded">
             <MdPendingActions size={50} />
@@ -38,7 +38,7 @@ const DashboardCard = () => {
           </div>
         </div>
       </Col>
-      <Col span={24}>
+      <Col xl={24} md={24} sm={24} lg={12}>
         <div className="w-[400px]">
           <div className="flex items-center justify-between  bg-white px-6 py-3 rounded">
             <MdRunningWithErrors size={50} />
@@ -51,7 +51,7 @@ const DashboardCard = () => {
           </div>
         </div>
       </Col>
-      <Col span={24}>
+      <Col xl={24} md={24} sm={24} lg={12}>
         <div className="w-[400px]">
           <div className="flex items-center justify-between  bg-white px-6 py-3 rounded">
             <MdCancel size={50} />

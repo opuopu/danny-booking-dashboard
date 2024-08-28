@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ConfigProvider, Table } from "antd";
-import { TablePaginationConfig } from "antd";
+import { ConfigProvider, Table, TablePaginationConfig } from "antd";
 interface ScrollProps {
   x?: number;
   y?: number | "max";
@@ -24,7 +23,7 @@ const ResTable = ({
   style,
   pagination = false,
   theme,
-  scroll,
+  scroll = { x: 800 },
 }: ResTableProps) => {
   return (
     <ConfigProvider theme={theme}>

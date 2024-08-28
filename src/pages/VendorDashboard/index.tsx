@@ -60,7 +60,7 @@ const VendorDashboard = () => {
   return (
     <div>
       <Row gutter={[16, 16]}>
-        <Col span={16}>
+        <Col xl={16} md={24} sm={24}>
           <div className="bg-white  p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -82,7 +82,7 @@ const VendorDashboard = () => {
             <BookingChart statistics={statistics?.data} />
           </div>
         </Col>
-        <Col span={8}>
+        <Col xl={8} md={24} sm={24}>
           <DashboardCard />
         </Col>
       </Row>

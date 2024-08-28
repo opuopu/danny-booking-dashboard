@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import BookingCard from "../../../component/BookingCard/BookingCard";
 
 import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { Button, DatePicker, TimePicker } from "antd";
 import dayjs from "dayjs";
 import ResModal from "../../../component/Modal/Modal";
+import SubAdminDashboardCard from "../../../component/SubAdminDashboardCard/SubAdminDashboardCard";
 import ResTable from "../../../component/Table";
 import { TUser, useCurrentUser } from "../../../redux/features/auth/authSlice";
 import { useFindAllBrancesBookingQuery } from "../../../redux/features/booking/bookingApi";
@@ -104,7 +104,7 @@ const Booking = () => {
       >
         <AddBooking setShow={setshow} />
       </ResModal>
-      <BookingCard />
+      <SubAdminDashboardCard />
 
       <div className="flex justify-end gap-x-4 my-4">
         <TimePicker
