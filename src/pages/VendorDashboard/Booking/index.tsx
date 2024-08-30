@@ -46,6 +46,10 @@ const Booking = () => {
     const toastid = toast.loading("Deleting....");
     try {
       await updateBooking({ id, body: { isDeleted: true } }).unwrap();
+      toast.success("Reservation deleted successfully.", {
+        id: toastid,
+        duration: 2000,
+      });
     } catch (error) {
       ErrorResponse(error, toastid);
     }

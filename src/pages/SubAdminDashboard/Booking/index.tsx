@@ -8,10 +8,16 @@ import ResModal from "../../../component/Modal/Modal";
 import SubAdminDashboardCard from "../../../component/SubAdminDashboardCard/SubAdminDashboardCard";
 import ResTable from "../../../component/Table";
 import { TUser, useCurrentUser } from "../../../redux/features/auth/authSlice";
-import { useFindAllBrancesBookingQuery } from "../../../redux/features/booking/bookingApi";
+import {
+  useFindAllBrancesBookingQuery,
+  useUpdateBookingMutation,
+} from "../../../redux/features/booking/bookingApi";
 import { setBookingFiletring } from "../../../redux/features/booking/bookingSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import AddBooking from "./AddBooking";
+import ResConfirm from "../../../component/UI/PopConfirm";
+import { toast } from "sonner";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
 const Booking = () => {
   const { searchTerm, arrivalTime, expiryTime, branch, date } = useAppSelector(
     (state) => state.booking
@@ -25,6 +31,7 @@ const Booking = () => {
   if (searchTerm) query["searchTerm"] = searchTerm;
   if (arrivalTime) query["arrivalTime"] = arrivalTime;
   if (expiryTime) query["expiryTime"] = expiryTime;
+  const [updateBooking] = useUpdateBookingMutation();
   const {
     data: bookingData,
     isLoading,
@@ -36,6 +43,18 @@ const Booking = () => {
   //   value: data?._id,
   // }));
 
+  const handleDelete = async (id: string) => {
+    const toastid = toast.loading("Deleting....");
+    try {
+      await updateBooking({ id, body: { isDeleted: true } }).unwrap();
+      toast.success("Reservation deleted successfully.", {
+        id: toastid,
+        duration: 2000,
+      });
+    } catch (error) {
+      ErrorResponse(error, toastid);
+    }
+  };
   const column = [
     {
       title: "Customer Name",
@@ -85,11 +104,12 @@ const Booking = () => {
       render: (data: any, index: number) => {
         return (
           <div className="text-center">
-            <DeleteOutlined
-              onClick={() => {}}
-              className="cursor-pointer"
-              key={index}
-            />
+            <ResConfirm
+              handleOk={() => handleDelete(data?._id)}
+              description="This action cannot be undone!"
+            >
+              <DeleteOutlined className="cursor-pointer" key={index} />
+            </ResConfirm>
           </div>
         );
       },
