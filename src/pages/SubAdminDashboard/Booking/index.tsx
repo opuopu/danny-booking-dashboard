@@ -103,10 +103,7 @@ const Booking = () => {
       key: "action",
       render: (data: any, index: number) => {
         return (
-          <ResConfirm
-            handleOk={() => handleDelete(data?._id)}
-            description="This action cannot be undone!"
-          >
+          <ResConfirm handleOk={() => handleDelete(data?._id)}>
             <DeleteOutlined className="cursor-pointer" key={index} />
           </ResConfirm>
         );
