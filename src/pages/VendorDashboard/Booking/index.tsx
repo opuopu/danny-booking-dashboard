@@ -7,11 +7,17 @@ import { Button, DatePicker, Select, TimePicker } from "antd";
 import dayjs from "dayjs";
 import ResModal from "../../../component/Modal/Modal";
 import ResTable from "../../../component/Table";
-import { useFindAllBrancesBookingQuery } from "../../../redux/features/booking/bookingApi";
+import {
+  useFindAllBrancesBookingQuery,
+  useUpdateBookingMutation,
+} from "../../../redux/features/booking/bookingApi";
 import { setBookingFiletring } from "../../../redux/features/booking/bookingSlice";
 import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import AddBooking from "./AddBooking";
+import ResConfirm from "../../../component/UI/PopConfirm";
+import { toast } from "sonner";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
 const Booking = () => {
   const { data: Bdata } = useGetAllBranchQuery({});
   const { searchTerm, arrivalTime, expiryTime, branch, date } = useAppSelector(
@@ -30,12 +36,20 @@ const Booking = () => {
     isLoading,
     isFetching,
   } = useFindAllBrancesBookingQuery(query);
-
+  const [updateBooking] = useUpdateBookingMutation();
   const options = Bdata?.data?.map((data: any) => ({
     label: data?.name,
     value: data?._id,
   }));
 
+  const handleDelete = async (id: string) => {
+    const toastid = toast.loading("Deleting....");
+    try {
+      await updateBooking({ id, body: { isDeleted: true } }).unwrap();
+    } catch (error) {
+      ErrorResponse(error, toastid);
+    }
+  };
   const column = [
     {
       title: "Customer Name",
@@ -85,11 +99,12 @@ const Booking = () => {
       render: (data: any, index: number) => {
         return (
           <div className="text-center">
-            <DeleteOutlined
-              onClick={() => {}}
-              className="cursor-pointer"
-              key={index}
-            />
+            <ResConfirm
+              handleOk={() => handleDelete(data?._id)}
+              description="This action cannot be undone!"
+            >
+              <DeleteOutlined className="cursor-pointer" key={index} />
+            </ResConfirm>
           </div>
         );
       },
