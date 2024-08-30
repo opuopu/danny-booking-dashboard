@@ -58,6 +58,7 @@ const SubAdmin = () => {
       title: "Action",
       key: "action",
       render: (data: any, index: number) => {
+        console.log(data);
         return (
           <div className="flex gap-x-4">
             <EditOutlined

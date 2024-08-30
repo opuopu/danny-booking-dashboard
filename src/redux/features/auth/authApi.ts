@@ -77,8 +77,8 @@ const authApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.user],
     }),
     deleteSubAdmin: builder.mutation({
-      query: (id) => ({
-        url: `/users/update/${id}`,
+      query: (data) => ({
+        url: `/users/update/${data?.id}`,
         method: "PATCH",
         body: { isDeleted: true },
       }),
