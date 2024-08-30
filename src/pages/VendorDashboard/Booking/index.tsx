@@ -55,21 +55,21 @@ const Booking = () => {
     }
   };
   const column = [
-    {
-      title: "Customer Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Booking Number",
-      dataIndex: "bookingId",
-      key: "bookingId",
-    },
+    // {
+    //   title: "Customer Name",
+    //   dataIndex: "name",
+    //   key: "name",
+    // },
+    // {
+    //   title: "Email",
+    //   dataIndex: "email",
+    //   key: "email",
+    // },
+    // {
+    //   title: "Booking Number",
+    //   dataIndex: "bookingId",
+    //   key: "bookingId",
+    // },
     {
       title: "Seats",
       render: (data: any) => {

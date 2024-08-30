@@ -39,16 +39,16 @@ const Branch = () => {
     }
   };
   const branchColumn = [
-    // {
-    //   title: "Branch Name",
-    //   dataIndex: "name",
-    //   key: "name",
-    // },
-    // {
-    //   title: "Branch Location",
-    //   dataIndex: "location",
-    //   key: "location",
-    // },
+    {
+      title: "Branch Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Branch Location",
+      dataIndex: "location",
+      key: "location",
+    },
     {
       title: "Tables",
       dataIndex: "tables",
