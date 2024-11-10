@@ -2,7 +2,7 @@ import * as z from "zod";
 
 const reservationSchema = z.object({
   name: z.string({ required_error: "Customer name is required" }),
-  email: z.string({ required_error: "Customer email is required" }),
+  email: z.string().optional(),
   number: z.string().optional(),
   branch: z.string({ required_error: "Branch is required" }),
   date: z.string({ required_error: "Date is required" }),

@@ -5,8 +5,11 @@ import BookingCard from "../../../component/BookingCard/BookingCard";
 import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { Button, DatePicker, Select, TimePicker } from "antd";
 import dayjs from "dayjs";
+import { toast } from "sonner";
 import ResModal from "../../../component/Modal/Modal";
 import ResTable from "../../../component/Table";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import ResConfirm from "../../../component/UI/PopConfirm";
 import {
   useFindAllBrancesBookingQuery,
   useUpdateBookingMutation,
@@ -15,9 +18,6 @@ import { setBookingFiletring } from "../../../redux/features/booking/bookingSlic
 import { useGetAllBranchQuery } from "../../../redux/features/branch/branchApi";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import AddBooking from "./AddBooking";
-import ResConfirm from "../../../component/UI/PopConfirm";
-import { toast } from "sonner";
-import ErrorResponse from "../../../component/UI/ErrorResponse";
 const Booking = () => {
   const { data: Bdata } = useGetAllBranchQuery({});
   const { searchTerm, arrivalTime, expiryTime, branch, date } = useAppSelector(
@@ -73,12 +73,20 @@ const Booking = () => {
     {
       title: "Seats",
       render: (data: any) => {
-        return (
-          <p>
-            {data?.table1Capacity ?? 0}+{data?.table2Capacity ?? 0}+
-            {data?.table3Capacity ?? 0}={data?.seats}
-          </p>
-        );
+        const table1 = data?.table1Capacity ?? 0;
+        const table2 = data?.table2Capacity ?? 0;
+        const table3 = data?.table3Capacity ?? 0;
+
+        // Check if all table capacities are zero
+        if (table1 === 0 && table2 === 0 && table3 === 0) {
+          return <p>{data?.seats}</p>;
+        } else {
+          return (
+            <p>
+              {table1}+{table2}+{table3}={data?.seats}
+            </p>
+          );
+        }
       },
     },
     {

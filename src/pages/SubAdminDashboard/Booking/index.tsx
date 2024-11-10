@@ -4,9 +4,12 @@ import { useState } from "react";
 import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { Button, DatePicker, TimePicker } from "antd";
 import dayjs from "dayjs";
+import { toast } from "sonner";
 import ResModal from "../../../component/Modal/Modal";
 import SubAdminDashboardCard from "../../../component/SubAdminDashboardCard/SubAdminDashboardCard";
 import ResTable from "../../../component/Table";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import ResConfirm from "../../../component/UI/PopConfirm";
 import { TUser, useCurrentUser } from "../../../redux/features/auth/authSlice";
 import {
   useFindAllBrancesBookingQuery,
@@ -15,9 +18,6 @@ import {
 import { setBookingFiletring } from "../../../redux/features/booking/bookingSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import AddBooking from "./AddBooking";
-import ResConfirm from "../../../component/UI/PopConfirm";
-import { toast } from "sonner";
-import ErrorResponse from "../../../component/UI/ErrorResponse";
 const Booking = () => {
   const { searchTerm, arrivalTime, expiryTime, branch, date } = useAppSelector(
     (state) => state.booking
@@ -74,12 +74,20 @@ const Booking = () => {
     {
       title: "Seats",
       render: (data: any) => {
-        return (
-          <p>
-            {data?.table1Capacity ?? 0}+{data?.table2Capacity ?? 0}+
-            {data?.table3Capacity ?? 0}={data?.seats}
-          </p>
-        );
+        const table1 = data?.table1Capacity ?? 0;
+        const table2 = data?.table2Capacity ?? 0;
+        const table3 = data?.table3Capacity ?? 0;
+
+        // Check if all table capacities are zero
+        if (table1 === 0 && table2 === 0 && table3 === 0) {
+          return <p>{data?.seats}</p>;
+        } else {
+          return (
+            <p>
+              {table1}+{table2}+{table3}={data?.seats}
+            </p>
+          );
+        }
       },
     },
     {
