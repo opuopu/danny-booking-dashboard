@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import ResForm from "../../../component/Form/FormProvider";
 import ResInput from "../../../component/Form/ResInput";
 import ResSelect from "../../../component/Form/ResSelect";
+import ResTextArea from "../../../component/Form/ResTextarea";
 import ResTimePicker from "../../../component/Form/ResTimepicker";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
 import { daysOfWeekend } from "../../../constant/days";
@@ -186,6 +187,13 @@ const CreateBranch = ({ setShow }: any) => {
               />
             </Col>
           </Row>
+        </Col>
+        <Col span={24}>
+          <ResTextArea
+            label="Email Template Data"
+            name="emailTemplateText"
+            placeholder="enter email template text here"
+          />
         </Col>
       </Row>
 

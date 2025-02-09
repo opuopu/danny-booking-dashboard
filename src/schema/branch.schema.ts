@@ -20,6 +20,9 @@ const createBranch = z.object({
   thursday: OpeningHoursSchema,
   friday: OpeningHoursSchema,
   saturday: OpeningHoursSchema,
+  emailTemplateText: z
+    .string({ required_error: "Email template text is required" })
+    .min(1, { message: "Email template text is required" }),
 });
 
 const editBranch = z.object({
@@ -43,6 +46,9 @@ const editBranch = z.object({
   thursday: OpeningHoursSchema,
   friday: OpeningHoursSchema,
   saturday: OpeningHoursSchema,
+  emailTemplateText: z
+    .string({ required_error: "Email template text is required" })
+    .min(1, { message: "Email template text is required" }),
 });
 
 export const branchValidation = {
