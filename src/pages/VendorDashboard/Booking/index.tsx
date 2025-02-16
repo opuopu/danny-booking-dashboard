@@ -2,7 +2,11 @@
 import { useState } from "react";
 import BookingCard from "../../../component/BookingCard/BookingCard";
 
-import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EyeFilled,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
 import { Button, DatePicker, Select, TimePicker } from "antd";
 import dayjs from "dayjs";
 import { toast } from "sonner";
@@ -25,9 +29,12 @@ const Booking = () => {
   );
   const dispatch = useAppDispatch();
   const [show, setshow] = useState<boolean | null>(null);
+  const [showNote, setshowNote] = useState<boolean | null>(false);
+  const [specialNote, setspecialNote] = useState<any>("");
   const query: Record<string, any> = {};
   if (branch) query["branch"] = branch;
   if (date) query["date"] = date;
+
   if (searchTerm) query["searchTerm"] = searchTerm;
   if (arrivalTime) query["arrivalTime"] = arrivalTime;
   if (expiryTime) query["expiryTime"] = expiryTime;
@@ -64,6 +71,11 @@ const Booking = () => {
       title: "Email",
       dataIndex: "email",
       key: "email",
+    },
+    {
+      title: "Booking Number",
+      dataIndex: "bookingId",
+      key: "bookingId",
     },
     {
       title: "Booking Number",
@@ -110,18 +122,40 @@ const Booking = () => {
       key: "action",
       render: (data: any, index: number) => {
         return (
-          <ResConfirm
-            handleOk={() => handleDelete(data?._id)}
-            description="This action cannot be undone!"
-          >
-            <DeleteOutlined className="cursor-pointer" key={index} />
-          </ResConfirm>
+          <div className="flex gap-x-4">
+            <EyeFilled
+              className="cursor-pointer"
+              key={index}
+              onClick={() => {
+                setshowNote((prev) => !prev);
+                setspecialNote(data?.specialNote);
+              }}
+            />
+
+            <ResConfirm
+              handleOk={() => {
+                handleDelete(data?._id);
+              }}
+              description="This action cannot be undone!"
+            >
+              <DeleteOutlined className="cursor-pointer" key={index} />
+            </ResConfirm>
+          </div>
         );
       },
     },
   ];
   return (
     <div>
+      <ResModal
+        showModal={showNote as boolean}
+        setShowModal={setshowNote}
+        title="Special Note"
+      >
+        <div className="border border-primary border-2  pb-20 px-4 pt-4 text-20">
+          {specialNote}
+        </div>
+      </ResModal>
       <ResModal
         showModal={show as boolean}
         setShowModal={setshow}
