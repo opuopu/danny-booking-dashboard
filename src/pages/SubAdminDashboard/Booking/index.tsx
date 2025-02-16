@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 
-import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EyeFilled,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
 import { Button, DatePicker, TimePicker } from "antd";
 import dayjs from "dayjs";
 import { toast } from "sonner";
@@ -31,6 +35,8 @@ const Booking = () => {
   if (searchTerm) query["searchTerm"] = searchTerm;
   if (arrivalTime) query["arrivalTime"] = arrivalTime;
   if (expiryTime) query["expiryTime"] = expiryTime;
+  const [showNote, setshowNote] = useState<boolean | null>(false);
+  const [specialNote, setspecialNote] = useState<any>("");
   const [updateBooking] = useUpdateBookingMutation();
   const {
     data: bookingData,
@@ -111,15 +117,41 @@ const Booking = () => {
       key: "action",
       render: (data: any, index: number) => {
         return (
-          <ResConfirm handleOk={() => handleDelete(data?._id)}>
-            <DeleteOutlined className="cursor-pointer" key={index} />
-          </ResConfirm>
+          <div>
+            <EyeFilled
+              className="cursor-pointer"
+              key={index}
+              onClick={() => {
+                setshowNote((prev) => !prev);
+                setspecialNote(data?.specialNote);
+              }}
+            />
+            <ResConfirm handleOk={() => handleDelete(data?._id)}>
+              <DeleteOutlined className="cursor-pointer" key={index} />
+            </ResConfirm>
+          </div>
         );
       },
     },
   ];
   return (
     <div>
+      <ResModal
+        showModal={showNote as boolean}
+        setShowModal={setshowNote}
+        title="Special Note"
+      >
+        <div className="border border-primary border-2  pb-20 px-4 pt-4 text-20">
+          {specialNote}
+        </div>
+      </ResModal>
+      <ResModal
+        showModal={show as boolean}
+        setShowModal={setshow}
+        title="Add A Reservation"
+      >
+        <AddBooking setShow={setshow} />
+      </ResModal>
       <ResModal
         showModal={show as boolean}
         setShowModal={setshow}
