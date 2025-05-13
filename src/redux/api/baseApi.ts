@@ -15,7 +15,7 @@ import { RootState } from "../store";
 const baseQuery = fetchBaseQuery({
   // baseUrl: "http://192.168.10.5:5005/api/v1",
   baseUrl: "https://api.mamnon.de/api/v1",
-  // credentials: "include",
+  credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const otpToken = sessionStorage.getItem("token");
 
@@ -50,7 +50,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 
     const res = await fetch("https://api.mamnon.de/api/v1/auth/refresh-token", {
       method: "POST",
-      // credentials: "include",
+      credentials: "include",
     });
 
     const data = await res.json();
